@@ -1,3 +1,44 @@
+<?php
+interface iPapeleo {
+}
+
+class Usuario {
+  private string $nombre;
+  private string $apellido;
+  private string $medioContacto;
+  private string $email;
+  private string $telefono;
+  private string $direccion;
+  public function __construct($nombre, $apellido) {
+    $this->nombre = $nombre;
+    $this->apellido = $apellido;
+  }
+
+  public function setDireccion($direccion) {
+    $this->direccion = $direccion;
+    return $this;
+  }
+  public function setEmail($email) {
+    $this->email = $email;
+    return $this;
+  }
+  public function setTelefono($telefono) {
+    $this->telefono = $telefono;
+    return $this;
+  }
+
+  public function build() {
+    return $this;
+  }
+}
+
+$usuario = new Usuario('Pedro', 'Perez');
+$usuario->setDireccion('Calle falsa 123')->setEmail('XXXXXXXXXXXXXXX')->setTelefono('123456789');
+print_r($usuario);
+?>
+
+
+
 <!DOCTYPE html>
 <html lang="es">
 
