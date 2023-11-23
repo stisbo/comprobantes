@@ -6,7 +6,7 @@ require_once('config/database.php');
 
 // include_once('./autoload.php');
 use App\Config\Database;
-use PDO;
+use \PDO;
 
 $con = Database::getInstace();
 

@@ -47,16 +47,16 @@ print_r($usuario);
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <title>PAGINA PRINCIPAL</title>
-  <link rel="stylesheet" href="../assets/datatables/datatables.bootstrap5.min.css">
-  <link href="../css/styles.css" rel="stylesheet" />
-  <script src="../assets/fontawesome/fontawesome6.min.js"></script>
-  <script src="../assets/jquery/jquery.js"></script>
+  <link rel="stylesheet" href="assets/datatables/datatables.bootstrap5.min.css">
+  <link href="css/styles.css" rel="stylesheet" />
+  <script src="assets/fontawesome/fontawesome6.min.js"></script>
+  <script src="assets/jquery/jquery.js"></script>
 </head>
 
 <body>
-  <?php include("../common/header.php"); ?>
+  <?php include("common/header.php"); ?>
   <div id="layoutSidenav"> <!-- contenedor -->
-    <?php include("../common/sidebar.php"); ?>
+    <?php include("common/sidebar.php"); ?>
     <div id="layoutSidenav_content">
       <main>
         <div class="container-fluid px-4">
@@ -70,10 +70,10 @@ print_r($usuario);
     </div>
   </div><!-- fin contenedor -->
 
-  <script src="../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../js/scripts.js"></script>
-  <script src="../assets/datatables/datatables.jquery.min.js"></script>
-  <script src="../assets/datatables/datatables.bootstrap5.min.js"></script>
+  <script src="assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="js/scripts.js"></script>
+  <script src="assets/datatables/datatables.jquery.min.js"></script>
+  <script src="assets/datatables/datatables.bootstrap5.min.js"></script>
 </body>
 
 </html>
