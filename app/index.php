@@ -15,7 +15,7 @@ $con1 = Database::getInstace();
 var_dump($con);
 
 
-$stmt = $con->prepare("SELECT 1 + 1", []);
+$stmt = $con->prepare("SELECT * FROM tblAsientos", []);
 $stmt->execute();
 var_dump($stmt->fetchAll(PDO::FETCH_ASSOC));
 echo "<br>";

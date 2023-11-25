@@ -3,12 +3,12 @@ interface iPapeleo {
 }
 
 class Usuario {
-  private string $nombre;
-  private string $apellido;
-  private string $medioContacto;
-  private string $email;
-  private string $telefono;
-  private string $direccion;
+  public string $nombre;
+  public string $apellido;
+  public string $medioContacto;
+  public string $email;
+  public string $telefono;
+  public string $direccion;
   public function __construct($nombre, $apellido) {
     $this->nombre = $nombre;
     $this->apellido = $apellido;
