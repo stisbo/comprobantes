@@ -2,11 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Interfaces\IAfiliado;
-
-class Afiliado implements IAfiliado {
-  public function getEgresos() {
-  }
-  public function getIngresos() {
-  }
+class Afiliado {
+  public int $idAfiliado;
+  public string $nombre;
 }

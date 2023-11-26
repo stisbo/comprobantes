@@ -35,6 +35,10 @@ class Usuario {
 $usuario = new Usuario('Pedro', 'Perez');
 $usuario->setDireccion('Calle falsa 123')->setEmail('XXXXXXXXXXXXXXX')->setTelefono('123456789');
 print_r($usuario);
+echo '<br>';
+$usuario->nombre = 'Putito';
+print_r($usuario);
+echo '<hr><p>'.$usuario->telefono.'</p>';
 ?>
 
 
