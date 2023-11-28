@@ -8,8 +8,11 @@
   <title>INGRESOS</title>
   <link rel="stylesheet" href="../assets/datatables/datatables.bootstrap5.min.css">
   <link href="../css/styles.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/custom.css">
+  <link rel="stylesheet" href="../assets/jquery/jqueryToast.min.css">
   <script src="../assets/fontawesome/fontawesome6.min.js"></script>
   <script src="../assets/jquery/jquery.js"></script>
+  <script src="../assets/jquery/jqueryToast.min.js"></script>
   <style>
     #suggestions {
       display: none;
@@ -43,18 +46,15 @@
     <div id="layoutSidenav_content">
       <main>
         <div class="container-fluid px-4">
-          <div class="mt-4 d-flex justify-content-between align-items-center">
+          <div class="mt-4">
             <h1>Ingresos</h1>
-            <div>
-              <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal_ingreso_nuevo"><i class="fa fa-plus"></i> Crear Nuevo </button>
-              <button class="btn btn-info"><i class="fa fa-info"></i> Pendientes</button>
-              <button class="btn btn-primary"><i class="fa fa-check"></i> Saldados</button>
-            </div>
           </div>
-          <ol class="breadcrumb mb-4">
-            <li class="breadcrumb-item active">Lista de ingresos</li>
-          </ol>
-
+          <div class="buttons-head col-md-6 col-sm-12 mb-3">
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal_ingreso_nuevo"><i class="fa fa-plus"></i> Crear Nuevo </button>
+            <button class="btn btn-info" onclick="listaTodos()"><i class="fa fa-book"></i> Lista Todos</button>
+            <button class="btn btn-warning" onclick="listaPendientes()"><i class="fa fa-info"></i> Pendientes</button>
+            <button class="btn btn-primary" onclick="listaSaldados()"><i class="fa fa-check"></i> Saldados</button>
+          </div>
           <div class="row" id="cards-ingresos">
             <div class="card mb-4 shadow">
               <div class="card-header">

@@ -16,7 +16,7 @@
 </head>
 
 <body>
-  <?php include('./modals.php');?>
+  <?php include('./modals.php'); ?>
   <?php include("../common/header.php"); ?>
   <div id="layoutSidenav"> <!-- contenedor -->
     <?php include("../common/sidebar.php"); ?>
@@ -103,6 +103,7 @@
   <script src="../js/scripts.js"></script>
   <script src="../assets/datatables/datatables.jquery.min.js"></script>
   <script src="../assets/datatables/datatables.bootstrap5.min.js"></script>
+  <script src="./js/app.js"></script>
 </body>
 
 </html>

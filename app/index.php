@@ -2,20 +2,33 @@
 
 namespace App;
 
-require_once('config/database.php');
+require_once 'config/database.php';
+include_once 'autoload.php';
+$url = isset($_GET['url']) ? $_GET['url'] : '';
 
-// include_once('./autoload.php');
-use App\Config\Database;
-use \PDO;
+$parts = explode('/', $url);
+// print_r($parts);
+$method = $_SERVER['REQUEST_METHOD'];
+$controller = $parts[0];
+$action = $parts[1];
 
-$con = Database::getInstace();
+$controller = new $controller();
 
-$con1 = Database::getInstace();
-
-var_dump($con);
-
-
-$stmt = $con->prepare("SELECT * FROM tblAsientos", []);
-$stmt->execute();
-var_dump($stmt->fetchAll(PDO::FETCH_ASSOC));
-echo "<br>";
+switch ($method) {
+  case 'GET':
+    $controller->$action($_GET);
+    break;
+  case 'POST':
+    $controller->$action($_POST, $_FILES);
+    break;
+  case 'PUT':
+    parse_str(file_get_contents('php://input'), $params);
+    $controller->$action($params);
+    break;
+  case 'DELETE':
+    parse_str(file_get_contents('php://input'), $params);
+    $controller->$action($params);
+    break;
+  default:
+    echo json_encode(array('error' => 'Metodo no permitido'));
+}

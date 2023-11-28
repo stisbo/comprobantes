@@ -9,9 +9,8 @@
       <div class="modal-body">
         <form id="form_nuevo">
           <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="inputWithSuggestions" placeholder="Buscar elementos" value="">
-            <label for="inputWithSuggestions">Motivo (concepto)</label>
-            <div id="suggestions"></div>
+            <input type="text" name="motivo" class="form-control" id="motivo_egreso" placeholder="Buscar elementos" value="" list="lista_motivo">
+            <label for="motivo_egreso">Motivo (concepto)</label>
           </div>
           <div class="form-floating mb-3">
             <input type="number" class="form-control" name="monto" placeholder="" value="">
@@ -31,3 +30,9 @@
     </div>
   </div>
 </div>
+<datalist id="lista_motivo">
+  <option value="Camaro">
+  <option value="Corvette">
+  <option value="Impala">
+  <option value="Colorado">
+</datalist>

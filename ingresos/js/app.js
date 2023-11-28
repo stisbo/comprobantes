@@ -2,19 +2,18 @@ $(document).ready(function () {
   // Datos de ejemplo para las sugerencias
   var sugerencias = ["Manzana", "Banana", "Cereza", "Dátil", "Uva", "Kiwi", "Limón"];
 
-  // Cache de elementos del DOM
   var $input = $("#inputWithSuggestions");
   var $suggestions = $("#suggestions");
 
   // Función para mostrar las sugerencias
-  function mostrarSugerencias(sugerenciasFiltradas) {
+  function mostrarSugerencias(sugerenciasFiltradas, $suggestions) {
     $suggestions.empty();
-    if(sugerenciasFiltradas.length > 0){
+    if (sugerenciasFiltradas.length > 0) {
       $.each(sugerenciasFiltradas, function (_, sugerencia) {
-        $("<li>").text(sugerencia).appendTo($suggestions);
+        $("<li>").attr('data-exist', 1).text(sugerencia).appendTo($suggestions);
       });
-    }else{
-      $("<li>").html($input.val()+'<button type="button" class="btn btn-success btn-sm float-end" onclick="agregarValor()"><i class="fa fa-plus"></i></button>').appendTo($suggestions);
+    } else {
+      $("<li>").attr('data-exist', 0).html($input.val() + '<button type="button" class="btn btn-success btn-sm float-end" onclick="agregarValor()"><i class="fa fa-plus"></i></button>').appendTo($suggestions);
     }
     $suggestions.show();
   }
@@ -33,13 +32,14 @@ $(document).ready(function () {
     if (valorInput === "") {
       ocultarSugerencias();
     } else {
-      mostrarSugerencias(sugerenciasFiltradas);
+      mostrarSugerencias(sugerenciasFiltradas, $suggestions);
     }
   });
 
   // Evento de clic en una sugerencia
   $suggestions.on("click", "li", function () {
     var sugerenciaSeleccionada = $(this).text();
+    console.log($(this).attr('data-exist'))
     $input.val(sugerenciaSeleccionada);
     ocultarSugerencias();
   });
@@ -52,6 +52,13 @@ $(document).ready(function () {
   });
 });
 
-function agregarValor(){
+function agregarValor() {
   console.log('Se agregara el valor registrado')
+  $.toast({
+    heading: 'Information',
+    text: 'Loaders are enabled by default. Use `loader`, `loaderBg` to change the default behavior',
+    icon: 'info',
+    loader: true,        // Change it to false to disable loader
+    loaderBg: '#9EC600'  // To change the background
+  })
 }

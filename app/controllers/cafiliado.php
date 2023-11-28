@@ -2,5 +2,5 @@
 
 namespace App\Controllers;
 
-class Afiliado {
+class CAfiliado {
 }
