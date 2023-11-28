@@ -9,9 +9,13 @@ $(document).ready(function () {
   // Función para mostrar las sugerencias
   function mostrarSugerencias(sugerenciasFiltradas) {
     $suggestions.empty();
-    $.each(sugerenciasFiltradas, function (_, sugerencia) {
-      $("<li>").text(sugerencia).appendTo($suggestions);
-    });
+    if(sugerenciasFiltradas.length > 0){
+      $.each(sugerenciasFiltradas, function (_, sugerencia) {
+        $("<li>").text(sugerencia).appendTo($suggestions);
+      });
+    }else{
+      $("<li>").html($input.val()+'<button type="button" class="btn btn-success btn-sm float-end" onclick="agregarValor()"><i class="fa fa-plus"></i></button>').appendTo($suggestions);
+    }
     $suggestions.show();
   }
 
@@ -47,3 +51,7 @@ $(document).ready(function () {
     }
   });
 });
+
+function agregarValor(){
+  console.log('Se agregara el valor registrado')
+}
