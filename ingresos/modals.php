@@ -19,7 +19,7 @@
           <div class="form-floating mb-3">
             <input type="text" class="form-control" id="inputWithSuggestions" placeholder="Buscar elementos" value="">
             <label for="floatingInputValue">Buscar Elementos</label>
-            <div id="suggestions"></div>
+            <div id="suggestions" class="suggestions"></div>
           </div>
         </form>
       </div>

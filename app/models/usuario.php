@@ -7,6 +7,8 @@ use App\Models\Afiliado;
 class Usuario {
   public int $idUsuario;
   public string $alias;
+  public string $rol;
+  public int $idGrupo; // usuario propietario ADMIN = 0
   public string $password;
   public function __construct($idUsuario = null) {
     if ($idUsuario != null) {
@@ -19,11 +21,21 @@ class Usuario {
         $this->idUsuario = $row['idUsuario'];
         $this->alias = $row['alias'];
         $this->password = $row['password'];
+        $this->rol = $row['rol'];
+        $this->idGrupo = $row['idGrupo'];
       } else {
         $this->idUsuario = 0;
         $this->alias = '';
         $this->password = '';
+        $this->rol = '';
+        $this->idGrupo = -1;
       }
+    } else {
+      $this->idUsuario = 0;
+      $this->alias = '';
+      $this->password = '';
+      $this->rol = '';
+      $this->idGrupo = -1;
     }
   }
   public function resetPass() {
@@ -43,13 +55,24 @@ class Usuario {
       if ($this->idUsuario == 0) { //insert
         $sql = "INSERT INTO tblUsuario (alias, password) VALUES (:alias, :password)";
         $params = ['alias' => $this->alias, 'password' => $this->password];
+        $stmt = $con->prepare($sql);
+        $res = $stmt->execute($params);
+        if ($res) {
+          $this->idUsuario = $con->lastInsertId();
+          $res = $this->idUsuario;
+        }
       } else { // update
         $sql = "UPDATE tblUsuario SET alias = :alias, password = :password WHERE idUsuario = :idUsuario";
         $params = ['alias' => $this->alias, 'password' => $this->password, 'idUsuario' => $this->idUsuario];
+        $stmt = $con->prepare($sql);
+        $res = $stmt->execute($params);
+        if (!$res) {
+          $res = -1;
+        }
       }
-      $stmt = $con->prepare($sql);
-      return $stmt->execute($params);
+      return $res;
     } catch (\Throwable $th) {
+      print_r($th);
       return -1;
     }
   }
@@ -66,6 +89,31 @@ class Usuario {
     return null;
   }
   public function searchAfiliado($nombre) {
-    $sql = "SELECT * FROM tblAfiliado WHERE nombre = :nombre AND idUsuario = :idUsuario";
+    $sql = "SELECT * FROM tblAfiliado WHERE nombre like '%$nombre%' AND idUsuario = $this->idUsuario";
+    $con = Database::getInstace();
+    $stmt = $con->prepare($sql);
+    $stmt->execute();
+    $rows = $stmt->fetchAll();
+    return $rows;
+  }
+  public function load($row) {
+    $this->idUsuario = $row['idUsuario'];
+    $this->alias = $row['alias'];
+    $this->password = $row['password'];
+  }
+  public static function exist($alias, $pass): Usuario {
+    $con = Database::getInstace();
+    $sql = "SELECT * FROM tblUsuario WHERE alias = :alias AND password = :password";
+    $passHash = hash('sha256', $pass);
+    $stmt = $con->prepare($sql);
+    $stmt->execute(['alias' => $alias, 'password' => $passHash]);
+    $row = $stmt->fetch();
+    $usuario = new Usuario();
+    if ($row) {
+      $usuario->load($row);
+      return $usuario;
+    } else {
+      return $usuario;
+    }
   }
 }

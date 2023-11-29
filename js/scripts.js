@@ -24,3 +24,20 @@ window.addEventListener('DOMContentLoaded', event => {
   }
 
 });
+
+$(document).on('click', '#idLogout', async () => {
+  const res = await $.ajax({
+    url: '../app/cusuario/logout',
+    data: {},
+    type: 'POST',
+    dataType: 'json',
+  })
+  if (res.status == 'success') {
+    setTimeout(() => {
+      window.location.href = '../auth/login.php';
+    }, 1000);
+  } else {
+    console.log(res)
+    // alert('Error al cerrar sesión');
+  }
+})

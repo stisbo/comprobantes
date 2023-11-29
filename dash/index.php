@@ -1,3 +1,11 @@
+<?php
+if (isset($_COOKIE['user_obj'])) {
+  $user = json_decode($_COOKIE['user_obj']);
+} else {
+  header('Location: ../auth/login.php');
+  die();
+}
+?>
 <!DOCTYPE html>
 <html lang="es">
 

@@ -9,7 +9,7 @@
       <div class="modal-body">
         <form id="form_nuevo">
           <div class="form-floating mb-3">
-            <input type="text" name="motivo" class="form-control" id="motivo_egreso" placeholder="Buscar elementos" value="" list="lista_motivo">
+            <input type="text" name="motivo" class="form-control" id="motivo_egreso" placeholder="Buscar elementos" value="" list="lista_motivo" autocomplete="off">
             <label for="motivo_egreso">Motivo (concepto)</label>
           </div>
           <div class="form-floating mb-3">
@@ -17,9 +17,10 @@
             <label for="">Monto</label>
           </div>
           <div class="form-floating">
-            <input type="text" class="form-control" id="afiliado" value="" placeholder="....">
+            <input type="text" class="form-control" id="afiliado" value="" placeholder="...." autocomplete="off">
             <label for="afiliado">Usuario o entidad referente</label>
             <input type="hidden" name="idUsuario" value="0">
+            <div id="suggestions" class="suggestions"></div>
           </div>
         </form>
       </div>
@@ -30,9 +31,4 @@
     </div>
   </div>
 </div>
-<datalist id="lista_motivo">
-  <option value="Camaro">
-  <option value="Corvette">
-  <option value="Impala">
-  <option value="Colorado">
-</datalist>
+<datalist id="lista_motivo"></datalist>

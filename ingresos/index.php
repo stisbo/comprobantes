@@ -1,3 +1,10 @@
+<?php
+if (isset($_COOKIE['user_obj'])) {
+  $user = json_decode($_COOKIE['user_obj']);
+} else {
+  header('Location: ../auth/login.php');
+  die();
+} ?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -13,29 +20,6 @@
   <script src="../assets/fontawesome/fontawesome6.min.js"></script>
   <script src="../assets/jquery/jquery.js"></script>
   <script src="../assets/jquery/jqueryToast.min.js"></script>
-  <style>
-    #suggestions {
-      display: none;
-      border: 1px solid #ccc;
-      max-height: 150px;
-      overflow-y: auto;
-    }
-
-    #suggestions ul {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    #suggestions li {
-      padding: 8px;
-      cursor: pointer;
-    }
-
-    #suggestions li:hover {
-      background-color: #f0f0f0;
-    }
-  </style>
 </head>
 
 <body>

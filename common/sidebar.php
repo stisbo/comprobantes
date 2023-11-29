@@ -47,10 +47,10 @@
             </div>
           </nav>
         </div>
-        <div class="sb-sidenav-menu-heading">Addons</div>
+        <div class="sb-sidenav-menu-heading">OPCIONES</div>
         <a class="nav-link" href="charts.html">
-          <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-          Charts
+          <div class="sb-nav-link-icon"><i class="fa fa-user-plus"></i></div>
+          Agregar usuario
         </a>
         <a class="nav-link" href="tables.html">
           <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
@@ -60,7 +60,7 @@
     </div>
     <div class="sb-sidenav-footer">
       <div class="small">Identificado como:</div>
-      Start Bootstrap
+      <?= strtoupper($user->alias) ?>
     </div>
   </nav>
 </div>

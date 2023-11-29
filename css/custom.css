@@ -1,8 +1,31 @@
-.buttons-head{
+.buttons-head {
   width: 100%;
   display: flex;
   flex-direction: row;
   gap: 8px;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+.suggestions {
+  display: none;
+  border: 1px solid #ccc;
+  max-height: 150px;
+  overflow-y: auto;
+}
+
+.suggestions ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.suggestions li {
+  padding: 8px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.suggestions li:hover {
+  background-color: #f0f0f0;
 }
