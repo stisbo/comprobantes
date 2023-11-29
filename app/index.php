@@ -11,8 +11,8 @@ $parts = explode('/', $url);
 $method = $_SERVER['REQUEST_METHOD'];
 $controller = $parts[0];
 $action = $parts[1];
-
-$controller = new $controller();
+$controllerClass = "App\\Controllers\\$controller";
+$controller = new $controllerClass();
 
 switch ($method) {
   case 'GET':
