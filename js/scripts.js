@@ -41,3 +41,18 @@ $(document).on('click', '#idLogout', async () => {
     // alert('Error al cerrar sesión');
   }
 })
+
+const lenguaje = {
+  processing: "Procesando...",
+  search: "Buscar en la tabla",
+  lengthMenu: "Mostrar  _MENU_ filas ",
+  paginate: {
+    first: "Primero",
+    previous: "Ant.",
+    next: "Sig.",
+    last: "Último",
+  },
+  emptyTable: "No hay registros...",
+  infoEmpty: "No hay resultados",
+  zeroRecords: "No hay registros...",
+};

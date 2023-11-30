@@ -10,6 +10,7 @@ class Usuario {
   public string $rol;
   public int $idGrupo; // usuario propietario ADMIN = 0
   public string $password;
+  public string $fechaCreacion;
   public function __construct($idUsuario = null) {
     if ($idUsuario != null) {
       $con = Database::getInstace();
@@ -53,8 +54,8 @@ class Usuario {
     try {
       $con = Database::getInstace();
       if ($this->idUsuario == 0) { //insert
-        $sql = "INSERT INTO tblUsuario (alias, password) VALUES (:alias, :password)";
-        $params = ['alias' => $this->alias, 'password' => $this->password];
+        $sql = "INSERT INTO tblUsuario (alias, password, rol, idGrupo) VALUES (:alias, :password, :rol, :idGrupo)";
+        $params = ['alias' => $this->alias, 'password' => $this->password, 'rol' => $this->rol, 'idGrupo' => $this->idGrupo];
         $stmt = $con->prepare($sql);
         $res = $stmt->execute($params);
         if ($res) {
@@ -62,8 +63,8 @@ class Usuario {
           $res = $this->idUsuario;
         }
       } else { // update
-        $sql = "UPDATE tblUsuario SET alias = :alias, password = :password WHERE idUsuario = :idUsuario";
-        $params = ['alias' => $this->alias, 'password' => $this->password, 'idUsuario' => $this->idUsuario];
+        $sql = "UPDATE tblUsuario SET alias = :alias, password = :password, rol = :rol, idGrupo = :idGrupo WHERE idUsuario = :idUsuario";
+        $params = ['alias' => $this->alias, 'password' => $this->password, 'idUsuario' => $this->idUsuario, 'rol' => $this->rol, 'idGrupo' => $this->idGrupo];
         $stmt = $con->prepare($sql);
         $res = $stmt->execute($params);
         if (!$res) {
@@ -80,7 +81,7 @@ class Usuario {
     try {
       $afiliado = new Afiliado();
       $afiliado->nombre = $nombre;
-      $afiliado->idUsuario = $this->idUsuario;
+      $afiliado->idGrupo = $this->idGrupo;
       $afiliado->save();
       return $afiliado;
     } catch (\Throwable $th) {
@@ -91,7 +92,7 @@ class Usuario {
   public function searchAfiliado($nombre) {
     // solo afiliados pertenecientes al grupo del usuario
     $idUsuario = $this->rol == 'ADMIN' ? $this->idUsuario : $this->idGrupo;
-    $sql = "SELECT * FROM tblAfiliado WHERE nombre like '%$nombre%' AND idUsuario = $idUsuario";
+    $sql = "SELECT * FROM tblAfiliado WHERE nombre like '%$nombre%' AND idGrupo = $idUsuario";
     $con = Database::getInstace();
     $stmt = $con->prepare($sql);
     $stmt->execute();
@@ -120,12 +121,20 @@ class Usuario {
       return $usuario;
     }
   }
-  public static function aliasExist($alias){
+  public static function aliasExist($alias, $idGrupo) {
     $con = Database::getInstace();
-    $sql = "SELECT * FROM tblUsuario WHERE alias like '$alias';";
+    $sql = "SELECT * FROM tblUsuario WHERE alias like '$alias' AND (idGrupo = $idGrupo OR idGrupo = 0);";
     $stmt = $con->prepare($sql);
     $stmt->execute();
-    $rows = $stmt->rowCount();
-    print_r($rows);  
+    $rows = count($stmt->fetchAll());
+    return $rows > 0;
+  }
+  public static function getAllUsers($idGrupo) {
+    $con = Database::getInstace();
+    $sql = "SELECT alias, idUsuario, rol, idGrupo, fechaCreacion FROM tblUsuario WHERE (idGrupo = $idGrupo OR idUsuario = $idGrupo);";
+    $stmt = $con->prepare($sql);
+    $stmt->execute();
+    $rows = $stmt->fetchAll();
+    return $rows;
   }
 }

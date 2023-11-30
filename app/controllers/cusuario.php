@@ -22,9 +22,31 @@ class CUsuario {
     }
   }
 
-  public function createSubUsuario($data, $files){
-    $usuario = new Usuario();
-
+  public function createSubUsuario($data, $files) {
+    // solo admistradores pueden crear usuarios.
+    // buscamos alias en el grupo del usuario que esta logueado
+    if (!isset($_COOKIE['user_obj'])) {
+      echo json_encode(array('status' => 'error', 'message' => 'Cookies de sesion necesarias'));
+    } else {
+      $idUsuario = json_decode($_COOKIE['user_obj'])->idUsuario;
+      // verifiacamos si existe el alias en el grupo
+      $resExist = Usuario::aliasExist($data['alias'], $idUsuario);
+      if ($resExist) {
+        echo json_encode(array('status' => 'error', 'message' => 'El usuario (alias) que proporcionaste ya existe en tu grupo, intenta con otro usuario'));
+      } else {
+        $usuario = new Usuario();
+        $usuario->alias = $data['alias'];
+        $usuario->password = hash('sha256', $data['alias']);
+        $usuario->rol = $data['rol'];
+        $usuario->idGrupo = $idUsuario;
+        $res = $usuario->save();
+        if ($res > 0) {
+          echo json_encode(array('status' => 'success', 'message' => 'El usuario fue creado exitosamente'));
+        } else {
+          echo json_encode(array('status' => 'error', 'message' => 'Ocurrió un error al crear el usuario, intenta más tarde'));
+        }
+      }
+    }
   }
   public function login($data, $files) {
     $user = Usuario::exist($data['alias'], $data['password']);
@@ -63,6 +85,19 @@ class CUsuario {
     } catch (\Throwable $th) {
       //throw $th;
       print_r($th);
+    }
+  }
+  public function getallUsers() {
+    if (!isset($_COOKIE['user_obj'])) {
+      echo json_encode(array('status' => 'error', 'message' => 'Cookies de sesion necesarias'));
+    } else {
+      try {
+        $user = json_decode($_COOKIE['user_obj']);
+        $users = Usuario::getAllUsers($user->idUsuario);
+        echo json_encode(array('status' => 'success', 'data' => json_encode($users)));
+      } catch (\Throwable $th) {
+        print_r($th);
+      }
     }
   }
 }

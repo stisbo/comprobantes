@@ -23,7 +23,8 @@ if (isset($_COOKIE['user_obj'])) {
 </head>
 
 <body>
-  <?php //include('./modals.php'); ?>
+  <?php include('./modals.php');
+  ?>
   <?php include("../common/header.php"); ?>
   <div id="layoutSidenav"> <!-- contenedor -->
     <?php include("../common/sidebar.php"); ?>
@@ -31,13 +32,11 @@ if (isset($_COOKIE['user_obj'])) {
       <main>
         <div class="container-fluid px-4">
           <div class="mt-4">
-            <h1>Usuarios</h1> 
+            <h1>Usuarios</h1>
           </div>
           <div class="buttons-head col-md-6 col-sm-12 mb-3">
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal_ingreso_nuevo"><i class="fa fa-plus"></i> Crear Nuevo </button>
-            <button class="btn btn-info" onclick="listaTodos()"><i class="fa fa-book"></i> Lista Todos</button>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal_usuario_nuevo"><i class="fa fa-user-plus"></i> Crear Nuevo Usuario</button>
             <button class="btn btn-warning" onclick="listaPendientes()"><i class="fa fa-info"></i> Pendientes</button>
-            <button class="btn btn-primary" onclick="listaSaldados()"><i class="fa fa-check"></i> Saldados</button>
           </div>
           <div class="row" id="cards-usuarios">
             <div class="card mb-4 shadow">
@@ -48,17 +47,17 @@ if (isset($_COOKIE['user_obj'])) {
                 </h4>
               </div>
               <div class="card-body">
-                <table id="table_usuarios">
+                <table style="width:100%" class="table table-striped" id="table_usuarios">
                   <thead>
                     <tr>
                       <th>ID</th>
-                      <th>Fecha</th>
-                      <th>Concepto</th>
-                      <th>Monto</th>
-                      <th>Acciones</th>
+                      <th>USUARIO</th>
+                      <th>ROL</th>
+                      <th>FECHA CREACIÓN</th>
+                      <th>ACCIONES</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody id="tbl_users">
 
                   </tbody>
                 </table>
@@ -69,7 +68,6 @@ if (isset($_COOKIE['user_obj'])) {
       </main>
     </div>
   </div><!-- fin contenedor -->
-
   <script src="../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../js/scripts.js"></script>
   <script src="../assets/datatables/datatables.jquery.min.js"></script>

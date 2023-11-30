@@ -20,6 +20,7 @@ if (isset($_COOKIE['user_obj'])) {
   <script src="../assets/fontawesome/fontawesome6.min.js"></script>
   <script src="../assets/jquery/jquery.js"></script>
   <script src="../assets/jquery/jqueryToast.min.js"></script>
+  <script src="../assets/sweetalert2/sweetalert2.all.min.js"></script>
 </head>
 
 <body>

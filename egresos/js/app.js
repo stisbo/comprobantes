@@ -4,7 +4,7 @@ $(document).ready(() => {
 
 $(document).on('input', "#motivo_egreso", async (e) => {
   // console.log(e.target.value)
-  if (e.target.value.length >= 2 && e.target.value.length <= 7) {
+  if (e.target.value.length >= 2 && e.target.value.length <= 8) {
     const res = await $.ajax({
       url: `../app/cmotivo/getByName?q=${e.target.value}`,
       type: 'GET',
@@ -42,10 +42,10 @@ function mostrarSugerencias(arraySuggestions, idSugg, input_id) {
   $suggestions.empty();
   if (arraySuggestions.length > 0) {
     $.each(arraySuggestions, function (_, sugerencia) {
-      $("<li>").attr('data-exist', 1).attr('data-idinput', input_id).text(sugerencia.nombre).appendTo($suggestions);
+      $("<li>").attr('data-exist', 1).attr('data-idinput', input_id).attr('data-idafiliado', sugerencia.idAfiliado).text(sugerencia.nombre).appendTo($suggestions);
     });
   } else {
-    if($(`#${input_id}`).val().length > 2){
+    if ($(`#${input_id}`).val().length > 2) {
       $("<li>").attr('data-exist', 0).attr('data-idinput', input_id).html($("#" + input_id).val() + '<button type="button" class="btn btn-success btn-sm float-end" onclick="agregarValor()"><i class="fa fa-plus"></i></button>').appendTo($suggestions);
     }
   }
@@ -57,9 +57,9 @@ function ocultarSugerencias(idSugg) {
 $(document).on('click', '.suggestions li', (e) => {
   $val = $(e.target);
   if (e.target.tagName == 'LI') {
-    console.log($val.data('exist'));
     if ($val.data('exist') == 1) {
       $("#" + $val.data('idinput')).val($val.text());
+      $("#idAfiliado_modal").val($val.data('idafiliado'));
       ocultarSugerencias('suggestions');
     } else {
       $.toast({
@@ -98,4 +98,49 @@ $(document).on('input', '#afiliado', async (e) => {
   if (res.status == 'success') {
     mostrarSugerencias(res.data, 'suggestions', 'afiliado');
   }
+})
+
+async function agregarValor() {
+  const nombre = $("#afiliado").val()
+  const res = await $.ajax({
+    url: '../app/cafiliado/create',
+    type: 'GET',
+    dataType: 'json',
+    data: { nombre }
+  })
+  if (res.status == 'success') {
+    $.toast({
+      heading: 'Operación exitosa',
+      text: 'Agregado correctamente',
+      icon: 'success',
+      position: 'top-right',
+      stack: 2,
+      hideAfter: 1550
+    })
+    $("#afiliado").val(nombre);
+    const afiliado = JSON.parse(res.afiliado);
+    $("#idAfiliado_modal").val(afiliado.idAfiliado)
+    ocultarSugerencias('suggestions');
+  } else {
+    $.toast({
+      heading: 'Ocurrió un error',
+      text: 'No se pudo agregar al usuario',
+      icon: 'danger',
+      position: 'top-right',
+      stack: 2,
+      hideAfter: 2000
+    })
+  }
+}
+
+async function createEgreso() {
+  const data = $("#form_egreso").serialize();
+  console.log(data)
+}
+
+$(document).on('hide.bs.modal', '#modal_egreso_nuevo', () => {
+  $("#motivo_egreso").val('');
+  $("#monto_egreso").val('');
+  $("#afiliado").val('')
+  $("#idAfiliado_modal").val('')
 })

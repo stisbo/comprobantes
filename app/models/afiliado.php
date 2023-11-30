@@ -7,7 +7,7 @@ use App\Config\Database;
 class Afiliado {
   public int $idAfiliado;
   public string $nombre;
-  public int $idUsuario; // usuario al que esta asociado 
+  public int $idGrupo; // usuario al que esta asociado (grupo)
 
   public function __construct($idAfiliado = null) {
     $con = Database::getInstace();
@@ -28,19 +28,19 @@ class Afiliado {
   public function load($row) {
     $this->idAfiliado = $row['idAfiliado'];
     $this->nombre = $row['nombre'];
-    $this->idUsuario = $row['idUsuario'];
+    $this->idGrupo = $row['idGrupo'];
   }
   public function objectNull() {
     $this->idAfiliado = 0;
     $this->nombre = '';
-    $this->idUsuario = 0;
+    $this->idGrupo = 0;
   }
   public function save() {
     try {
       $con = Database::getInstace();
       if ($this->idAfiliado == 0) { // insert
-        $sql = "INSERT INTO tblAfiliado (nombre, idUsuario) VALUES (?, ?)";
-        $params = [$this->nombre, $this->idUsuario];
+        $sql = "INSERT INTO tblAfiliado (nombre, idGrupo) VALUES (?, ?)";
+        $params = [$this->nombre, $this->idGrupo];
         $stmt = $con->prepare($sql);
         $res = $stmt->execute($params);
         if ($res) {
@@ -48,8 +48,8 @@ class Afiliado {
           $res = $this->idAfiliado;
         }
       } else {
-        $sql = "UPDATE tblAfiliado SET nombre = ?, idUsuario = ? WHERE idAfiliado = ?";
-        $params = [$this->nombre, $this->idUsuario, $this->idAfiliado];
+        $sql = "UPDATE tblAfiliado SET nombre = ?, idGrupo = ? WHERE idAfiliado = ?";
+        $params = [$this->nombre, $this->idGrupo, $this->idAfiliado];
         $stmt = $con->prepare($sql);
         $res = $stmt->execute($params);
         if (!$res) {

@@ -1,6 +1,6 @@
 <?php
 if (isset($_COOKIE['user_obj'])) {
-  header('Location: ./');
+  header('Location: ../');
   die();
 }
 ?>

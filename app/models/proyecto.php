@@ -9,13 +9,13 @@ class Proyecto {
   public int $idProyecto;
   public string $tipo;
   public float $monto;
-  public string $idPropietario; // Id Usuario
+  public string $idGrupo; // Id Grupo del usuario
   public int $idAfiliado;
   public string $estado;
   public string $fechaCreacion;
   public function __construct($idProyecto = null) {
     if ($idProyecto != null) {
-      $sql = "SELECT * FROM tblProyecto WHERE idUsuario = $idProyecto";
+      $sql = "SELECT * FROM tblProyecto WHERE idGrupo = $idProyecto";
       $con = Database::getInstace();
       $stmt = $con->prepare($sql);
       $stmt->execute([]);
@@ -24,7 +24,7 @@ class Proyecto {
         $this->idProyecto = $proyectoData['idProyecto'];
         $this->tipo = $proyectoData['tipo'];
         $this->monto = $proyectoData['monto'];
-        $this->idPropietario = $proyectoData['idPropietario'];
+        $this->idGrupo = $proyectoData['idGrupo'];
         $this->idAfiliado = $proyectoData['idAfiliado'];
         $this->estado = $proyectoData['estado'];
         $this->fechaCreacion = $proyectoData['fechaCreacion'];
@@ -39,12 +39,12 @@ class Proyecto {
     $this->idProyecto = 0;
     $this->tipo = '';
     $this->monto = 0.0;
-    $this->idPropietario = '';
+    $this->idGrupo = '';
     $this->idAfiliado = 0;
   }
-  public static function getProyectos($idPropietario) {
+  public static function getProyectos($idGrupo) {
     $con = Database::getInstace();
-    $sql = "SELECT * FROM tblProyecto WHERE idUsuario = $idPropietario";
+    $sql = "SELECT * FROM tblProyecto WHERE idGrupo = $idGrupo";
     $stmt = $con->prepare($sql);
     $stmt->execute([]);
     $arrayProyectos = array();
@@ -58,7 +58,7 @@ class Proyecto {
     $new->idProyecto = $proy['idProyecto'];
     $new->tipo = $proy['tipo'];
     $new->monto = $proy['monto'];
-    $new->idPropietario = $proy['idPropietario'];
+    $new->idGrupo = $proy['idGrupo'];
     $new->idAfiliado = $proy['idAfiliado'];
     return $new;
   }
@@ -67,11 +67,11 @@ class Proyecto {
     try {
       $con = Database::getInstace();
       if ($this->idProyecto == 0) { //insert
-        $sql = "INSERT INTO tblProyecto(tipo, monto, idPropietario, idAfiliado) VALUES(?, ?, ?, ?);";
-        $params = [$this->tipo, $this->monto, $this->idPropietario, $this->idAfiliado];
+        $sql = "INSERT INTO tblProyecto(tipo, monto, idGrupo, idAfiliado) VALUES(?, ?, ?, ?);";
+        $params = [$this->tipo, $this->monto, $this->idGrupo, $this->idAfiliado];
       } else { // update
-        $sql = "UPDATE tblProyecto SET tipo = ?, monto = ?, idPropietario = ?, idAfiliado = ?, estado = ?, fechaCreacion = ? WHERE idProyecto = ?";
-        $params = [$this->tipo, $this->monto, $this->idPropietario, $this->idAfiliado, $this->estado, $this->fechaCreacion, $this->idProyecto];
+        $sql = "UPDATE tblProyecto SET tipo = ?, monto = ?, idGrupo = ?, idAfiliado = ?, estado = ?, fechaCreacion = ? WHERE idProyecto = ?";
+        $params = [$this->tipo, $this->monto, $this->idGrupo, $this->idAfiliado, $this->estado, $this->fechaCreacion, $this->idProyecto];
       }
       $stmt = $con->prepare($sql);
       return $stmt->execute($params);

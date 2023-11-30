@@ -47,13 +47,17 @@
             </div>
           </nav>
         </div>
-        <?php if($user->rol == 'ADMIN'): ?>
         <div class="sb-sidenav-menu-heading">OPCIONES</div>
-        <a class="nav-link" href="../usuarios/">
-          <div class="sb-nav-link-icon"><i class="fa fa-user-plus"></i></div>
-          Administrar usuarios
+        <?php if ($user->rol == 'ADMIN') : ?>
+          <a class="nav-link" href="../usuarios/">
+            <div class="sb-nav-link-icon"><i class="fa fa-user-plus"></i></div>
+            Administrar usuarios
+          </a>
+        <?php endif; ?>
+        <a class="nav-link" href="#" type="button">
+          <div class="sb-nav-link-icon"><i class="fa fa-lock"></i></div>
+          Cambiar mi contraseña
         </a>
-        <?php endif;?>
       </div>
     </div>
     <div class="sb-sidenav-footer">
