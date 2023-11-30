@@ -89,7 +89,9 @@ class Usuario {
     return null;
   }
   public function searchAfiliado($nombre) {
-    $sql = "SELECT * FROM tblAfiliado WHERE nombre like '%$nombre%' AND idUsuario = $this->idUsuario";
+    // solo afiliados pertenecientes al grupo del usuario
+    $idUsuario = $this->rol == 'ADMIN' ? $this->idUsuario : $this->idGrupo;
+    $sql = "SELECT * FROM tblAfiliado WHERE nombre like '%$nombre%' AND idUsuario = $idUsuario";
     $con = Database::getInstace();
     $stmt = $con->prepare($sql);
     $stmt->execute();
@@ -100,6 +102,8 @@ class Usuario {
     $this->idUsuario = $row['idUsuario'];
     $this->alias = $row['alias'];
     $this->password = $row['password'];
+    $this->rol = $row['rol'];
+    $this->idGrupo = $row['idGrupo'];
   }
   public static function exist($alias, $pass): Usuario {
     $con = Database::getInstace();
@@ -115,5 +119,13 @@ class Usuario {
     } else {
       return $usuario;
     }
+  }
+  public static function aliasExist($alias){
+    $con = Database::getInstace();
+    $sql = "SELECT * FROM tblUsuario WHERE alias like '$alias';";
+    $stmt = $con->prepare($sql);
+    $stmt->execute();
+    $rows = $stmt->rowCount();
+    print_r($rows);  
   }
 }

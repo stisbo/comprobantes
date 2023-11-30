@@ -45,7 +45,9 @@ function mostrarSugerencias(arraySuggestions, idSugg, input_id) {
       $("<li>").attr('data-exist', 1).attr('data-idinput', input_id).text(sugerencia.nombre).appendTo($suggestions);
     });
   } else {
-    $("<li>").attr('data-exist', 0).attr('data-idinput', input_id).html($("#" + input_id).val() + '<button type="button" class="btn btn-success btn-sm float-end" onclick="agregarValor()"><i class="fa fa-plus"></i></button>').appendTo($suggestions);
+    if($(`#${input_id}`).val().length > 2){
+      $("<li>").attr('data-exist', 0).attr('data-idinput', input_id).html($("#" + input_id).val() + '<button type="button" class="btn btn-success btn-sm float-end" onclick="agregarValor()"><i class="fa fa-plus"></i></button>').appendTo($suggestions);
+    }
   }
   $suggestions.show();
 }

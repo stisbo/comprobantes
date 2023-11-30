@@ -47,15 +47,13 @@
             </div>
           </nav>
         </div>
+        <?php if($user->rol == 'ADMIN'): ?>
         <div class="sb-sidenav-menu-heading">OPCIONES</div>
-        <a class="nav-link" href="charts.html">
+        <a class="nav-link" href="../usuarios/">
           <div class="sb-nav-link-icon"><i class="fa fa-user-plus"></i></div>
-          Agregar usuario
+          Administrar usuarios
         </a>
-        <a class="nav-link" href="tables.html">
-          <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-          Tables
-        </a>
+        <?php endif;?>
       </div>
     </div>
     <div class="sb-sidenav-footer">
