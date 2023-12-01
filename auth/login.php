@@ -41,7 +41,7 @@ if (isset($_COOKIE['user_obj'])) {
                       <label for="inputPassword">Contraseña</label>
                     </div>
                     <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                      <button type="button" class="btn btn-primary" onclick="login()">Ingresar</button>
+                      <button type="submit" class="btn btn-primary" id="btn_logg">Ingresar</button>
                     </div>
                   </form>
                 </div>
@@ -58,7 +58,8 @@ if (isset($_COOKIE['user_obj'])) {
   <script src="../assets/bootstrap/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
   <script src="../js/scripts.js"></script>
   <script>
-    async function login() {
+    $(document).on('submit', '#form_login', async (e) => {
+      e.preventDefault();
       const data = $("#form_login").serialize();
       const res = await $.ajax({
         url: '../app/cusuario/login',
@@ -67,6 +68,7 @@ if (isset($_COOKIE['user_obj'])) {
         dataType: 'json'
       });
       if (res.status == 'success') {
+        $("#btn_logg").attr('disabled', 'disabled')
         $.toast({
           heading: 'INGRESO CORRECTO',
           text: 'Redireccionando a la pagina principal',
@@ -85,8 +87,7 @@ if (isset($_COOKIE['user_obj'])) {
           icon: 'error',
         })
       }
-
-    }
+    })
   </script>
 </body>
 

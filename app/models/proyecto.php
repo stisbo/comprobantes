@@ -15,7 +15,7 @@ class Proyecto {
   public string $fechaCreacion;
   public function __construct($idProyecto = null) {
     if ($idProyecto != null) {
-      $sql = "SELECT * FROM tblProyecto WHERE idGrupo = $idProyecto";
+      $sql = "SELECT * FROM tblProyecto WHERE idProyecto = $idProyecto";
       $con = Database::getInstace();
       $stmt = $con->prepare($sql);
       $stmt->execute([]);
@@ -41,6 +41,8 @@ class Proyecto {
     $this->monto = 0.0;
     $this->idGrupo = '';
     $this->idAfiliado = 0;
+    $this->estado = '';
+    $this->fechaCreacion = '';
   }
   public static function getProyectos($idGrupo) {
     $con = Database::getInstace();
@@ -64,21 +66,31 @@ class Proyecto {
   }
 
   public function save() {
+    $res = -1;
     try {
       $con = Database::getInstace();
       if ($this->idProyecto == 0) { //insert
-        $sql = "INSERT INTO tblProyecto(tipo, monto, idGrupo, idAfiliado) VALUES(?, ?, ?, ?);";
-        $params = [$this->tipo, $this->monto, $this->idGrupo, $this->idAfiliado];
+        $sql = "INSERT INTO tblProyecto(tipo, monto, idGrupo, idAfiliado, estado) VALUES(?, ?, ?, ?, ?);";
+        $params = [$this->tipo, $this->monto, $this->idGrupo, $this->idAfiliado, $this->estado];
+        $stmt = $con->prepare($sql);
+        $res = $stmt->execute($params);
+        if ($res) {
+          $this->idProyecto = $con->lastInsertId();
+          $res = $this->idProyecto;
+        }
       } else { // update
-        $sql = "UPDATE tblProyecto SET tipo = ?, monto = ?, idGrupo = ?, idAfiliado = ?, estado = ?, fechaCreacion = ? WHERE idProyecto = ?";
-        $params = [$this->tipo, $this->monto, $this->idGrupo, $this->idAfiliado, $this->estado, $this->fechaCreacion, $this->idProyecto];
+        $sql = "UPDATE tblProyecto SET tipo = ?, monto = ?, idGrupo = ?, idAfiliado = ?, estado = ? WHERE idProyecto = ?";
+        $params = [$this->tipo, $this->monto, $this->idGrupo, $this->idAfiliado, $this->estado, $this->idProyecto];
+        $stmt = $con->prepare($sql);
+        $res = $stmt->execute($params);
+        if (!$res) {
+          $res = -1;
+        }
       }
-      $stmt = $con->prepare($sql);
-      return $stmt->execute($params);
     } catch (\Throwable $th) {
       print_r($th);
     }
-    return -1;
+    return $res;
   }
 
   public function afiliado(): Afiliado {

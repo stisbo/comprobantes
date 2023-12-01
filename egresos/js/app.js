@@ -134,8 +134,16 @@ async function agregarValor() {
 }
 
 async function createEgreso() {
-  const data = $("#form_egreso").serialize();
+  let data = $("#form_egreso").serialize();
+  data += '&tipo=EGRESO';
   console.log(data)
+  const res = await $.ajax({
+    url: '../app/cproyecto/create',
+    type: 'POST',
+    data,
+    dataType: 'json'
+  });
+  console.log(res)
 }
 
 $(document).on('hide.bs.modal', '#modal_egreso_nuevo', () => {
