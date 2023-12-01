@@ -1,6 +1,19 @@
-$(document).ready(() => {
-  // listaTodos();
+$(document).ready(async () => {
+  loadInicio()
 });
+
+async function loadInicio() {
+  await $("#main_egresos").load('./cabeceraLista.php');
+  await listar('all');
+  $("#table_egresos").DataTable({
+    language: lenguaje,
+    info: false,
+    scrollX: true,
+    columnDefs: [
+      { orderable: false, targets: [3, 6] }
+    ],
+  })
+}
 
 $(document).on('input', "#motivo_egreso", async (e) => {
   // console.log(e.target.value)
@@ -19,16 +32,47 @@ $(document).on('input', "#motivo_egreso", async (e) => {
   }
 });
 
-async function listaTodos() {
+async function listar(estado) {
   const res = await $.ajax({
-    url: '../app/',
+    url: '../app/cproyecto/getAll',
     type: 'GET',
     dataType: 'json',
-    data: { filtro: '' }
+    data: { estado, tipo: 'EGRESO' }
   });
-  console.log(res);
+  if (res.status == 'success') {
+    let html = generarTabla(JSON.parse(res.data));
+    $("#t_body_egresos").html(html);
+  }
 }
-
+function generarTabla(data) {
+  let html = '';
+  data.forEach((element) => {
+    let clsEstado = element.estado == 'PENDIENTE' ? 'text-bg-warning' : 'text-bg-primary';
+    let fecha = new Date(element.fechaCreacion);
+    let opciones = `
+      <li><button class="dropdown-item" type="button"><i class="fa fa-eye text-primary"></i> Ver Pagos</button></li>`;
+    opciones += element.estado == 'PENDIENTE' ? `<li><button class="dropdown-item" type="button" onclick=""><i class="fa fa-sack-dollar text-success"></i> Nuevo Pago</button></li>` : '';
+    html += `<tr>
+    <td class="text-center">${element.idProyecto}</td>
+    <td>${element.motivo}</td>
+    <td>${element.nombre.toUpperCase()}</td>
+    <td>${fecha.toLocaleDateString()} ${fecha.toLocaleTimeString()}</td>
+    <td class="text-center">${element.alias.toUpperCase()}</td>
+    <td align="center"><span class="badge ${clsEstado}">${element.estado}</span></td>
+    <td align="center">
+      <div class="dropdown">
+        <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+          Acciones
+        </button>
+        <ul class="dropdown-menu">
+        ${opciones}
+        </ul>
+      </div>
+    </td>
+  </tr>`
+  })
+  return html;
+}
 async function listaPendientes() {
 
 }
@@ -144,11 +188,43 @@ async function createEgreso() {
     dataType: 'json'
   });
   console.log(res)
+  if (res.status == 'success') {
+    $("#modal_egreso_nuevo").modal('hide');
+    $.toast({
+      heading: 'Registro exitoso',
+      text: 'Proyecto de tipo EGRESO registrado correctamente',
+      icon: 'success',
+      position: 'top-right',
+      hideAfter: 1900
+    });
+    const proyecto = JSON.parse(res.data);
+    $("#idProyecto_pago").val(proyecto.idProyecto);
+    $("#motivo_proyecto").val(proyecto.motivo);
+    $("#monto_pago").val(proyecto.monto);
+    $("#modal_pago_nuevo").modal('show');
+  } else {
+    $.toast({
+      heading: 'Ocurrió un error',
+      text: 'No se pudo registrar el proyecto',
+      icon: 'error',
+      position: 'top-right',
+      hideAfter: 1900
+    })
+  }
 }
+$(document).on('hide.bs.modal', '#modal_pago_nuevo', () => {
+  setTimeout(() => {
+    $("#idProyecto_pago").val('');
+    $("#motivo_proyecto").val('');
+    $("#monto_pago").val('');
+  }, 900);
+})
 
 $(document).on('hide.bs.modal', '#modal_egreso_nuevo', () => {
-  $("#motivo_egreso").val('');
-  $("#monto_egreso").val('');
-  $("#afiliado").val('')
-  $("#idAfiliado_modal").val('')
+  setTimeout(() => {
+    $("#motivo_egreso").val('');
+    $("#monto_egreso").val('');
+    $("#afiliado").val('')
+    $("#idAfiliado_modal").val('')
+  }, 900);
 })
