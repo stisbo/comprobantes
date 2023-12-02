@@ -1,3 +1,4 @@
+var tabla = null;
 $(document).ready(async () => {
   loadInicio()
 });
@@ -5,18 +6,9 @@ $(document).ready(async () => {
 async function loadInicio() {
   await $("#main_egresos").load('./cabeceraLista.php');
   await listar('all');
-  $("#table_egresos").DataTable({
-    language: lenguaje,
-    info: false,
-    scrollX: true,
-    columnDefs: [
-      { orderable: false, targets: [3, 6] }
-    ],
-  })
 }
 
 $(document).on('input', "#motivo_egreso", async (e) => {
-  // console.log(e.target.value)
   if (e.target.value.length >= 2 && e.target.value.length <= 8) {
     const res = await $.ajax({
       url: `../app/cmotivo/getByName?q=${e.target.value}`,
@@ -33,6 +25,9 @@ $(document).on('input', "#motivo_egreso", async (e) => {
 });
 
 async function listar(estado) {
+  if (tabla) {
+    tabla.destroy();
+  }
   const res = await $.ajax({
     url: '../app/cproyecto/getAll',
     type: 'GET',
@@ -42,6 +37,14 @@ async function listar(estado) {
   if (res.status == 'success') {
     let html = generarTabla(JSON.parse(res.data));
     $("#t_body_egresos").html(html);
+    tabla = $("#table_egresos").DataTable({
+      language: lenguaje,
+      info: false,
+      scrollX: true,
+      columnDefs: [
+        { orderable: false, targets: [3, 6] }
+      ],
+    })
   }
 }
 function generarTabla(data) {
@@ -190,18 +193,29 @@ async function createEgreso() {
   console.log(res)
   if (res.status == 'success') {
     $("#modal_egreso_nuevo").modal('hide');
-    $.toast({
-      heading: 'Registro exitoso',
-      text: 'Proyecto de tipo EGRESO registrado correctamente',
+    Swal.fire({
       icon: 'success',
-      position: 'top-right',
-      hideAfter: 1900
+      title: "El proyecto se creo exitosamente",
+      text: "¿Desea agregar un pago?",
+      showCancelButton: true,
+      confirmButtonText: "Agregar Pago",
+      cancelButtonText: 'No, volver'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        let data = JSON.parse(res.data);
+        var form = document.createElement("form");
+        form.setAttribute("method", "POST");
+        form.setAttribute("action", "pago.php");
+        form.innerHTML = `
+        <input type='hidden' name='project' value='${JSON.stringify(data)}' >
+        <input type='hidden' name='hola' value='amamamama' >`;
+        document.body.appendChild(form);
+        form.submit();
+        form.remove();
+      } else {
+        location.reload();
+      }
     });
-    const proyecto = JSON.parse(res.data);
-    $("#idProyecto_pago").val(proyecto.idProyecto);
-    $("#motivo_proyecto").val(proyecto.motivo);
-    $("#monto_pago").val(proyecto.monto);
-    $("#modal_pago_nuevo").modal('show');
   } else {
     $.toast({
       heading: 'Ocurrió un error',
