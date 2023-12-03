@@ -3,10 +3,8 @@
     <h1>Egreso</h1>
   </div>
   <div class="buttons-head col-md-6 col-sm-12 mb-3">
-    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal_egreso_nuevo"><i class="fa fa-plus"></i> Crear Nuevo </button>
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal_egreso_nuevo"><i class="fa fa-plus"></i> Nuevo Egreso </button>
     <button class="btn btn-info" onclick="listar('all')"><i class="fa fa-book"></i> Lista Todos</button>
-    <button class="btn btn-warning" onclick="listar('PENDIENTE')"><i class="fa fa-info"></i> Pendientes</button>
-    <button class="btn btn-primary" onclick="listar('SALDADO')"><i class="fa fa-check"></i> Saldados</button>
   </div>
   <div class="row" id="card-egresos">
     <div class="card shadow">

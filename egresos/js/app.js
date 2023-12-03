@@ -1,6 +1,6 @@
 var tabla = null;
 $(document).ready(async () => {
-  loadInicio()
+  // loadInicio()
 });
 
 async function loadInicio() {
