@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/La_Paz');
 if (isset($_COOKIE['user_obj'])) {
   $user = json_decode($_COOKIE['user_obj']);
 } else {
@@ -92,9 +93,9 @@ if (isset($_COOKIE['user_obj'])) {
                     <div class="d-flex justify-content-center flex-wrap gap-3">
                       <h4>¿Agregar un comprobante de pago?</h4>
                       <div class="d-flex gap-2">
-                        <button type="button" class="btn btn-info"><i class="fa fa-image"></i></button>
-                        <button type="button" class="btn btn-info"><i class="fa fa-signature"></i></button>
-                        <button type="button" class="btn btn-info"><i class="fa fa-microphone"></i></button>
+                        <button type="button" class="btn btn-outline-primary"><i class="fa fa-image"></i></button>
+                        <button type="button" class="btn btn-outline-dark"><i class="fa fa-signature"></i></button>
+                        <button type="button" class="btn btn-outline-secondary"><i class="fa fa-microphone"></i></button>
                       </div>
                     </div>
                   </div>
