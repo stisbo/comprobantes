@@ -39,57 +39,73 @@ if (isset($_COOKIE['user_obj'])) {
             <button type="button" class="btn btn-secondary"><i class="fa fa-arrow-left"></i> Volver </button>
           </div>
           <div class="row" id="card-egresos">
-            <div class="card shadow">
-              <!-- <div class="card-header">
-                <h4>
-                  <i class="fa fa-comment-dollar"></i> Lista todos los egresos
-                </h4>
-              </div> -->
-              <div class="card-body">
-                <!-- <div class="callout callout-primary shadow">
-                  <h4>Primary Callout</h4>
-                  This is a primary callout.
-                </div> -->
-                <div class="row">
-                  <div class="col-md-4">
-                    <div class="form-floating mb-3">
-                      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-                      <label for="floatingInput">Email address</label>
+            <form id="form_nuevo">  
+              <div class="card shadow">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="tipo_detalle" placeholder="Tipo de detalle">
+                        <label for="">Tipo de detalle</label>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="" placeholder="Descripcion">
+                        <label for="">Concepto</label>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-floating mb-3">
+                        <select name="modo_pago" id="" class="form-control">
+                          <option value="">-- SELECCIONE --</option>
+                          <option value="EFECTIVO">EFECTIVO</option>
+                          <option value="CHEQUE">CHEQUE</option>
+                          <option value="DEPOSITO">DEPOSITO</option>
+                          <option value="GIRO">GIRO</option>
+                          <option value="TARJETA">TARJETA</option>
+                          <option value="BANCO">BANCO</option>
+                        </select>
+                        <label for="">Modo de pago</label>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="" placeholder="Usuario" value="<?=strtoupper($user->alias)?>" disabled >
+                        <label for="">Pagado por:</label>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" id="" placeholder="Usuario destino">
+                        <label for="">Recibido por:</label>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-floating mb-3">
+                        <input type="date" class="form-control" id="" placeholder="fecha registro" value="<?=date('Y-m-d')?>" disabled>
+                        <label for="">Fecha de registro</label>
+                      </div>
                     </div>
                   </div>
-                  <div class="col-md-4">
-                    <div class="form-floating mb-3">
-                      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-                      <label for="floatingInput">Email address</label>
+                  <div class="row">
+                    <div class="d-flex justify-content-center flex-wrap gap-3">
+                      <h4>¿Agregar un comprobante de pago?</h4>
+                      <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-info"><i class="fa fa-image"></i></button>
+                        <button type="button" class="btn btn-info"><i class="fa fa-signature"></i></button>
+                        <button type="button" class="btn btn-info"><i class="fa fa-microphone"></i></button>
+                      </div>
                     </div>
                   </div>
-                  <div class="col-md-4">
-                    <div class="form-floating mb-3">
-                      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-                      <label for="floatingInput">Email address</label>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-floating mb-3">
-                      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-                      <label for="floatingInput">Email address</label>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-floating mb-3">
-                      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-                      <label for="floatingInput">Email address</label>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div class="form-floating mb-3">
-                      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
-                      <label for="floatingInput">Email address</label>
-                    </div>
+                </div> 
+                <div class="card-footer">
+                  <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-success shadow">GUARDAR</button>
                   </div>
                 </div>
-              </div>
-            </div>
+              </div><!-- end card -->
+            </form>
           </div>
         </div>
       </main>
