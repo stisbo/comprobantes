@@ -40,7 +40,7 @@ if (isset($_COOKIE['user_obj'])) {
             <button type="button" class="btn btn-secondary"><i class="fa fa-arrow-left"></i> Volver </button>
           </div>
           <div class="row" id="card-egresos">
-            <form id="form_nuevo">  
+            <form id="form_nuevo">
               <div class="card shadow">
                 <div class="card-body">
                   <div class="row">
@@ -48,6 +48,8 @@ if (isset($_COOKIE['user_obj'])) {
                       <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="tipo_detalle" placeholder="Tipo de detalle">
                         <label for="">Tipo de detalle</label>
+                        <input type="hidden" name="idProyecto" id="idProyecto" value="0">
+                        <div id="suggestion_proy" class="suggestions"></div>
                       </div>
                     </div>
                     <div class="col-md-4">
@@ -72,19 +74,27 @@ if (isset($_COOKIE['user_obj'])) {
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="" placeholder="Usuario" value="<?=strtoupper($user->alias)?>" disabled >
+                        <input type="text" class="form-control" id="" placeholder="Usuario" value="<?= strtoupper($user->alias) ?>" disabled>
                         <label for="">Pagado por:</label>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="" placeholder="Usuario destino">
-                        <label for="">Recibido por:</label>
+                        <input type="text" class="form-control" id="afiliado_to" placeholder="Usuario destino">
+                        <label for="afiliado_to">Recibido por:</label>
+                        <input type="hidden" name="idAfiliado" value="0" id="idAfiliado">
+                        <div id="suggestions_afiliado" class="suggestions"></div>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="" placeholder="fecha registro" value="<?=date('Y-m-d')?>" disabled>
+                        <input type="number" class="form-control" id="" placeholder="Monto del pago">
+                        <label for="">Monto</label>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-floating mb-3">
+                        <input type="date" class="form-control" id="" placeholder="fecha registro" value="<?= date('Y-m-d') ?>" disabled>
                         <label for="">Fecha de registro</label>
                       </div>
                     </div>
@@ -99,7 +109,7 @@ if (isset($_COOKIE['user_obj'])) {
                       </div>
                     </div>
                   </div>
-                </div> 
+                </div>
                 <div class="card-footer">
                   <div class="d-flex justify-content-center">
                     <button type="submit" class="btn btn-success shadow">GUARDAR</button>
@@ -117,6 +127,7 @@ if (isset($_COOKIE['user_obj'])) {
   <script src="../js/scripts.js"></script>
   <script src="../assets/datatables/datatables.jquery.min.js"></script>
   <script src="../assets/datatables/datatables.bootstrap5.min.js"></script>
+  <script src="./js/pago.js"></script>
 </body>
 
 </html>

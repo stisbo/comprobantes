@@ -77,18 +77,7 @@ class Usuario {
       return -1;
     }
   }
-  public function addAfiliado($nombre) {
-    try {
-      $afiliado = new Afiliado();
-      $afiliado->nombre = $nombre;
-      $afiliado->idGrupo = $this->idGrupo;
-      $afiliado->save();
-      return $afiliado;
-    } catch (\Throwable $th) {
-      //throw $th;
-    }
-    return null;
-  }
+
   public function searchAfiliado($nombre) {
     // solo afiliados pertenecientes al grupo del usuario
     $idUsuario = $this->rol == 'ADMIN' ? $this->idUsuario : $this->idGrupo;

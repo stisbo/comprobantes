@@ -16,7 +16,7 @@ class CProyecto {
       $res = $proyecto->save();
       if ($res > 0) {
         $proyecto->idProyecto = $res;
-        echo json_encode(['status' => 'success', 'message' => 'Proyecto creado con exito', 'data' => json_encode($proyecto)]);
+        echo json_encode(['status' => 'success', 'message' => 'Proyecto creado con exito', 'proyecto' => json_encode($proyecto)]);
       } else {
         echo json_encode(['status' => 'error', 'message' => 'Ocurrió un error en la creación del proyecto']);
       }

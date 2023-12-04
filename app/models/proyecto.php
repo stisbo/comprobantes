@@ -34,7 +34,7 @@ class Proyecto {
     $this->idProyecto = 0;
     $this->proyecto = '';
     $this->fechaCreacion = '';
-    $this->idUsuario = 1;
+    $this->idUsuario = 0;
   }
   public static function searchByName($name) {
     $con = Database::getInstace();
@@ -42,7 +42,7 @@ class Proyecto {
     $stmt = $con->prepare($sql);
     $stmt->execute();
     $rows = $stmt->fetchAll();
-    return $rows;  
+    return $rows;
   }
 
   public function save() {
