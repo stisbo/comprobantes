@@ -37,7 +37,7 @@ if (isset($_COOKIE['user_obj'])) {
             <h1>Nuevo Egreso</h1>
           </div>
           <div class="buttons-head col-md-6 col-sm-12 mb-3">
-            <button type="button" class="btn btn-secondary"><i class="fa fa-arrow-left"></i> Volver </button>
+            <button type="button" class="btn btn-secondary" onclick="history.back()"><i class="fa fa-arrow-left"></i> Volver </button>
           </div>
           <div class="row" id="card-egresos">
             <form id="form_nuevo">
@@ -47,20 +47,20 @@ if (isset($_COOKIE['user_obj'])) {
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="tipo_detalle" placeholder="Tipo de detalle">
-                        <label for="">Tipo de detalle</label>
+                        <label for="tipo_detalle">Tipo de detalle</label>
                         <input type="hidden" name="idProyecto" id="idProyecto" value="0">
                         <div id="suggestion_proy" class="suggestions"></div>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="" placeholder="Descripcion">
+                        <input type="text" class="form-control" id="" placeholder="Descripcion" name="concepto">
                         <label for="">Concepto</label>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <select name="modo_pago" id="" class="form-control">
+                        <select name="modoPago" id="" class="form-select">
                           <option value="">-- SELECCIONE --</option>
                           <option value="EFECTIVO">EFECTIVO</option>
                           <option value="CHEQUE">CHEQUE</option>
@@ -88,7 +88,7 @@ if (isset($_COOKIE['user_obj'])) {
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="" placeholder="Monto del pago">
+                        <input type="number" class="form-control" id="" placeholder="Monto del pago" name="monto" step="any">
                         <label for="">Monto</label>
                       </div>
                     </div>

@@ -8,7 +8,10 @@ use App\Models\Afiliado;
 class Proyecto {
   public int $idProyecto;
   public string $proyecto;
+  public float $montoRef;
+  public string $estado;
   public string $fechaCreacion;
+  public string $tipo; // ingreso egreso
   public int $idUsuario; // creado por
   // public float $monto;
   public function __construct($idProyecto = null) {
@@ -23,6 +26,9 @@ class Proyecto {
         $this->proyecto = $proyectoData['proyecto'];
         $this->fechaCreacion = $proyectoData['fechaCreacion'];
         $this->idUsuario = $proyectoData['idUsuario'];
+        $this->tipo = $proyectoData['tipo'];
+        $this->estado = $proyectoData['estado'];
+        $this->montoRef = $proyectoData['montoRef'];
       } else {
         $this->objectNull();
       }
@@ -35,6 +41,9 @@ class Proyecto {
     $this->proyecto = '';
     $this->fechaCreacion = '';
     $this->idUsuario = 0;
+    $this->tipo = '';
+    $this->estado = '';
+    $this->montoRef = 0.0;
   }
   public static function searchByName($name) {
     $con = Database::getInstace();
@@ -50,8 +59,8 @@ class Proyecto {
     try {
       $con = Database::getInstace();
       if ($this->idProyecto == 0) { //insert
-        $sql = "INSERT INTO tblProyecto(proyecto, idUsuario) VALUES(?, ?);";
-        $params = [$this->proyecto, $this->idUsuario];
+        $sql = "INSERT INTO tblProyecto(proyecto, idUsuario, tipo, montoRef, estado) VALUES(?, ?, ?, ?, ?);";
+        $params = [$this->proyecto, $this->idUsuario, $this->tipo, $this->montoRef, $this->estado];
         $stmt = $con->prepare($sql);
         $res = $stmt->execute($params);
         if ($res) {
@@ -59,8 +68,8 @@ class Proyecto {
           $res = $this->idProyecto;
         }
       } else { // update
-        $sql = "UPDATE tblProyecto SET proyecto = ?, idUsuario = ? WHERE idProyecto = ?";
-        $params = [$this->proyecto, $this->idUsuario, $this->idProyecto];
+        $sql = "UPDATE tblProyecto SET proyecto = ?, idUsuario = ?, tipo = ?, estado = ?, montoRef = ? WHERE idProyecto = ?";
+        $params = [$this->proyecto, $this->idUsuario, $this->tipo, $this->estado, $this->montoRef, $this->idProyecto];
         $stmt = $con->prepare($sql);
         $res = $stmt->execute($params);
         if (!$res) {
@@ -79,5 +88,13 @@ class Proyecto {
     $params = [$this->idProyecto];
     $stmt = $con->prepare($sql);
     return $stmt->execute($params);
+  }
+  public static function getAll() {
+    $con = Database::getInstace();
+    $sql = "SELECT tp.*, tu.alias FROM tblProyecto tp INNER JOIN tblUsuario tu ON tp.idUsuario = tu.idUsuario;";
+    $stmt = $con->prepare($sql);
+    $stmt->execute();
+    $rows = $stmt->fetchAll();
+    return $rows;
   }
 }

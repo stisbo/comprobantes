@@ -32,17 +32,17 @@ if (isset($_COOKIE['user_obj'])) {
       <main id="main_egresos">
         <div class="container-fluid px-4">
           <div class="mt-4">
-            <h1>Proyectos Egreso</h1>
+            <h1>Egresos</h1>
           </div>
           <div class="buttons-head col-md-6 col-sm-12 mb-3">
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal_egreso_nuevo" data-idproyecto="0"><i class="fa fa-plus"></i> Nuevo Proyecto </button>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal_egreso_nuevo"><i class="fa fa-plus"></i> Nuevo Egreso </button>
             <button class="btn btn-info" onclick="listar('all')"><i class="fa fa-book"></i></button>
           </div>
           <div class="row" id="card-egresos">
             <div class="card shadow">
               <div class="card-header">
                 <h4>
-                  <i class="fa fa-table"></i> Lista de proyectos
+                  <i class="fa fa-table"></i> Lista todos los egresos
                 </h4>
               </div>
               <div class="card-body">
@@ -51,12 +51,12 @@ if (isset($_COOKIE['user_obj'])) {
                     <thead>
                       <tr>
                         <th class="text-center">N° ID</th>
-                        <th class="text-center">Descripción</th>
-                        <th class="text-center">Tipo</th>
-                        <th class="text-center">Monto Ref.</th>
-                        <th class="text-center">Creado por</th>
-                        <th class="text-center">Fecha creación</th>
-                        <th class="text-center">Estado</th>
+                        <th class="text-center">Detalle concepto</th>
+                        <th class="text-center">Monto</th>
+                        <th class="text-center">Modo pago</th>
+                        <th class="text-center">Fecha registro</th>
+                        <th class="text-center">Pagado por</th>
+                        <th class="text-center">Recibido por</th>
                         <th class="text-center">Acciones</th>
                       </tr>
                     </thead>

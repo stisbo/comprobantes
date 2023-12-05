@@ -28,7 +28,7 @@ function mostrarSugerenciasAfiliado(arraySuggestions, idSugg, input_id) {
   $suggestions.empty();
   if (arraySuggestions.length > 0) {
     $.each(arraySuggestions, function (_, sugerencia) {
-      $("<li>").attr('data-exist', 1).attr('data-idinput', input_id).attr('data-idproyecto', sugerencia.idAfiliado).text(sugerencia.nombre.toUpperCase()).appendTo($suggestions);
+      $("<li>").attr('data-exist', 1).attr('data-idinput', input_id).attr('data-idafiliado', sugerencia.idAfiliado).text(sugerencia.nombre.toUpperCase()).appendTo($suggestions);
     });
   } else {
     if ($(`#${input_id}`).val().length > 2) {
@@ -101,8 +101,8 @@ $(document).on('click', '#suggestions_afiliado li', (e) => {
   if (e.target.tagName == 'LI') {
     if ($val.data('exist') == 1) {
       $("#" + $val.data('idinput')).val($val.text().toUpperCase());
-      $("#idProyecto").val($val.data('idproyecto'));
-      ocultarSugerencias('suggestion_proy');
+      $("#idAfiliado").val($val.data('idafiliado'));
+      ocultarSugerencias('suggestions_afiliado');
     } else {
       $.toast({
         heading: '<b>No existe el afiliado</b>',
@@ -110,7 +110,7 @@ $(document).on('click', '#suggestions_afiliado li', (e) => {
         icon: 'warning',
         position: 'top-right',
         stack: 2,
-        hideAfter: 2500
+        hideAfter: 2800
       })
     }
   }
@@ -138,7 +138,7 @@ async function agregarProyecto() {
     url: '../app/cproyecto/create',
     type: 'POST',
     dataType: 'json',
-    data: { proyecto }
+    data: { proyecto, tipo: 'EGRESO' }
   })
   if (res.status == 'success') {
     $.toast({
@@ -164,8 +164,8 @@ async function agregarProyecto() {
     })
   }
 }
-async function agregarValor() {
-  const nombre = $("#afiliado").val()
+async function agregarAfiliado() {
+  const nombre = $("#afiliado_to").val()
   const res = await $.ajax({
     url: '../app/cafiliado/create',
     type: 'GET',
@@ -181,10 +181,10 @@ async function agregarValor() {
       stack: 2,
       hideAfter: 1550
     })
-    $("#afiliado").val(nombre);
+    $("#afiliado_to").val(nombre);
     const afiliado = JSON.parse(res.afiliado);
-    $("#idAfiliado_modal").val(afiliado.idAfiliado)
-    ocultarSugerencias('suggestions');
+    $("#idAfiliado").val(afiliado.idAfiliado)
+    ocultarSugerencias('suggestions_afiliado');
   } else {
     $.toast({
       heading: 'Ocurrió un error',
@@ -196,3 +196,35 @@ async function agregarValor() {
     })
   }
 }
+$(document).on('submit', '#form_nuevo', async (e) => {
+  e.preventDefault();
+  const data = $(e.target).serialize();
+  const res = await $.ajax({
+    url: '../app/cpago/create',
+    data,
+    type: 'POST',
+    dataType: 'json'
+  });
+  if (res.status == 'success') {
+    $.toast({
+      heading: '<b>PAGO AGREGADO</b>',
+      text: 'Se agregó el pago exitosamente',
+      icon: 'success',
+      position: 'top-right',
+      stack: 3,
+      hideAfter: 1500
+    });
+    setTimeout(() => {
+      window.location.href = './';
+    }, 1500);
+  } else {
+    $.toast({
+      heading: '<b>OCURRIÓ UN ERROR</b>',
+      text: 'No se pudo agregar el pago',
+      icon: 'danger',
+      position: 'top-right',
+      stack: 2,
+      hideAfter: 2800
+    })
+  }
+})

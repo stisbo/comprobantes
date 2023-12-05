@@ -1,28 +1,21 @@
 var tabla = null;
 $(document).ready(async () => {
-  // loadInicio()
+  loadInicio()
 });
 
 async function loadInicio() {
-  await $("#main_egresos").load('./cabeceraLista.php');
-  await listar('all');
-}
-
-$(document).on('input', "#motivo_egreso", async (e) => {
-  if (e.target.value.length >= 2 && e.target.value.length <= 8) {
-    const res = await $.ajax({
-      url: `../app/cmotivo/getByName?q=${e.target.value}`,
-      type: 'GET',
-      dataType: 'json',
-    });
-    // console.log(res);
-    let html = '';
-    res.forEach(element => {
-      html += `<option value="${element.motivo.toUpperCase()}">`
-    });
-    $("#lista_motivo").html(html);
+  const res = await $.ajax({
+    url: '../app/cproyecto/getProjects',
+    type: 'GET',
+    dataType: 'json',
+    data: { tipo: 'EGRESO' },
+  });
+  if (res.status == 'success') {
+    const data = JSON.parse(res.data);
+    $("#t_body_egresos").html(generarTabla(data));
   }
-});
+
+}
 
 async function listar(estado) {
   if (tabla) {
@@ -54,13 +47,15 @@ function generarTabla(data) {
     let fecha = new Date(element.fechaCreacion);
     let opciones = `
       <li><button class="dropdown-item" type="button"><i class="fa fa-eye text-primary"></i> Ver Pagos</button></li>`;
-    opciones += element.estado == 'PENDIENTE' ? `<li><button class="dropdown-item" type="button" onclick=""><i class="fa fa-sack-dollar text-success"></i> Nuevo Pago</button></li>` : '';
+    // opciones += element.estado == 'PENDIENTE' ? `<li><button class="dropdown-item" type="button" onclick=""><i class="fa fa-sack-dollar text-success"></i> Nuevo Pago</button></li>` : '';
+    opciones += `<li><button class="dropdown-item" type="button"  data-bs-toggle="modal" data-bs-target="#modal_egreso_nuevo" data-idproyecto="${element.idProyecto}"><i class="fa fa-pencil text-info"></i> Editar</button></li>`;
     html += `<tr>
     <td class="text-center">${element.idProyecto}</td>
-    <td>${element.motivo}</td>
-    <td>${element.nombre.toUpperCase()}</td>
-    <td>${fecha.toLocaleDateString()} ${fecha.toLocaleTimeString()}</td>
-    <td class="text-center">${element.alias.toUpperCase()}</td>
+    <td>${element.proyecto.toUpperCase()}</td>
+    <td>${element.tipo}</td>
+    <td class="text-end">${Number(element.montoRef).toFixed(2)}</td>
+    <td>${element.alias}</td>
+    <td>${fecha.toLocaleDateString()}</td>
     <td align="center"><span class="badge ${clsEstado}">${element.estado}</span></td>
     <td align="center">
       <div class="dropdown">
@@ -76,169 +71,63 @@ function generarTabla(data) {
   })
   return html;
 }
-async function listaPendientes() {
 
-}
-
-async function listaSaldados() {
-
-}
-
-function mostrarSugerencias(arraySuggestions, idSugg, input_id) {
-  $suggestions = $("#" + idSugg);
-  $suggestions.empty();
-  if (arraySuggestions.length > 0) {
-    $.each(arraySuggestions, function (_, sugerencia) {
-      $("<li>").attr('data-exist', 1).attr('data-idinput', input_id).attr('data-idafiliado', sugerencia.idAfiliado).text(sugerencia.nombre).appendTo($suggestions);
+$("#modal_egreso_nuevo").on('show.bs.modal', async (e) => {
+  if (parseInt(e.relatedTarget.dataset.idproyecto) != 0) { // edit
+    const res = await $.ajax({
+      url: '../app/cproyecto/getProjectID',
+      type: 'GET',
+      data: { idProyecto: e.relatedTarget.dataset.idproyecto },
+      dataType: 'json'
     });
-  } else {
-    if ($(`#${input_id}`).val().length > 2) {
-      $("<li>").attr('data-exist', 0).attr('data-idinput', input_id).html($("#" + input_id).val() + '<button type="button" class="btn btn-success btn-sm float-end" onclick="agregarValor()"><i class="fa fa-plus"></i></button>').appendTo($suggestions);
-    }
-  }
-  $suggestions.show();
-}
-function ocultarSugerencias(idSugg) {
-  $("#" + idSugg).hide();
-}
-$(document).on('click', '.suggestions li', (e) => {
-  $val = $(e.target);
-  if (e.target.tagName == 'LI') {
-    if ($val.data('exist') == 1) {
-      $("#" + $val.data('idinput')).val($val.text());
-      $("#idAfiliado_modal").val($val.data('idafiliado'));
-      ocultarSugerencias('suggestions');
+    if (res.status == 'success') {
+      const data = JSON.parse(res.data);
+      console.log(data)
+      $("#idProyecto_egreso").val(data.idProyecto);
+      $("#descripcion_e").val(data.proyecto.toUpperCase());
+      $("#monto_e").val(data.montoRef);
+      let htmlOptions = `<option value="PENDIENTE" ${data.estado == 'PENDIENTE' ? 'selected' : ''}>PENDIENTE</option>
+      <option value="SALDADO" ${data.estado == 'SALDADO' ? 'selected' : ''}>SALDADO</option>`;
+      $("#estado_e").html(htmlOptions);
     } else {
-      $.toast({
-        heading: 'El usuario no existe',
-        text: 'Agrégalo haciendo click en el boton +',
-        icon: 'warning',
-        position: 'top-right',
-        stack: 2,
-        hideAfter: 2000
-      })
+      console.warn(res);
     }
-  }
-})
-$(document).on("click", function (event) {
-  // verificamos si se hizo click en otra parte
-  $input = $("#afiliado");
-  // input id
-  $suggestions = $("#suggestions");
-  if (!$(event.target).closest($input).length && !$(event.target).closest($suggestions).length) {
-    ocultarSugerencias('suggestions');
-  }
-});
-$(document).on('input', '#afiliado', async (e) => {
-  $input = $("#afiliado");
-  var valorInput = $input.val().toLowerCase();
-  if (valorInput.length < 2) {
-    ocultarSugerencias('suggestions');
-    return;
-  }
-  var res = await $.ajax({
-    url: '../app/cusuario/suggestionAfiliado',
-    type: 'GET',
-    dataType: 'json',
-    data: { q: valorInput }
-  })
-  if (res.status == 'success') {
-    mostrarSugerencias(res.data, 'suggestions', 'afiliado');
+  } else { //create
+    let htmlOptions = `
+    <option value="">-- Seleccione una opción --</option>
+    <option value="PENDIENTE">PENDIENTE</option>
+    <option value="SALDADO" >SALDADO</option>`;
+    $("#estado_e").html(htmlOptions);
   }
 })
 
-async function agregarValor() {
-  const nombre = $("#afiliado").val()
-  const res = await $.ajax({
-    url: '../app/cafiliado/create',
-    type: 'GET',
-    dataType: 'json',
-    data: { nombre }
-  })
-  if (res.status == 'success') {
-    $.toast({
-      heading: 'Operación exitosa',
-      text: 'Agregado correctamente',
-      icon: 'success',
-      position: 'top-right',
-      stack: 2,
-      hideAfter: 1550
-    })
-    $("#afiliado").val(nombre);
-    const afiliado = JSON.parse(res.afiliado);
-    $("#idAfiliado_modal").val(afiliado.idAfiliado)
-    ocultarSugerencias('suggestions');
-  } else {
-    $.toast({
-      heading: 'Ocurrió un error',
-      text: 'No se pudo agregar al usuario',
-      icon: 'danger',
-      position: 'top-right',
-      stack: 2,
-      hideAfter: 2000
-    })
-  }
-}
-
-async function createEgreso() {
+$("#modal_egreso_nuevo").on('hide.bs.modal', async () => {
+  setTimeout(() => {
+    $("#idProyecto_egreso").val('0');
+    $("#descripcion_e").val('');
+    $("#monto_e").val('');
+    $("#estado_e").val('');
+  }, 800);
+})
+async function egresoUp() {
   let data = $("#form_egreso").serialize();
   data += '&tipo=EGRESO';
-  console.log(data)
   const res = await $.ajax({
     url: '../app/cproyecto/create',
     type: 'POST',
     data,
     dataType: 'json'
   });
-  console.log(res)
   if (res.status == 'success') {
-    $("#modal_egreso_nuevo").modal('hide');
-    Swal.fire({
-      icon: 'success',
-      title: "El proyecto se creo exitosamente",
-      text: "¿Desea agregar un pago?",
-      showCancelButton: true,
-      confirmButtonText: "Agregar Pago",
-      cancelButtonText: 'No, volver'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        let data = JSON.parse(res.data);
-        var form = document.createElement("form");
-        form.setAttribute("method", "POST");
-        form.setAttribute("action", "pago.php");
-        form.innerHTML = `
-        <input type='hidden' name='project' value='${JSON.stringify(data)}' >
-        <input type='hidden' name='hola' value='amamamama' >`;
-        document.body.appendChild(form);
-        form.submit();
-        form.remove();
-      } else {
-        location.reload();
-      }
-    });
-  } else {
     $.toast({
-      heading: 'Ocurrió un error',
-      text: 'No se pudo registrar el proyecto',
-      icon: 'error',
+      heading: 'Operación exitosa',
+      icon: 'success',
       position: 'top-right',
-      hideAfter: 1900
+      hideAfter: 1100
     })
+    setTimeout(() => {
+      location.reload()
+    }, 1200);
   }
+  $("#modal_egreso_nuevo").modal('hide')
 }
-$(document).on('hide.bs.modal', '#modal_pago_nuevo', () => {
-  setTimeout(() => {
-    $("#idProyecto_pago").val('');
-    $("#motivo_proyecto").val('');
-    $("#monto_pago").val('');
-  }, 900);
-})
-
-$(document).on('hide.bs.modal', '#modal_egreso_nuevo', () => {
-  setTimeout(() => {
-    $("#motivo_egreso").val('');
-    $("#monto_egreso").val('');
-    $("#afiliado").val('')
-    $("#idAfiliado_modal").val('')
-  }, 900);
-})
