@@ -8,19 +8,26 @@
           MENU INICIO
         </a>
         <div class="sb-sidenav-menu-heading">ACCIONES</div>
-        <a class="nav-link" id="nav-id-ingresos" href="../ingresos/">
-          <div class="sb-nav-link-icon"><i class="fa fa-solid fa-arrow-trend-up"></i></div>
-          INGRESOS
+        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#ingresosCollapse" aria-expanded="false" aria-controls="ingresosCollapse">
+          <div class="sb-nav-link-icon"><i class="fa fa-solid fa-arrow-trend-down"></i></div> INGRESOS
+          <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
         </a>
+        <div class="collapse" id="ingresosCollapse" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+          <nav class="sb-sidenav-menu-nested nav">
+            <a class="nav-link" href="../ingresos/">Proyectos (ingreso)</a>
+            <a class="nav-link" href="../egresos/nuevo.php">Nuevo pago</a>
+          </nav>
+        </div>
+
         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
           <div class="sb-nav-link-icon"><i class="fa fa-solid fa-arrow-trend-down"></i></div> EGRESOS
           <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
         </a>
         <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
           <nav class="sb-sidenav-menu-nested nav">
-            <a class="nav-link" href="../egresos/">Proyectos</a>
-            <a class="nav-link" href="../egresos/pagos.php">Todos los Pagos</a>
-            <a class="nav-link" href="password.html">Forgot Password</a>
+            <a class="nav-link" href="../egresos/">Proyectos (egreso)</a>
+            <a class="nav-link" href="../egresos/nuevo.php">Nuevo pago</a>
+            <a class="nav-link" href="">Forgot Password</a>
           </nav>
         </div>
 

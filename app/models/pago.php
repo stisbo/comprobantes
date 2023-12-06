@@ -75,6 +75,20 @@ class Pago {
     return $res;
   }
 
+  public static function getByProject($idProyecto) {
+    try {
+      $sql = "SELECT pa.*, UPPER(us.alias) usuario, UPPER(af.nombre) afiliado  FROM tblPago pa INNER JOIN tblAfiliado af ON pa.idRecibidoPor = af.idAfiliado INNER JOIN tblUsuario us ON pa.idPagadoPor = us.idUsuario WHERE idProyecto = ?;";
+      $con = Database::getInstace();
+      $stmt = $con->prepare($sql);
+      $stmt->execute([$idProyecto]);
+      $res = $stmt->fetchAll();
+      return $res;
+    } catch (\Throwable $th) {
+      //throw $th;
+      return [];
+    }
+  }
+
   public static function getAll($tipo) {
     try { // obtener los valores por fecha del ultimo mes
       $con = Database::getInstace();

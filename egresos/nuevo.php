@@ -46,7 +46,7 @@ if (isset($_COOKIE['user_obj'])) {
                   <div class="row">
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="tipo_detalle" placeholder="Tipo de detalle">
+                        <input type="text" class="form-control" id="tipo_detalle" placeholder="Tipo de detalle" autocomplete="off">
                         <label for="tipo_detalle">Tipo de detalle</label>
                         <input type="hidden" name="idProyecto" id="idProyecto" value="0">
                         <div id="suggestion_proy" class="suggestions"></div>
@@ -54,13 +54,13 @@ if (isset($_COOKIE['user_obj'])) {
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="" placeholder="Descripcion" name="concepto">
+                        <input type="text" class="form-control" id="" placeholder="Descripcion" name="concepto" required>
                         <label for="">Concepto</label>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <select name="modoPago" id="" class="form-select">
+                        <select name="modoPago" id="" class="form-select" required>
                           <option value="">-- SELECCIONE --</option>
                           <option value="EFECTIVO">EFECTIVO</option>
                           <option value="CHEQUE">CHEQUE</option>
@@ -80,7 +80,7 @@ if (isset($_COOKIE['user_obj'])) {
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="afiliado_to" placeholder="Usuario destino">
+                        <input type="text" class="form-control" id="afiliado_to" placeholder="Usuario destino" autocomplete="off">
                         <label for="afiliado_to">Recibido por:</label>
                         <input type="hidden" name="idAfiliado" value="0" id="idAfiliado">
                         <div id="suggestions_afiliado" class="suggestions"></div>
@@ -88,7 +88,7 @@ if (isset($_COOKIE['user_obj'])) {
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="" placeholder="Monto del pago" name="monto" step="any">
+                        <input type="number" class="form-control" id="" placeholder="Monto del pago" name="monto" step="any" required>
                         <label for="">Monto</label>
                       </div>
                     </div>
@@ -102,11 +102,7 @@ if (isset($_COOKIE['user_obj'])) {
                   <div class="row">
                     <div class="d-flex justify-content-center flex-wrap gap-3">
                       <h4>¿Agregar un comprobante de pago?</h4>
-                      <div class="d-flex gap-2">
-                        <button type="button" class="btn btn-outline-primary"><i class="fa fa-image"></i></button>
-                        <button type="button" class="btn btn-outline-dark"><i class="fa fa-signature"></i></button>
-                        <button type="button" class="btn btn-outline-secondary"><i class="fa fa-microphone"></i></button>
-                      </div>
+                      <button type="button" class="btn btn-primary shadow-lg" data-bs-toggle="modal" data-bs-target="#modal_egreso_comprobante"><i class="fa fa-solid fa-upload"></i></button>
                     </div>
                   </div>
                 </div>

@@ -77,7 +77,6 @@ if (isset($_COOKIE['user_obj'])) {
   <script src="../js/scripts.js"></script>
   <script src="../assets/datatables/datatables.jquery.min.js"></script>
   <script src="../assets/datatables/datatables.bootstrap5.min.js"></script>
-  <script src="./js/app.js"></script>
 </body>
 
 </html>

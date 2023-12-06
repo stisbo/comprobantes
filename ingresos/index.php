@@ -31,13 +31,10 @@ if (isset($_COOKIE['user_obj'])) {
       <main>
         <div class="container-fluid px-4">
           <div class="mt-4">
-            <h1>Ingresos</h1>
+            <h1>Proyectos Ingresos</h1>
           </div>
           <div class="buttons-head col-md-6 col-sm-12 mb-3">
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal_ingreso_nuevo"><i class="fa fa-plus"></i> Crear Nuevo </button>
-            <button class="btn btn-info" onclick="listaTodos()"><i class="fa fa-book"></i> Lista Todos</button>
-            <button class="btn btn-warning" onclick="listaPendientes()"><i class="fa fa-info"></i> Pendientes</button>
-            <button class="btn btn-primary" onclick="listaSaldados()"><i class="fa fa-check"></i> Saldados</button>
           </div>
           <div class="row" id="cards-ingresos">
             <div class="card mb-4 shadow">

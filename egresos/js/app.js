@@ -4,6 +4,13 @@ $(document).ready(async () => {
 });
 
 async function loadInicio() {
+  listar('PENDIENTE');
+}
+
+async function listar(estado) {
+  if (tabla) {
+    tabla.destroy();
+  }
   const res = await $.ajax({
     url: '../app/cproyecto/getProjects',
     type: 'GET',
@@ -13,29 +20,12 @@ async function loadInicio() {
   if (res.status == 'success') {
     const data = JSON.parse(res.data);
     $("#t_body_egresos").html(generarTabla(data));
-  }
-
-}
-
-async function listar(estado) {
-  if (tabla) {
-    tabla.destroy();
-  }
-  const res = await $.ajax({
-    url: '../app/cproyecto/getAll',
-    type: 'GET',
-    dataType: 'json',
-    data: { estado, tipo: 'EGRESO' }
-  });
-  if (res.status == 'success') {
-    let html = generarTabla(JSON.parse(res.data));
-    $("#t_body_egresos").html(html);
     tabla = $("#table_egresos").DataTable({
       language: lenguaje,
       info: false,
       scrollX: true,
       columnDefs: [
-        { orderable: false, targets: [3, 6] }
+        { orderable: false, targets: [5, 7] }
       ],
     })
   }
@@ -46,15 +36,14 @@ function generarTabla(data) {
     let clsEstado = element.estado == 'PENDIENTE' ? 'text-bg-warning' : 'text-bg-primary';
     let fecha = new Date(element.fechaCreacion);
     let opciones = `
-      <li><button class="dropdown-item" type="button"><i class="fa fa-eye text-primary"></i> Ver Pagos</button></li>`;
-    // opciones += element.estado == 'PENDIENTE' ? `<li><button class="dropdown-item" type="button" onclick=""><i class="fa fa-sack-dollar text-success"></i> Nuevo Pago</button></li>` : '';
+      <li><a class="dropdown-item" type="button" href="./pagoslist.php?proid=${element.idProyecto}"><i class="fa fa-eye text-primary"></i> Pagos Asociados</a></li>`;
     opciones += `<li><button class="dropdown-item" type="button"  data-bs-toggle="modal" data-bs-target="#modal_egreso_nuevo" data-idproyecto="${element.idProyecto}"><i class="fa fa-pencil text-info"></i> Editar</button></li>`;
     html += `<tr>
     <td class="text-center">${element.idProyecto}</td>
     <td>${element.proyecto.toUpperCase()}</td>
     <td>${element.tipo}</td>
     <td class="text-end">${Number(element.montoRef).toFixed(2)}</td>
-    <td>${element.alias}</td>
+    <td class="text-center">${element.alias.toUpperCase()}</td>
     <td>${fecha.toLocaleDateString()}</td>
     <td align="center"><span class="badge ${clsEstado}">${element.estado}</span></td>
     <td align="center">
@@ -82,7 +71,6 @@ $("#modal_egreso_nuevo").on('show.bs.modal', async (e) => {
     });
     if (res.status == 'success') {
       const data = JSON.parse(res.data);
-      console.log(data)
       $("#idProyecto_egreso").val(data.idProyecto);
       $("#descripcion_e").val(data.proyecto.toUpperCase());
       $("#monto_e").val(data.montoRef);

@@ -36,7 +36,7 @@ if (isset($_COOKIE['user_obj'])) {
           </div>
           <div class="buttons-head col-md-6 col-sm-12 mb-3">
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal_egreso_nuevo" data-idproyecto="0"><i class="fa fa-plus"></i> Nuevo Proyecto </button>
-            <button class="btn btn-info" onclick="listar('all')"><i class="fa fa-book"></i></button>
+            <a class="btn btn-primary" type="button" href="./nuevo.php"><i class="fa fa-solid fa-hand-holding-dollar"></i> Nuevo pago</a>
           </div>
           <div class="row" id="card-egresos">
             <div class="card shadow">
@@ -46,25 +46,23 @@ if (isset($_COOKIE['user_obj'])) {
                 </h4>
               </div>
               <div class="card-body">
-                <div class="table-responsive">
-                  <table style="width:100%" class="table table-hover" id="table_egresos">
-                    <thead>
-                      <tr>
-                        <th class="text-center">N° ID</th>
-                        <th class="text-center">Descripción</th>
-                        <th class="text-center">Tipo</th>
-                        <th class="text-center">Monto Ref.</th>
-                        <th class="text-center">Creado por</th>
-                        <th class="text-center">Fecha creación</th>
-                        <th class="text-center">Estado</th>
-                        <th class="text-center">Acciones</th>
-                      </tr>
-                    </thead>
-                    <tbody id="t_body_egresos">
+                <table style="width:100%" class="table table-hover" id="table_egresos">
+                  <thead>
+                    <tr>
+                      <th class="text-center">N° ID</th>
+                      <th class="text-center">Descripción</th>
+                      <th class="text-center">Tipo</th>
+                      <th class="text-center">Monto Ref.</th>
+                      <th class="text-center">Creado por</th>
+                      <th class="text-center">Fecha creación</th>
+                      <th class="text-center">Estado</th>
+                      <th class="text-center">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody id="t_body_egresos">
 
-                    </tbody>
-                  </table>
-                </div>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
