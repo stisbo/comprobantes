@@ -247,7 +247,16 @@ $(document).on('click', '.type-comp', (e) => {
       </div>
     `);
   } else if (tipo == 'audio') {
-
+    $("#cont_comprobante").html(`
+      <div class="row justify-content-center m-3">
+        <div class="image-container" >
+          <img src="../assets/img/empty.jpg" alt="Upload image" />
+        </div>
+        <div>
+          <input type="file" class="form-control mt-2" name="file" id="file_comprobante" accept="image/*">
+        </div>
+      </div>
+    `);
   } else {
 
   }
