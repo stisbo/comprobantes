@@ -1,3 +1,5 @@
+var audio = null;
+var imagen = null;
 $(document).ready(function () {
   console.log('cargado')
 })
@@ -249,14 +251,13 @@ $(document).on('click', '.type-comp', (e) => {
   } else if (tipo == 'audio') {
     $("#cont_comprobante").html(`
       <div class="row justify-content-center m-3">
-        <div class="image-container" >
-          <img src="../assets/img/empty.jpg" alt="Upload image" />
+        <div class="d-flex justify-content-center">
+          <i id="recordButton" class="fa fa-microphone"></i>
         </div>
-        <div>
-          <input type="file" class="form-control mt-2" name="file" id="file_comprobante" accept="image/*">
-        </div>
+        <p id="recordingTime" class="text-center">Tiempo de grabación: 00:00</p>
       </div>
     `);
+    handlerAudio('recordButton', 'type_file_upload');
   } else {
 
   }
@@ -269,3 +270,14 @@ $("#modal_egreso_comprobante").on('hide.bs.modal', () => {
   })
   $("#cont_comprobante").html('')
 })
+
+function adjuntarArch() {
+  if (audio == null && imagen == null) {
+    return;
+  }
+  $('#btn_file_upload').html('<i class="fa fa-paperclip"></i>')
+  $('#btn_file_upload').removeClass('btn-primary');
+  $('#btn_file_upload').addClass('btn-secondary');
+  $('#btn_file_upload').attr('disabled', true);
+  $("#comprobante_pago_file").html(`Archivo de tipo <i>${$("#type_file_upload").val()}</i> adjunto`)
+}

@@ -41,6 +41,7 @@ if (isset($_COOKIE['user_obj'])) {
           </div>
           <div class="row" id="card-egresos">
             <form id="form_nuevo">
+              <input type="hidden" id="type_file_upload">
               <div class="card shadow">
                 <div class="card-body">
                   <div class="row">
@@ -101,8 +102,8 @@ if (isset($_COOKIE['user_obj'])) {
                   </div>
                   <div class="row">
                     <div class="d-flex justify-content-center flex-wrap gap-3">
-                      <h4>¿Agregar un comprobante de pago?</h4>
-                      <button type="button" class="btn btn-primary shadow-lg" data-bs-toggle="modal" data-bs-target="#modal_egreso_comprobante"><i class="fa fa-solid fa-upload"></i></button>
+                      <h4 id="comprobante_pago_file">¿Agregar un comprobante de pago?</h4>
+                      <button id="btn_file_upload" type="button" class="btn btn-primary shadow-lg" data-bs-toggle="modal" data-bs-target="#modal_egreso_comprobante"><i class="fa fa-solid fa-upload"></i></button>
                     </div>
                   </div>
                 </div>
@@ -124,6 +125,7 @@ if (isset($_COOKIE['user_obj'])) {
   <script src="../assets/datatables/datatables.jquery.min.js"></script>
   <script src="../assets/datatables/datatables.bootstrap5.min.js"></script>
   <script src="./js/pago.js"></script>
+  <script src="./js/record.js"></script>
 </body>
 
 </html>

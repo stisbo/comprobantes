@@ -121,17 +121,18 @@
   object-fit: contain;
 }
 
-/* input[type="radio"] {
-  -webkit-appearance: none;
-  appearance: none;
+#recordButton {
+  font-size: 60px;
+  background: #fff;
+  border-radius: 50%;
+  padding: 15px 20px;
 }
 
-input[type="radio"] {
-  border: 2px solid #818181;
-  border-radius: 10px;
-  height: 20px;
-  outline: none;
-  width: 20px;
-  vertical-align: -5px;
+#recordButton:hover {
+  cursor: pointer;
+  background-color: beige;
+}
 
-} */
+.bi-mic-mute-fill {
+  cursor: pointer;
+}
