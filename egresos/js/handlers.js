@@ -1,11 +1,12 @@
-function handlerAudio(idBoton, file_id) {
+async function handlerAudio(idBoton, file_id) {
   const recordButton = document.getElementById(idBoton);
   const recordingTimeDisplay = document.getElementById("recordingTime");
   let mediaRecorder;
   let audioChunks = [];
   let startTime;
   let timerInterval;
-
+  let inputs = await navigator.mediaDevices.enumerateDevices()
+  alert('nuevos')
   async function startRecording() {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -22,6 +23,12 @@ function handlerAudio(idBoton, file_id) {
       };
 
       mediaRecorder.onstop = () => {
+        $.toast({
+          heading: '<b>Audio Grabado</b>',
+          icon: 'success',
+          position: 'top-right',
+          hideAfter: 1300
+        });
         clearInterval(timerInterval);
         const audioBlob = new Blob(audioChunks, {
           type: "audio/webm",
@@ -32,18 +39,9 @@ function handlerAudio(idBoton, file_id) {
         $(`#${idBoton}`).addClass('fa-microphone')
 
         // Envía el audio grabado al servidor
-        const formData = new FormData();
-        formData.append("audio", audioBlob, "recording.webm");
         audio = audioBlob;
         $(`#${file_id}`).val('audio');
-        // axios
-        //   .post("save_audio.php", formData)
-        //   .then((response) => {
-        //     console.log(response.data);
-        //   })
-        //   .catch((error) => {
-        //     console.error("Error al enviar el audio al servidor:", error);
-        //   });
+        buttonsDisabled();
       };
 
       mediaRecorder.start();
@@ -65,7 +63,6 @@ function handlerAudio(idBoton, file_id) {
     if (mediaRecorder && mediaRecorder.state === "recording") {
       clearInterval(timerInterval);
       mediaRecorder.stop();
-
       recordButton.classList.remove("recording");
     }
   }
@@ -88,4 +85,25 @@ function handlerAudio(idBoton, file_id) {
       startRecording();
     }
   });
+}
+
+function handlerImage(idContImg, idFileInput, file_id){
+  $(`#${idFileInput}`).change(function() {
+    var reader = new FileReader();
+    reader.onload = function(event) {
+      var blob = event.target.result;
+      var img = $(`#${idContImg}`);
+      img.attr("src", blob);
+      $(`#${file_id}`).val('imagen');
+      imagen = blob
+      buttonsDisabled()
+    };
+    reader.readAsDataURL(this.files[0]);
+  });
+}
+
+function buttonsDisabled(){
+  $('.type-comp').each((_,e) => {
+    $(e).attr('disabled', 'true')
+  })
 }

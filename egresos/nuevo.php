@@ -41,7 +41,7 @@ if (isset($_COOKIE['user_obj'])) {
           </div>
           <div class="row" id="card-egresos">
             <form id="form_nuevo">
-              <input type="hidden" id="type_file_upload">
+              <input type="hidden" id="type_file_upload" name="tipo_file" value="">
               <div class="card shadow">
                 <div class="card-body">
                   <div class="row">
@@ -125,7 +125,7 @@ if (isset($_COOKIE['user_obj'])) {
   <script src="../assets/datatables/datatables.jquery.min.js"></script>
   <script src="../assets/datatables/datatables.bootstrap5.min.js"></script>
   <script src="./js/pago.js"></script>
-  <script src="./js/record.js"></script>
+  <script src="./js/handlers.js"></script>
 </body>
 
 </html>

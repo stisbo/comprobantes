@@ -1,7 +1,6 @@
 var audio = null;
 var imagen = null;
 $(document).ready(function () {
-  console.log('cargado')
 })
 
 
@@ -200,10 +199,18 @@ async function agregarAfiliado() {
 }
 $(document).on('submit', '#form_nuevo', async (e) => {
   e.preventDefault();
-  const data = $(e.target).serialize();
+  const data = $(e.target).serializeArray();
+  let formData = new FormData();
+  $.each(data, (_, e) => {
+    formData.append(e.name, e.value)
+  });
+  if(imagen != null) formData.append('imagen', imagen);
+  if(audio != null) formData.append('audio', audio);
   const res = await $.ajax({
     url: '../app/cpago/create',
-    data,
+    data: formData,
+    contentType: false,
+    processData: false,
     type: 'POST',
     dataType: 'json'
   });
@@ -217,7 +224,7 @@ $(document).on('submit', '#form_nuevo', async (e) => {
       hideAfter: 1500
     });
     setTimeout(() => {
-      window.location.href = './';
+      // window.location.href = './';
     }, 1500);
   } else {
     $.toast({
@@ -241,25 +248,26 @@ $(document).on('click', '.type-comp', (e) => {
     $("#cont_comprobante").html(`
       <div class="row justify-content-center m-3">
         <div class="image-container" >
-          <img src="../assets/img/empty.jpg" alt="Upload image" />
+          <img id="img_comprobante" src="../assets/img/empty.jpg" alt="Upload image" />
         </div>
         <div>
           <input type="file" class="form-control mt-2" name="file" id="file_comprobante" accept="image/*">
         </div>
       </div>
     `);
+    handlerImage('img_comprobante', 'file_comprobante', 'type_file_upload')
   } else if (tipo == 'audio') {
     $("#cont_comprobante").html(`
       <div class="row justify-content-center m-3">
         <div class="d-flex justify-content-center">
           <i id="recordButton" class="fa fa-microphone"></i>
         </div>
-        <p id="recordingTime" class="text-center">Tiempo de grabación: 00:00</p>
+        <p id="recordingTime" class="text-center">Tiempo de: 00:00</p>
       </div>
     `);
     handlerAudio('recordButton', 'type_file_upload');
   } else {
-
+    $("#cont_comprobante").html(``);
   }
 
 })
@@ -267,6 +275,7 @@ $(document).on('click', '.type-comp', (e) => {
 $("#modal_egreso_comprobante").on('hide.bs.modal', () => {
   $.each($('.type-comp'), function (_, type) {
     $(type).removeClass('active');
+    $(type).attr('disabled', false);
   })
   $("#cont_comprobante").html('')
 })

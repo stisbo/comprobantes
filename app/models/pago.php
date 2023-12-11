@@ -13,6 +13,7 @@ class Pago {
   public int $idPagadoPor; // usuario
   public int $idRecibidoPor; // afiliado
   public string $fechaRegistro;
+  public string $nameFile;
 
   public function __construct($idPago = null) {
     $con = Database::getInstace();
@@ -30,6 +31,7 @@ class Pago {
         $this->idPagadoPor = $pagoRow['idPagadoPor'];
         $this->idRecibidoPor = $pagoRow['idRecibidoPor'];
         $this->fechaRegistro = $pagoRow['fechaRegistro'];
+        $this->nameFile = $pagoRow['nameFile'];
       } else {
         $this->objectNull();
       }
@@ -46,6 +48,7 @@ class Pago {
     $this->idPagadoPor = 0;
     $this->idRecibidoPor = 0;
     $this->fechaRegistro = '';
+    $this->nameFile = '';
   }
   public function save() {
     $res = -1;
@@ -73,6 +76,39 @@ class Pago {
       print_r($th);
     }
     return $res;
+  }
+
+  public function saveFile($tipo, $files, $image64){
+    $nameFile = '';
+    if($tipo == '' || (!isset($files['audio']) && !isset($image64['imagen']))){
+      echo 'NO EXISTE ARCHIVO';
+      echo "======$tipo";
+      return $nameFile;
+    }else{
+      try {
+        echo 'EXISTE ARCHIVO';
+        // creamos el directorio si es que no existe 
+        $path = dirname(dirname(__DIR__));
+        if(!is_dir($path.'/public/domain')){
+          mkdir($path . "/public/domain", 0777);
+        }        
+        if($tipo == 'audio'){
+          $nameFile = $tipo.'_'.time().'.webm';
+          $tmp_name = $files['audio']['tmp_name'];
+          move_uploaded_file($tmp_name, "$path/public/domain/$nameFile");
+          return $nameFile;
+        }else if($tipo == 'imagen'){
+          $nameFile = $tipo.'_'.time().'.jpg';
+          $imageData = base64_decode($image64['imagen']);
+          $image = imagecreatefromstring($imageData);
+          imagejpeg($image, "$path/public/domain/$nameFile");
+        }
+        return $nameFile;
+      } catch (\Throwable $th) {
+        print_r($th);
+        return null;
+      }
+    }
   }
 
   public static function getByProject($idProyecto) {

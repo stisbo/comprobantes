@@ -11,18 +11,26 @@ class CPago {
     } else {
       $user = json_decode($_COOKIE['user_obj']);
       $pago = new Pago();
-      $pago->concepto = $data['concepto'];
-      $pago->monto = $data['monto'];
-      $pago->idProyecto = $data['idProyecto'];
-      $pago->idRecibidoPor = $data['idAfiliado'];
-      $pago->modoPago = $data['modoPago'];
-      $pago->idPagadoPor = $user->idUsuario;
-      $res = $pago->save();
-      if ($res) {
-        $pago->idPago = $res;
-        echo json_encode(['status' => 'success', 'message' => 'Pago creado', 'pago' => json_encode($pago)]);
-      } else {
-        echo json_encode(['status' => 'error', 'message' => 'Error al crear afiliado']);
+      // guardamos los archivos enviados, si es que existen.
+      $tipo = isset($data['tipo_file']) ? $data['tipo_file'] : '';
+      $file = $pago->saveFile($tipo, $files, $data);
+      if($file != null){
+        $pago->concepto = $data['concepto'];
+        $pago->monto = $data['monto'];
+        $pago->idProyecto = $data['idProyecto'];
+        $pago->idRecibidoPor = $data['idAfiliado'];
+        $pago->modoPago = $data['modoPago'];
+        $pago->nameFile = $file;
+        $pago->idPagadoPor = $user->idUsuario;
+        $res = $pago->save();
+        if ($res) {
+          $pago->idPago = $res;
+          echo json_encode(['status' => 'success', 'message' => 'Pago creado', 'pago' => json_encode($pago)]);
+        } else {
+          echo json_encode(['status' => 'error', 'message' => 'Error al crear afiliado']);
+        }
+      }else{
+        echo json_encode(['status' => 'error', 'message' => 'No se ha podido crear el archivo del comprobante']);
       }
     }
   }
