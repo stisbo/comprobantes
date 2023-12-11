@@ -84,7 +84,9 @@ $pagos = Pago::getByProject($proyecto->idProyecto);
                     <tbody>
                       <?php
                       $suma = 0;
-                      foreach ($pagos as $pago) : ?>
+                      foreach ($pagos as $pago) :
+                        // print_r($pago);
+                      ?>
                         <tr class="text-center">
                           <td><?= $pago['idPago'] ?></td>
                           <td><?= $pago['concepto'] ?></td>
@@ -93,7 +95,21 @@ $pagos = Pago::getByProject($proyecto->idProyecto);
                           <td><?= date('d/m/Y', strtotime($pago['fechaRegistro'])) ?></td>
                           <td><?= $pago['usuario'] ?></td>
                           <td><?= $pago['afiliado'] ?></td>
-                          <td></td>
+                          <td>
+                            <div class="dropdown">
+                              <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Opciones
+                              </button>
+                              <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#"><i class="fa fa-pen text-primary"></i> Editar</a></li>
+                                <?php if ($pago['namefile'] == '') : ?>
+                                  <li><a class="dropdown-item" href="#" type="button"><i class="fa fa-plus text-success"></i> Agregar comprobante</a></li>
+                                <?php else : ?>
+                                  <li><a class="dropdown-item" href="#"><i class="fa fa-eye text-secondary"></i> Ver comprobante</a></li>
+                                <?php endif; ?>
+                              </ul>
+                            </div>
+                          </td>
                         </tr>
                       <?php
                         $suma += floatval($pago['monto']);

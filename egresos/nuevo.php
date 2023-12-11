@@ -124,6 +124,7 @@ if (isset($_COOKIE['user_obj'])) {
   <script src="../js/scripts.js"></script>
   <script src="../assets/datatables/datatables.jquery.min.js"></script>
   <script src="../assets/datatables/datatables.bootstrap5.min.js"></script>
+  <script src="./js/draw.js"></script>
   <script src="./js/pago.js"></script>
   <script src="./js/handlers.js"></script>
 </body>

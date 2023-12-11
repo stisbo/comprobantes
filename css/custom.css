@@ -133,6 +133,12 @@
   background-color: beige;
 }
 
-.bi-mic-mute-fill {
-  cursor: pointer;
+.canvas_firma {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+#draw_picture {
+  border: 2px dashed #c0c0c0;
 }

@@ -204,8 +204,8 @@ $(document).on('submit', '#form_nuevo', async (e) => {
   $.each(data, (_, e) => {
     formData.append(e.name, e.value)
   });
-  if(imagen != null) formData.append('imagen', imagen);
-  if(audio != null) formData.append('audio', audio);
+  if (imagen != null) formData.append('imagen', imagen);
+  if (audio != null) formData.append('audio', audio);
   const res = await $.ajax({
     url: '../app/cpago/create',
     data: formData,
@@ -267,7 +267,26 @@ $(document).on('click', '.type-comp', (e) => {
     `);
     handlerAudio('recordButton', 'type_file_upload');
   } else {
-    $("#cont_comprobante").html(``);
+    $("#cont_comprobante").html(`
+    <h5 class="text-center mt-2">Dibuja tu firma</h5>
+    <div class="canvas_firma">
+      <canvas id="draw_picture"></canvas>
+    </div>
+    <button type="button" id="btn_clean_firma" class="btn btn-danger float-end mt-3"><i class="fa-solid fa-eraser"></i> Limpiar</button>
+    <button type="button" id="btn_terminar_firma" class="btn btn-primary float-end mt-3 me-3">Terminar</button>`);
+    const hand = new HandlerFirma();
+    hand.clean_draw();
+    console.log(hand)
+    $("#btn_clean_firma").on('click', () => {
+      hand.clean_draw();
+    });
+    $("#btn_terminar_firma").on('click', () => {
+      imagen = hand.save_draw();
+      $("#type_file_upload").val('imagen')
+      $("#btn_clean_firma").attr('disabled', true);
+      $("#modal_egreso_comprobante").modal('hide')
+      adjuntarArch();
+    })
   }
 
 })
