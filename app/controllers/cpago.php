@@ -14,7 +14,7 @@ class CPago {
       // guardamos los archivos enviados, si es que existen.
       $tipo = isset($data['tipo_file']) ? $data['tipo_file'] : '';
       $file = $pago->saveFile($tipo, $files, $data);
-      if($file != null){
+      if ($file != null || $file == '') {
         $pago->concepto = $data['concepto'];
         $pago->monto = $data['monto'];
         $pago->idProyecto = $data['idProyecto'];
@@ -29,7 +29,7 @@ class CPago {
         } else {
           echo json_encode(['status' => 'error', 'message' => 'Error al crear afiliado']);
         }
-      }else{
+      } else {
         echo json_encode(['status' => 'error', 'message' => 'No se ha podido crear el archivo del comprobante']);
       }
     }

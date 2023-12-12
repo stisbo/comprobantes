@@ -6,8 +6,8 @@ async function handlerAudio(idBoton, file_id) {
   let startTime;
   let timerInterval;
   let inputs = await navigator.mediaDevices.enumerateDevices()
-  alert('nuevos')
   async function startRecording() {
+    $("#" + idBoton).addClass('pushed')
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         audio: true,
@@ -23,6 +23,7 @@ async function handlerAudio(idBoton, file_id) {
       };
 
       mediaRecorder.onstop = () => {
+        $("#" + idBoton).removeClass('pushed')
         $.toast({
           heading: '<b>Audio Grabado</b>',
           icon: 'success',
@@ -87,10 +88,10 @@ async function handlerAudio(idBoton, file_id) {
   });
 }
 
-function handlerImage(idContImg, idFileInput, file_id){
-  $(`#${idFileInput}`).change(function() {
+function handlerImage(idContImg, idFileInput, file_id) {
+  $(`#${idFileInput}`).change(function () {
     var reader = new FileReader();
-    reader.onload = function(event) {
+    reader.onload = function (event) {
       var blob = event.target.result;
       var img = $(`#${idContImg}`);
       img.attr("src", blob);
@@ -102,8 +103,8 @@ function handlerImage(idContImg, idFileInput, file_id){
   });
 }
 
-function buttonsDisabled(){
-  $('.type-comp').each((_,e) => {
+function buttonsDisabled() {
+  $('.type-comp').each((_, e) => {
     $(e).attr('disabled', 'true')
   })
 }

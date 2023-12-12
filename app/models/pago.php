@@ -18,7 +18,7 @@ class Pago {
   public function __construct($idPago = null) {
     $con = Database::getInstace();
     if ($idPago != null) {
-      $sql = "SELECT * FROM tblPago WHERE idProyecto = $idPago";
+      $sql = "SELECT * FROM tblPago WHERE idPago = $idPago";
       $stmt = $con->prepare($sql);
       $stmt->execute([]);
       $pagoRow = $stmt->fetch(); // Utiliza fetch en lugar de fetchAll
@@ -31,7 +31,7 @@ class Pago {
         $this->idPagadoPor = $pagoRow['idPagadoPor'];
         $this->idRecibidoPor = $pagoRow['idRecibidoPor'];
         $this->fechaRegistro = $pagoRow['fechaRegistro'];
-        $this->nameFile = $pagoRow['nameFile'];
+        $this->nameFile = $pagoRow['namefile'];
       } else {
         $this->objectNull();
       }
@@ -108,6 +108,31 @@ class Pago {
         print_r($th);
         return null;
       }
+    }
+  }
+  public function pagadoPor() {
+    try {
+      $con = Database::getInstace();
+      $sql = "SELECT * FROM tblUsuario WHERE idUsuario = ?";
+      $stmt = $con->prepare($sql);
+      $stmt->execute([$this->idPagadoPor]);
+      $res = $stmt->fetch();
+      return $res;
+    } catch (\Throwable $th) {
+      return null;
+    }
+  }
+
+  public function recibidoPor() {
+    try {
+      $con = Database::getInstace();
+      $sql = "SELECT * FROM tblAfiliado WHERE idAfiliado = ?";
+      $stmt = $con->prepare($sql);
+      $stmt->execute([$this->idRecibidoPor]);
+      $res = $stmt->fetch();
+      return $res;
+    } catch (\Throwable $th) {
+      return null;
     }
   }
 

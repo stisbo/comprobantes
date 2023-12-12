@@ -101,11 +101,11 @@ $pagos = Pago::getByProject($proyecto->idProyecto);
                                 Opciones
                               </button>
                               <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#"><i class="fa fa-pen text-primary"></i> Editar</a></li>
-                                <?php if ($pago['namefile'] == '') : ?>
-                                  <li><a class="dropdown-item" href="#" type="button"><i class="fa fa-plus text-success"></i> Agregar comprobante</a></li>
-                                <?php else : ?>
-                                  <li><a class="dropdown-item" href="#"><i class="fa fa-eye text-secondary"></i> Ver comprobante</a></li>
+                                <?php if ($user->rol == 'ADMIN') : ?>
+                                  <li><a class="dropdown-item" href="./pagoedit.php?pid=<?= $pago['idPago'] ?>"><i class="fa fa-pen text-primary"></i> Editar</a></li>
+                                <?php endif; ?>
+                                <?php if ($pago['namefile'] != '') : ?>
+                                  <li><a class="dropdown-item" href="#" type="button" data-bs-toggle="modal" data-bs-target="#modal_ver_comprobante" data-namefile="<?= $pago['namefile'] ?>" data-idpago="<?= $pago['idPago'] ?>"><i class="fa fa-eye text-secondary"></i> Ver comprobante</a></li>
                                 <?php endif; ?>
                               </ul>
                             </div>
@@ -135,7 +135,7 @@ $pagos = Pago::getByProject($proyecto->idProyecto);
       </main>
     </div>
   </div><!-- fin contenedor -->
-
+  <?php include('./modal_vercomprobante.php'); ?>
   <script src="../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../js/scripts.js"></script>
   <script src="../assets/datatables/datatables.jquery.min.js"></script>
@@ -153,6 +153,7 @@ $pagos = Pago::getByProject($proyecto->idProyecto);
       })
     })
   </script>
+  <script src="./js/pago.js"></script>
 </body>
 
 </html>

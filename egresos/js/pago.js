@@ -204,6 +204,7 @@ $(document).on('submit', '#form_nuevo', async (e) => {
   $.each(data, (_, e) => {
     formData.append(e.name, e.value)
   });
+  console.log(formData)
   if (imagen != null) formData.append('imagen', imagen);
   if (audio != null) formData.append('audio', audio);
   const res = await $.ajax({
@@ -309,3 +310,35 @@ function adjuntarArch() {
   $('#btn_file_upload').attr('disabled', true);
   $("#comprobante_pago_file").html(`Archivo de tipo <i>${$("#type_file_upload").val()}</i> adjunto`)
 }
+
+$(document).on('show.bs.modal', '#modal_ver_comprobante', async (e) => {
+  const nameFile = e.relatedTarget.dataset.namefile;
+  const idPago = e.relatedTarget.dataset.idpago;
+  await $('#modal_body_ver_comp').load('./loadComprobante.php', { nameFile, idPago })
+})
+$(document).on('hide.bs.modal', '#modal_ver_comprobante', () => {
+  const audio = document.getElementById('audio_comp');
+  if (audio != null) {
+    audio.pause();
+  }
+})
+
+$(document).on('click', '#btn_delete_comp', async (e) => {
+  const idPago = e.currentTarget.dataset.idpago;
+  const res = await $.ajax({
+    url: '../app/cpago/deletefile',
+    type: 'DELETE',
+    dataType: 'json',
+    data: { idPago }
+  });
+  if (res.status == 'success') {
+    $("#modal_ver_comprobante").modal('hide')
+    $.toast({
+      heading: '<b>Eliminado con éxito</b>',
+      text: 'Se eliminó el comporbante de pago',
+      icon: 'success',
+      position: 'top-right',
+      hideAfter: 2100
+    })
+  }
+})

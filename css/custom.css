@@ -133,6 +133,20 @@
   background-color: beige;
 }
 
+#recordButton.pushed {
+  position: relative;
+  box-shadow: 0 0 0 0 #3a9cc8;
+  cursor: pointer;
+  background: #4489cc;
+  animation: pulse 2s infinite cubic-bezier(0.66, 0, 0, 1);
+}
+
+@keyframes pulse {
+  to {
+    box-shadow: 0 0 0 20px rgba(90, 0, 141, 0);
+  }
+}
+
 .canvas_firma {
   display: flex;
   flex-wrap: wrap;

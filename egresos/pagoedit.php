@@ -6,6 +6,19 @@ if (isset($_COOKIE['user_obj'])) {
   header('Location: ../auth/login.php');
   die();
 }
+require_once('../app/config/database.php');
+require_once('../app/models/pago.php');
+require_once('../app/models/proyecto.php');
+
+use App\Models\Pago;
+use App\Models\Proyecto;
+
+$domain = 'domanin';
+if (isset($_GET['pid'])) {
+  $pid = $_GET['pid'];
+  $pago = new Pago($pid);
+  $proyecto = new Proyecto($pago->idProyecto);
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -34,28 +47,27 @@ if (isset($_COOKIE['user_obj'])) {
       <main id="main_egresos">
         <div class="container-fluid px-4">
           <div class="mt-4">
-            <h1>Nuevo pago</h1>
+            <h1>Editar Pago</h1>
           </div>
           <div class="buttons-head col-md-6 col-sm-12 mb-3">
             <button type="button" class="btn btn-secondary" onclick="history.back()"><i class="fa fa-arrow-left"></i> Volver </button>
           </div>
           <div class="row" id="card-egresos">
-            <form id="form_nuevo">
-              <input type="hidden" id="type_file_upload" name="tipo_file" value="">
+            <form id="form_update">
+              <input type="hidden" id="type_file_upload" name="tipo_file" value="<?= $pago->nameFile == '' ? '' : 'file' ?>">
               <div class="card shadow">
                 <div class="card-body">
                   <div class="row">
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="tipo_detalle" placeholder="Tipo de detalle" autocomplete="off">
+                        <input type="text" class="form-control" id="tipo_detalle" placeholder="Tipo de detalle" value="<?= $proyecto->proyecto ?>" disabled>
                         <label for="tipo_detalle">Tipo de detalle</label>
-                        <input type="hidden" name="idProyecto" id="idProyecto" value="0">
-                        <div id="suggestion_proy" class="suggestions"></div>
+                        <input type="hidden" name="idProyecto" value="<?= $proyecto->idProyecto ?>">
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="" placeholder="Descripcion" name="concepto" required>
+                        <input type="text" class="form-control" id="" placeholder="Descripcion" name="concepto" value="<?= $pago->concepto ?>" required>
                         <label for="">Concepto</label>
                       </div>
                     </div>
@@ -63,53 +75,58 @@ if (isset($_COOKIE['user_obj'])) {
                       <div class="form-floating mb-3">
                         <select name="modoPago" id="" class="form-select" required>
                           <option value="">-- SELECCIONE --</option>
-                          <option value="EFECTIVO">EFECTIVO</option>
-                          <option value="CHEQUE">CHEQUE</option>
-                          <option value="DEPOSITO">DEPOSITO</option>
-                          <option value="GIRO">GIRO</option>
-                          <option value="TARJETA">TARJETA</option>
-                          <option value="BANCO">BANCO</option>
+                          <option value="EFECTIVO" <?= $pago->modoPago == 'EFECTIVO' ? 'selected' : '' ?>>EFECTIVO</option>
+                          <option value="CHEQUE" <?= $pago->modoPago == 'CHEQUE' ? 'selected' : '' ?>>CHEQUE</option>
+                          <option value="DEPOSITO" <?= $pago->modoPago == 'DEPOSITO' ? 'selected' : '' ?>>DEPOSITO</option>
+                          <option value="GIRO" <?= $pago->modoPago == 'GIRO' ? 'selected' : '' ?>>GIRO</option>
+                          <option value="TARJETA" <?= $pago->modoPago == 'TARJETA' ? 'selected' : '' ?>>TARJETA</option>
+                          <option value="BANCO" <?= $pago->modoPago == 'BANCO' ? 'selected' : '' ?>>BANCO</option>
                         </select>
                         <label for="">Modo de pago</label>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="" placeholder="Usuario" value="<?= strtoupper($user->alias) ?>" disabled>
+                        <input type="text" class="form-control" id="" placeholder="Usuario" value="<?= strtoupper($pago->pagadoPor()['alias']) ?>" disabled>
                         <label for="">Pagado por:</label>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="afiliado_to" placeholder="Usuario destino" autocomplete="off">
+                        <input type="text" class="form-control" id="afiliado_to" placeholder="Usuario destino" autocomplete="off" value="<?= strtoupper($pago->recibidoPor()['nombre']) ?>">
                         <label for="afiliado_to">Recibido por:</label>
-                        <input type="hidden" name="idAfiliado" value="0" id="idAfiliado">
+                        <input type="hidden" name="idAfiliado" value="<?= $pago->idRecibidoPor ?>" id="idAfiliado">
                         <div id="suggestions_afiliado" class="suggestions"></div>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="" placeholder="Monto del pago" name="monto" step="any" required>
+                        <input type="number" class="form-control" id="" placeholder="Monto del pago" name="monto" step="any" value="<?= $pago->monto ?>" required>
                         <label for="">Monto</label>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="" placeholder="fecha registro" value="<?= date('Y-m-d') ?>" disabled>
+                        <input type="date" class="form-control" id="" placeholder="fecha registro" value="<?= date('Y-m-d', strtotime($pago->fechaRegistro)) ?>" disabled>
                         <label for="">Fecha de registro</label>
                       </div>
                     </div>
                   </div>
                   <div class="row">
                     <div class="d-flex justify-content-center flex-wrap gap-3">
-                      <h4 id="comprobante_pago_file">¿Agregar un comprobante de pago?</h4>
-                      <button id="btn_file_upload" type="button" class="btn btn-primary shadow-lg" data-bs-toggle="modal" data-bs-target="#modal_egreso_comprobante"><i class="fa fa-solid fa-upload"></i></button>
+                      <?php if ($pago->nameFile == '') : ?>
+                        <h4 id="comprobante_pago_file">Agregar comprobante</h4>
+                        <button id="btn_file_upload" type="button" class="btn btn-primary shadow-lg" data-bs-toggle="modal" data-bs-target="#modal_egreso_comprobante"><i class="fa fa-solid fa-upload"></i></button>
+                      <?php else : ?>
+                        <h4 id="comprobante_pago_file">Ver comprobante</h4>
+                        <button type="button" class="btn btn-warning shadow-lg" data-bs-toggle="modal" data-bs-target="#modal_ver_comprobante" data-namefile="<?= $pago->nameFile ?>" data-idpago="<?= $pago->idPago ?>"><i class="fa fa-solid fa-eye"></i></button>
+                      <?php endif; ?>
                     </div>
                   </div>
                 </div>
                 <div class="card-footer">
                   <div class="d-flex justify-content-center">
-                    <button type="submit" class="btn btn-success shadow">GUARDAR</button>
+                    <button type="submit" class="btn btn-success shadow">ACTUALIZAR</button>
                   </div>
                 </div>
               </div><!-- end card -->
@@ -119,7 +136,7 @@ if (isset($_COOKIE['user_obj'])) {
       </main>
     </div>
   </div><!-- fin contenedor -->
-
+  <?php include('./modal_vercomprobante.php'); ?>
   <script src="../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../js/scripts.js"></script>
   <script src="../assets/datatables/datatables.jquery.min.js"></script>
@@ -127,6 +144,7 @@ if (isset($_COOKIE['user_obj'])) {
   <script src="./js/draw.js"></script>
   <script src="./js/pago.js"></script>
   <script src="./js/handlers.js"></script>
+  <script src="./js/edit.js"></script>
 </body>
 
 </html>
