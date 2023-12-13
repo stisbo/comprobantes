@@ -49,7 +49,7 @@ class CProyecto {
   }
   public function getProjects($data) {
     try {
-      $projects = Proyecto::getAll();
+      $projects = Proyecto::getAll($data['tipo']);
       echo json_encode(['status' => 'success', 'data' => json_encode($projects)]);
     } catch (\Throwable $th) {
       //throw $th;

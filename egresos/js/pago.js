@@ -204,7 +204,6 @@ $(document).on('submit', '#form_nuevo', async (e) => {
   $.each(data, (_, e) => {
     formData.append(e.name, e.value)
   });
-  console.log(formData)
   if (imagen != null) formData.append('imagen', imagen);
   if (audio != null) formData.append('audio', audio);
   const res = await $.ajax({
@@ -225,7 +224,7 @@ $(document).on('submit', '#form_nuevo', async (e) => {
       hideAfter: 1500
     });
     setTimeout(() => {
-      // window.location.href = './';
+      window.location.href = './';
     }, 1500);
   } else {
     $.toast({
@@ -246,6 +245,7 @@ $(document).on('click', '.type-comp', (e) => {
 
   const tipo = e.currentTarget.dataset.tipo;
   if (tipo == 'img') {
+    $("#btn_adjArchivo_modal").removeClass('d-none')
     $("#cont_comprobante").html(`
       <div class="row justify-content-center m-3">
         <div class="image-container" >
@@ -258,6 +258,7 @@ $(document).on('click', '.type-comp', (e) => {
     `);
     handlerImage('img_comprobante', 'file_comprobante', 'type_file_upload')
   } else if (tipo == 'audio') {
+    $("#btn_adjArchivo_modal").removeClass('d-none')
     $("#cont_comprobante").html(`
       <div class="row justify-content-center m-3">
         <div class="d-flex justify-content-center">
@@ -268,6 +269,7 @@ $(document).on('click', '.type-comp', (e) => {
     `);
     handlerAudio('recordButton', 'type_file_upload');
   } else {
+    $("#btn_adjArchivo_modal").addClass('d-none')
     $("#cont_comprobante").html(`
     <h5 class="text-center mt-2">Dibuja tu firma</h5>
     <div class="canvas_firma">
@@ -277,12 +279,17 @@ $(document).on('click', '.type-comp', (e) => {
     <button type="button" id="btn_terminar_firma" class="btn btn-primary float-end mt-3 me-3">Terminar</button>`);
     const hand = new HandlerFirma();
     hand.clean_draw();
-    console.log(hand)
     $("#btn_clean_firma").on('click', () => {
       hand.clean_draw();
     });
     $("#btn_terminar_firma").on('click', () => {
       imagen = hand.save_draw();
+      $.toast({
+        heading: '<b></b>',
+        icon: 'success',
+        position: 'top-right',
+        hideAfter: 1200
+      })
       $("#type_file_upload").val('imagen')
       $("#btn_clean_firma").attr('disabled', true);
       $("#modal_egreso_comprobante").modal('hide')
@@ -298,6 +305,7 @@ $("#modal_egreso_comprobante").on('hide.bs.modal', () => {
     $(type).attr('disabled', false);
   })
   $("#cont_comprobante").html('')
+  $("#btn_adjArchivo_modal").removeClass('d-none')
 })
 
 function adjuntarArch() {
@@ -338,7 +346,12 @@ $(document).on('click', '#btn_delete_comp', async (e) => {
       text: 'Se eliminó el comporbante de pago',
       icon: 'success',
       position: 'top-right',
-      hideAfter: 2100
+      hideAfter: 1500
     })
+    setTimeout(() => {
+      window.location.reload();
+    }, 1550);
+  } else {
+    console.warn(res)
   }
 })

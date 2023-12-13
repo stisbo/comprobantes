@@ -89,9 +89,9 @@ class Proyecto {
     $stmt = $con->prepare($sql);
     return $stmt->execute($params);
   }
-  public static function getAll() {
+  public static function getAll($tipo) { // ingreso o egreso
     $con = Database::getInstace();
-    $sql = "SELECT tp.*, tu.alias FROM tblProyecto tp INNER JOIN tblUsuario tu ON tp.idUsuario = tu.idUsuario;";
+    $sql = "SELECT tp.*, tu.alias FROM tblProyecto tp INNER JOIN tblUsuario tu ON tp.idUsuario = tu.idUsuario WHERE tp.tipo LIKE '$tipo';";
     $stmt = $con->prepare($sql);
     $stmt->execute();
     $rows = $stmt->fetchAll();

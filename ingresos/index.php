@@ -28,34 +28,36 @@ if (isset($_COOKIE['user_obj'])) {
   <div id="layoutSidenav"> <!-- contenedor -->
     <?php include("../common/sidebar.php"); ?>
     <div id="layoutSidenav_content">
-      <main>
+      <main id="main_egresos">
         <div class="container-fluid px-4">
           <div class="mt-4">
-            <h1>Proyectos Ingresos</h1>
+            <h1>Proyectos Ingreso</h1>
           </div>
           <div class="buttons-head col-md-6 col-sm-12 mb-3">
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal_ingreso_nuevo"><i class="fa fa-plus"></i> Crear Nuevo </button>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal_egreso_nuevo" data-idproyecto="0"><i class="fa fa-plus"></i> Nuevo Proyecto </button>
+            <a class="btn btn-primary" type="button" href="./nuevo.php"><i class="fa fa-solid fa-hand-holding-dollar"></i> Nuevo pago</a>
           </div>
-          <div class="row" id="cards-ingresos">
-            <div class="card mb-4 shadow">
+          <div class="row" id="card-egresos">
+            <div class="card shadow">
               <div class="card-header">
                 <h4>
-                  <i class="fas fa-table me-1"></i>
-                  Lista de ingresos
+                  <i class="fa fa-table"></i> Lista de proyectos
                 </h4>
               </div>
               <div class="card-body">
-                <table id="datatablesSimple">
+                <table style="width:100%" class="table table-hover" id="table_ingresos">
                   <thead>
                     <tr>
-                      <th>ID</th>
-                      <th>Fecha</th>
-                      <th>Concepto</th>
-                      <th>Monto</th>
-                      <th>Acciones</th>
+                      <th class="text-center">N° ID</th>
+                      <th class="text-center">Descripción</th>
+                      <th class="text-center">Tipo</th>
+                      <th class="text-center">Monto Ref.</th>
+                      <th class="text-center">Creado por</th>
+                      <th class="text-center">Fecha creación</th>
+                      <th class="text-center">Acciones</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody id="t_body_ingresos">
 
                   </tbody>
                 </table>

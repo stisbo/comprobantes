@@ -44,4 +44,58 @@ class CPago {
       echo json_encode(['status' => 'error', 'message' => 'Error al obtener datos']);
     }
   }
+  public function deletefile($data) {
+    $domain = 'domain';
+    try {
+      $pago = new Pago($data['idPago']);
+      $url = dirname(dirname(__DIR__));
+      $url = $url . '/public/' . $domain . '/' . $pago->nameFile;
+      if (unlink($url)) {
+        $pago->nameFile = '';
+        if ($pago->save() != -1) {
+          echo json_encode(['status' => 'success', 'message' => 'Archivo eliminado']);
+        } else {
+          echo json_encode(['status' => 'error', 'message' => 'Se elimino el archivo pero no se actualizo en nombre de archivo']);
+        }
+      } else {
+        echo json_encode(['status' => 'error', 'message' => 'No se pudo eliminar el archivo']);
+      }
+    } catch (\Throwable $th) {
+      echo json_encode(['status' => 'error', 'message' => json_encode($th)]);
+    }
+  }
+  public function update($data, $files) {
+    try {
+      $pago = new Pago($data['idPago']);
+      $pago->concepto = $data['concepto'];
+      $pago->monto = $data['monto'];
+      $pago->idProyecto = $data['idProyecto'];
+      $pago->idRecibidoPor = $data['idAfiliado'];
+      $pago->modoPago = $data['modoPago'];
+      if ($data['tipo_file'] == 'file') { // existe archivo
+        $res = $pago->save();
+        if ($res) {
+          echo json_encode(['status' => 'success', 'message' => 'Pago actualizado', 'pago' => json_encode($pago)]);
+        } else {
+          echo json_encode(['status' => 'error', 'message' => 'Error al crear pago']);
+        }
+      } else {
+        $tipo = $data['tipo_file'] == '' ? '' : $data['tipo_file'];
+        $file = $pago->saveFile($tipo, $files, $data);
+        if ($file != null || $file == '') {
+          $pago->nameFile = $file;
+          $res = $pago->save();
+          if ($res) {
+            echo json_encode(['status' => 'success', 'message' => 'Pago actualizado', 'pago' => json_encode($pago)]);
+          } else {
+            echo json_encode(['status' => 'error', 'message' => 'Error al crear pago']);
+          }
+        } else {
+          echo json_encode(['status' => 'error', 'message' => 'No se ha podido crear el archivo del comprobante']);
+        }
+      }
+    } catch (\Throwable $th) {
+      echo json_encode(['status' => 'error', 'message' => json_encode($th)]);
+    }
+  }
 }

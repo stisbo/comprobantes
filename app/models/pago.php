@@ -55,7 +55,7 @@ class Pago {
     try {
       $con = Database::getInstace();
       if ($this->idPago == 0) { //insert
-        $sql = "INSERT INTO tblPago(concepto, monto, idProyecto, modoPago, idPagadoPor, idRecibidoPor, nameFile) VALUES(?, ?, ?, ?, ?, ?, ?);";
+        $sql = "INSERT INTO tblPago(concepto, monto, idProyecto, modoPago, idPagadoPor, idRecibidoPor, namefile) VALUES(?, ?, ?, ?, ?, ?, ?);";
         $params = [$this->concepto, $this->monto, $this->idProyecto, $this->modoPago, $this->idPagadoPor, $this->idRecibidoPor, $this->nameFile];
         $stmt = $con->prepare($sql);
         $res = $stmt->execute($params);
@@ -64,7 +64,7 @@ class Pago {
           $res = $this->idPago;
         }
       } else { // update
-        $sql = "UPDATE tblPago SET idProyecto = ?, concepto = ?, modoPago = ?, idPagadoPor = ?, idRecibidoPor = ?, monto = ?, nameFile = ? WHERE idPago = ?";
+        $sql = "UPDATE tblPago SET idProyecto = ?, concepto = ?, modoPago = ?, idPagadoPor = ?, idRecibidoPor = ?, monto = ?, namefile = ? WHERE idPago = ?";
         $params = [$this->idProyecto, $this->concepto, $this->modoPago, $this->idPagadoPor, $this->idRecibidoPor, $this->monto, $this->nameFile, $this->idPago];
         $stmt = $con->prepare($sql);
         $res = $stmt->execute($params);
@@ -81,27 +81,24 @@ class Pago {
   public function saveFile($tipo, $files, $image64) {
     $nameFile = '';
     if ($tipo == '' || (!isset($files['audio']) && !isset($image64['imagen']))) {
-      // echo 'NO EXISTE ARCHIVO';
-      // echo "======$tipo";
       return $nameFile;
     } else {
       try {
-        // echo 'EXISTE ARCHIVO';
-        // creamos el directorio si es que no existe 
+        $domain = 'domain';
         $path = dirname(dirname(__DIR__));
-        if (!is_dir($path . '/public/domain')) {
-          mkdir($path . "/public/domain", 0777);
+        if (!is_dir($path . "/public/$domain")) {
+          mkdir($path . "/public/$domain", 0777);
         }
         if ($tipo == 'audio') {
           $nameFile = $tipo . '_' . time() . '.webm';
           $tmp_name = $files['audio']['tmp_name'];
-          move_uploaded_file($tmp_name, "$path/public/domain/$nameFile");
+          move_uploaded_file($tmp_name, "$path/public/$domain/$nameFile");
           return $nameFile;
         } else if ($tipo == 'imagen') {
           $nameFile = $tipo . '_' . time() . '.jpg';
           $imageData = file_get_contents($image64['imagen']);
           $image = imagecreatefromstring($imageData);
-          imagejpeg($image, "$path/public/domain/$nameFile");
+          imagejpeg($image, "$path/public/$domain/$nameFile");
         }
         return $nameFile;
       } catch (\Throwable $th) {

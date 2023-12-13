@@ -35,36 +35,44 @@ if (isset($_COOKIE['user_obj'])) {
           <div class="row">
             <div class="col-xl-3 col-md-6">
               <div class="card bg-primary text-white mb-4 shadow">
-                <div class="card-body">Primary Card</div>
+                <div class="card-body">
+                  <h4><i class="fa fa-plus"></i> Nuevo pago egreso</h4>
+                </div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
-                  <a class="small text-white stretched-link" href="#">View Details</a>
+                  <a class="text-white stretched-link" href="../egresos/nuevo.php">Nuevo pago</a>
                   <div class="small text-white"><i class="fa fa-angle-right"></i></div>
                 </div>
               </div>
             </div>
             <div class="col-xl-3 col-md-6">
-              <div class="card bg-warning text-white mb-4 shadow">
-                <div class="card-body">Warning Card</div>
+              <div class="card bg-info text-white mb-4 shadow">
+                <div class="card-body">
+                  <h4><i class="fa fa-eye"></i> Lista de egresos</h4>
+                </div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
-                  <a class="small text-white stretched-link" href="#">View Details</a>
+                  <a class="text-white stretched-link" href="../egresos/">Ver egresos</a>
                   <div class="small text-white"><i class="fa fa-angle-right"></i></div>
                 </div>
               </div>
             </div>
             <div class="col-xl-3 col-md-6">
               <div class="card bg-success text-white mb-4 shadow">
-                <div class="card-body">Prueba Card</div>
+                <div class="card-body">
+                  <h4><i class="fa fa-table"></i> Lista de ingresos</h4>
+                </div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
-                  <a class="small text-white stretched-link" href="#">View Details</a>
-                  <div class="small text-white"><i class="fa fa-angle-right"></i></div>
+                  <a class="small text-white stretched-link" href="../ingresos/">Ver ingresos</a>
+                  <div class="text-white"><i class="fa fa-angle-right"></i></div>
                 </div>
               </div>
             </div>
             <div class="col-xl-3 col-md-6">
-              <div class="card bg-danger text-white mb-4 shadow">
-                <div class="card-body">Danger Card</div>
+              <div style="background-color:var(--bs-teal);" class="card text-white mb-4 shadow">
+                <div class="card-body">
+                  <h4><i class="fa fa-plus"></i> Agregar nuevo ingreso</h4>
+                </div>
                 <div class="card-footer d-flex align-items-center justify-content-between">
-                  <a class="small text-white stretched-link" href="#">View Details</a>
+                  <a class="text-white stretched-link" href="../ingresos/nuevo.php">Nuevo pago</a>
                   <div class="small text-white"><i class="fa fa-angle-right"></i></div>
                 </div>
               </div>

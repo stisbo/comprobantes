@@ -15,7 +15,7 @@
         <div class="collapse" id="ingresosCollapse" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
           <nav class="sb-sidenav-menu-nested nav">
             <a class="nav-link" href="../ingresos/">Proyectos (ingreso)</a>
-            <a class="nav-link" href="../egresos/nuevo.php">Nuevo pago</a>
+            <a class="nav-link" href="../ingresos/nuevo.php">Nuevo pago</a>
           </nav>
         </div>
 

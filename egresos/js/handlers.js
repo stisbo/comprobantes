@@ -53,7 +53,6 @@ async function handlerAudio(idBoton, file_id) {
       $(`#${idBoton}`).addClass('fa-microphone-slash')
       $(`#${idBoton}`).addClass('text-danger')
       // recordButton.classList.add("text-danger", "fa-microphone-slash");
-      console.log(recordButton.classList)
       recordButton.classList.add("recording"); // Agregar la clase "recording"
     } catch (error) {
       console.error("Error al acceder al micrófono:", error);
