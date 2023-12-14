@@ -14,6 +14,7 @@ class Pago {
   public int $idRecibidoPor; // afiliado
   public string $fechaRegistro;
   public string $nameFile;
+  public string $nroNotaFact;
 
   public function __construct($idPago = null) {
     $con = Database::getInstace();
@@ -32,6 +33,7 @@ class Pago {
         $this->idRecibidoPor = $pagoRow['idRecibidoPor'];
         $this->fechaRegistro = $pagoRow['fechaRegistro'];
         $this->nameFile = $pagoRow['namefile'];
+        $this->nroNotaFact = $pagoRow['nroNotaFact'];
       } else {
         $this->objectNull();
       }
@@ -49,14 +51,15 @@ class Pago {
     $this->idRecibidoPor = 0;
     $this->fechaRegistro = '';
     $this->nameFile = '';
+    $this->nroNotaFact = '';
   }
   public function save() {
     $res = -1;
     try {
       $con = Database::getInstace();
       if ($this->idPago == 0) { //insert
-        $sql = "INSERT INTO tblPago(concepto, monto, idProyecto, modoPago, idPagadoPor, idRecibidoPor, namefile) VALUES(?, ?, ?, ?, ?, ?, ?);";
-        $params = [$this->concepto, $this->monto, $this->idProyecto, $this->modoPago, $this->idPagadoPor, $this->idRecibidoPor, $this->nameFile];
+        $sql = "INSERT INTO tblPago(concepto, monto, idProyecto, modoPago, idPagadoPor, idRecibidoPor, namefile, nroNotaFact) VALUES(?, ?, ?, ?, ?, ?, ?, ?);";
+        $params = [$this->concepto, $this->monto, $this->idProyecto, $this->modoPago, $this->idPagadoPor, $this->idRecibidoPor, $this->nameFile, $this->nroNotaFact];
         $stmt = $con->prepare($sql);
         $res = $stmt->execute($params);
         if ($res) {
@@ -64,8 +67,8 @@ class Pago {
           $res = $this->idPago;
         }
       } else { // update
-        $sql = "UPDATE tblPago SET idProyecto = ?, concepto = ?, modoPago = ?, idPagadoPor = ?, idRecibidoPor = ?, monto = ?, namefile = ? WHERE idPago = ?";
-        $params = [$this->idProyecto, $this->concepto, $this->modoPago, $this->idPagadoPor, $this->idRecibidoPor, $this->monto, $this->nameFile, $this->idPago];
+        $sql = "UPDATE tblPago SET idProyecto = ?, concepto = ?, modoPago = ?, idPagadoPor = ?, idRecibidoPor = ?, monto = ?, namefile = ?, nroNotaFact = ? WHERE idPago = ?";
+        $params = [$this->idProyecto, $this->concepto, $this->modoPago, $this->idPagadoPor, $this->idRecibidoPor, $this->monto, $this->nameFile, $this->nroNotaFact, $this->idPago];
         $stmt = $con->prepare($sql);
         $res = $stmt->execute($params);
         if (!$res) {

@@ -22,6 +22,7 @@ class CPago {
         $pago->modoPago = $data['modoPago'];
         $pago->nameFile = $file;
         $pago->idPagadoPor = $user->idUsuario;
+        $pago->nroNotaFact = isset($data['nro']) ? $data['nro'] : '';
         $res = $pago->save();
         if ($res) {
           $pago->idPago = $res;
@@ -72,6 +73,7 @@ class CPago {
       $pago->idProyecto = $data['idProyecto'];
       $pago->idRecibidoPor = $data['idAfiliado'];
       $pago->modoPago = $data['modoPago'];
+      $pago->nroNotaFact = isset($data['nro']) ? $data['nro'] : '';
       if ($data['tipo_file'] == 'file') { // existe archivo
         $res = $pago->save();
         if ($res) {

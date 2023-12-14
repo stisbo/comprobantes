@@ -54,3 +54,26 @@ function generarTabla(data) {
   })
   return html;
 }
+
+async function ingresoUp() {
+  let data = $("#form_ingreso").serialize();
+  data += '&tipo=INGRESO';
+  const res = await $.ajax({
+    url: '../app/cproyecto/create',
+    type: 'POST',
+    data,
+    dataType: 'json'
+  });
+  if (res.status == 'success') {
+    $.toast({
+      heading: 'Operación exitosa',
+      icon: 'success',
+      position: 'top-right',
+      hideAfter: 1100
+    })
+    setTimeout(() => {
+      location.reload()
+    }, 1200);
+  }
+  $("#modal_egreso_nuevo").modal('hide')
+}

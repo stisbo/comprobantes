@@ -3,11 +3,11 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Proyecto de tipo egreso</h1>
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Proyecto de tipo ingreso</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form id="form_egreso">
+        <form id="form_ingreso">
           <input type="hidden" name="idProyecto" id="idProyecto_egreso" value="0">
           <div class="form-floating mb-3">
             <input type="text" name="proyecto" class="form-control" id="descripcion_e" placeholder="Buscar elementos" value="" autocomplete="off">
@@ -17,17 +17,11 @@
             <input type="number" class="form-control" id="monto_e" name="montoRef" placeholder="" value="" step="any">
             <label for="monto_e">Monto Ref:</label>
           </div>
-          <div class="form-floating">
-            <select class="form-select" id="estado_e" name="estado">
-
-            </select>
-            <label for="estado">Estado</label>
-          </div>
         </form>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary" onclick="egresoUp()">Guardar</button>
+        <button type="button" class="btn btn-primary" onclick="ingresoUp()">Guardar</button>
       </div>
     </div>
   </div>
