@@ -34,7 +34,7 @@ if (isset($_COOKIE['user_obj'])) {
       <main id="main_egresos">
         <div class="container-fluid px-4">
           <div class="mt-4">
-            <h1>Nuevo pago</h1>
+            <h1>Nuevo pago (ingreso)</h1>
           </div>
           <div class="buttons-head col-md-6 col-sm-12 mb-3">
             <button type="button" class="btn btn-secondary" onclick="history.back()"><i class="fa fa-arrow-left"></i> Volver </button>
@@ -47,7 +47,7 @@ if (isset($_COOKIE['user_obj'])) {
                   <div class="row">
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="tipo_detalle" placeholder="Tipo de detalle" autocomplete="off">
+                        <input type="text" class="form-control" id="tipo_detalle" placeholder="Tipo de detalle" autocomplete="off" required>
                         <label for="tipo_detalle">Tipo de detalle</label>
                         <input type="hidden" name="idProyecto" id="idProyecto" value="0">
                         <div id="suggestion_proy" class="suggestions"></div>
@@ -75,7 +75,7 @@ if (isset($_COOKIE['user_obj'])) {
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="afiliado_to" placeholder="Usuario Origen" autocomplete="off">
+                        <input type="text" class="form-control" id="afiliado_to" placeholder="Usuario Origen" autocomplete="off" required>
                         <label for="afiliado_from">Pagado por:</label>
                         <input type="hidden" name="idAfiliado" value="0" id="idAfiliado">
                         <div id="suggestions_afiliado" class="suggestions"></div>

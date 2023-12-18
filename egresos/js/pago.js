@@ -1,5 +1,6 @@
 var audio = null;
 var imagen = null;
+var formulario = false;
 $(document).ready(function () {
 })
 
@@ -233,42 +234,46 @@ $(document).on('submit', '#form_nuevo', async (e) => {
   if (!validator()) {
     return;
   }
-  const data = $(e.target).serializeArray();
-  let formData = new FormData();
-  $.each(data, (_, e) => {
-    formData.append(e.name, e.value)
-  });
-  if (imagen != null) formData.append('imagen', imagen);
-  if (audio != null) formData.append('audio', audio);
-  const res = await $.ajax({
-    url: '../app/cpago/createEgreso',
-    data: formData,
-    contentType: false,
-    processData: false,
-    type: 'POST',
-    dataType: 'json'
-  });
-  if (res.status == 'success') {
-    $.toast({
-      heading: '<b>PAGO AGREGADO</b>',
-      text: 'Se agregó el pago exitosamente',
-      icon: 'success',
-      position: 'top-right',
-      stack: 3,
-      hideAfter: 1500
+  if (!formulario) {
+    formulario = true;
+    const data = $(e.target).serializeArray();
+    let formData = new FormData();
+    $.each(data, (_, e) => {
+      formData.append(e.name, e.value)
     });
-    setTimeout(() => {
-      window.location.href = './';
-    }, 1500);
-  } else {
-    $.toast({
-      heading: '<b>OCURRIÓ UN ERROR</b>',
-      text: 'No se pudo agregar el pago',
-      icon: 'danger',
-      position: 'top-right',
-      stack: 2,
-      hideAfter: 2800
-    })
+    if (imagen != null) formData.append('imagen', imagen);
+    if (audio != null) formData.append('audio', audio);
+    const res = await $.ajax({
+      url: '../app/cpago/createEgreso',
+      data: formData,
+      contentType: false,
+      processData: false,
+      type: 'POST',
+      dataType: 'json'
+    });
+    if (res.status == 'success') {
+      $.toast({
+        heading: '<b>PAGO AGREGADO</b>',
+        text: 'Se agregó el pago exitosamente',
+        icon: 'success',
+        position: 'top-right',
+        stack: 3,
+        hideAfter: 1500
+      });
+      setTimeout(() => {
+        window.location.href = './';
+      }, 1500);
+    } else {
+      formulario = false;
+      $.toast({
+        heading: '<b>OCURRIÓ UN ERROR</b>',
+        text: 'No se pudo agregar el pago',
+        icon: 'danger',
+        position: 'top-right',
+        stack: 2,
+        hideAfter: 2800
+      })
+    }
   }
 })
 $(document).on('click', '.type-comp', (e) => {

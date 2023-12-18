@@ -27,7 +27,6 @@
           <nav class="sb-sidenav-menu-nested nav">
             <a class="nav-link" href="../egresos/">Proyectos (egreso)</a>
             <a class="nav-link" href="../egresos/nuevo.php">Nuevo pago</a>
-            <a class="nav-link" href="">Forgot Password</a>
           </nav>
         </div>
 

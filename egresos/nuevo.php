@@ -34,7 +34,7 @@ if (isset($_COOKIE['user_obj'])) {
       <main id="main_egresos">
         <div class="container-fluid px-4">
           <div class="mt-4">
-            <h1>Nuevo pago</h1>
+            <h1>Nuevo pago (egreso)</h1>
           </div>
           <div class="buttons-head col-md-6 col-sm-12 mb-3">
             <button type="button" class="btn btn-secondary" onclick="history.back()"><i class="fa fa-arrow-left"></i> Volver </button>
@@ -55,13 +55,13 @@ if (isset($_COOKIE['user_obj'])) {
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="" placeholder="Descripcion" name="concepto" required>
+                        <input type="text" class="form-control" placeholder="Descripcion" name="concepto" required>
                         <label for="">Concepto</label>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <select name="modoPago" id="" class="form-select" required>
+                        <select name="modoPago" class="form-select" required>
                           <option value="">-- SELECCIONE --</option>
                           <option value="EFECTIVO">EFECTIVO</option>
                           <option value="CHEQUE">CHEQUE</option>
@@ -75,7 +75,7 @@ if (isset($_COOKIE['user_obj'])) {
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="" placeholder="Usuario" value="<?= strtoupper($user->alias) ?>" disabled>
+                        <input type="text" class="form-control" placeholder="Usuario" value="<?= strtoupper($user->alias) ?>" disabled>
                         <label for="">Pagado por:</label>
                       </div>
                     </div>

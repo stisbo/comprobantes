@@ -98,18 +98,16 @@ $pagos = Pago::getByProject($proyecto->idProyecto);
                           <td><?= $pago['usuario'] ?></td>
                           <td><?= $pago['afiliado'] ?></td>
                           <td>
-                            <div class="dropdown">
-                              <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Opciones
-                              </button>
-                              <ul class="dropdown-menu">
-                                <?php if ($user->rol == 'ADMIN') : ?>
-                                  <li><a class="dropdown-item" href="./pagoedit.php?pid=<?= $pago['idPago'] ?>"><i class="fa fa-pen text-primary"></i> Editar</a></li>
-                                <?php endif; ?>
-                                <?php if ($pago['namefile'] != '') : ?>
-                                  <li><a class="dropdown-item" href="#" type="button" data-bs-toggle="modal" data-bs-target="#modal_ver_comprobante" data-namefile="<?= $pago['namefile'] ?>" data-idpago="<?= $pago['idPago'] ?>"><i class="fa fa-eye text-secondary"></i> Ver comprobante</a></li>
-                                <?php endif; ?>
-                              </ul>
+                            <div class="d-flex justify-content-around gap-2">
+                              <?php if ($user->rol == 'ADMIN' || $user->rol == 'EDITOR') : ?>
+                                <div><a class="btn btn-primary" href="./pagoedit.php?pid=<?= $pago['idPago'] ?>"><i class="fa fa-pen"></i></a></div>
+                              <?php endif; ?>
+                              <?php if ($pago['namefile'] != '') : ?>
+                                <div><a class="btn btn-info" href="#" type="button" data-bs-toggle="modal" data-bs-target="#modal_ver_comprobante" data-namefile="<?= $pago['namefile'] ?>" data-idpago="<?= $pago['idPago'] ?>"><i class="fa fa-eye"></i></a></div>
+                              <?php endif; ?>
+                              <?php if ($user->rol == 'ADMIN') : ?>
+                                <div><button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#modal_delete_pago" data-namefile="<?= $pago['namefile'] ?>" data-idpago="<?= $pago['idPago'] ?>"><i class="fa fa-trash"></i></a></div>
+                              <?php endif; ?>
                             </div>
                           </td>
                         </tr>
@@ -139,6 +137,7 @@ $pagos = Pago::getByProject($proyecto->idProyecto);
     </div>
   </div><!-- fin contenedor -->
   <?php include('./modal_vercomprobante.php'); ?>
+  <?php include('./modal_delete_pago.php'); ?>
   <script src="../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../js/scripts.js"></script>
   <script src="../assets/datatables/datatables.jquery.min.js"></script>
@@ -151,7 +150,7 @@ $pagos = Pago::getByProject($proyecto->idProyecto);
         scrollX: true,
         columnDefs: [{
           orderable: false,
-          targets: [2, 4, 7]
+          targets: [4, 5, 8]
         }],
       })
     })

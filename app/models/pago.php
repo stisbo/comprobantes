@@ -14,7 +14,7 @@ class Pago {
   public int $idRecibidoPor; // afiliado
   public string $fechaRegistro;
   public string $nameFile;
-  public string $nroNotaFact;
+  public $nroNotaFact;
 
   public function __construct($idPago = null) {
     $con = Database::getInstace();
@@ -78,7 +78,20 @@ class Pago {
     }
     return $res;
   }
-
+  public function delete() {
+    $res = -1;
+    try {
+      $con = Database::getInstace();
+      $sql = "DELETE FROM tblPago WHERE idPago = ?";
+      $stmt = $con->prepare($sql);
+      $stmt->execute([$this->idPago]);
+      $res = 1;
+    } catch (\Throwable $th) {
+      print_r($th);
+      $res = -1;
+    }
+    return $res;
+  }
   public function saveFile($tipo, $files, $image64) {
     $nameFile = '';
     if ($tipo == '' || (!isset($files['audio']) && !isset($image64['imagen']))) {

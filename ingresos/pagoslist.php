@@ -139,6 +139,7 @@ $pagos = Pago::getByProjectIngreso($proyecto->idProyecto);
     </div>
   </div><!-- fin contenedor -->
   <?php include('./modal_vercomprobante.php'); ?>
+  <?php include('./modal_delete_pago.php'); ?>
   <script src="../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../js/scripts.js"></script>
   <script src="../assets/datatables/datatables.jquery.min.js"></script>

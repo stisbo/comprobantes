@@ -5,7 +5,6 @@ async function handlerAudio(idBoton, file_id) {
   let audioChunks = [];
   let startTime;
   let timerInterval;
-  let inputs = await navigator.mediaDevices.enumerateDevices()
   async function startRecording() {
     $("#" + idBoton).addClass('pushed')
     try {
@@ -55,7 +54,13 @@ async function handlerAudio(idBoton, file_id) {
       // recordButton.classList.add("text-danger", "fa-microphone-slash");
       recordButton.classList.add("recording"); // Agregar la clase "recording"
     } catch (error) {
-      console.error("Error al acceder al micrófono:", error);
+      $.toast({
+        heading: '<b>Error al acceder al micrófono</b>',
+        icon: 'error',
+        position: 'top-center',
+        hideAfter: 1300,
+      })
+      console.warn("Error al acceder al micrófono:", error);
     }
   }
 
