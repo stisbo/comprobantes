@@ -70,10 +70,8 @@ class Pago {
         $sql = "UPDATE tblPago SET idProyecto = ?, concepto = ?, modoPago = ?, idPagadoPor = ?, idRecibidoPor = ?, monto = ?, namefile = ?, nroNotaFact = ? WHERE idPago = ?";
         $params = [$this->idProyecto, $this->concepto, $this->modoPago, $this->idPagadoPor, $this->idRecibidoPor, $this->monto, $this->nameFile, $this->nroNotaFact, $this->idPago];
         $stmt = $con->prepare($sql);
-        $res = $stmt->execute($params);
-        if (!$res) {
-          $res = -1;
-        }
+        $stmt->execute($params);
+        $res = 1;
       }
     } catch (\Throwable $th) {
       print_r($th);
@@ -110,7 +108,7 @@ class Pago {
       }
     }
   }
-  public function pagadoPor() {
+  public function pagadoPorEgreso() {
     try {
       $con = Database::getInstace();
       $sql = "SELECT * FROM tblUsuario WHERE idUsuario = ?";
@@ -123,7 +121,7 @@ class Pago {
     }
   }
 
-  public function recibidoPor() {
+  public function recibidoPorEgreso() {
     try {
       $con = Database::getInstace();
       $sql = "SELECT * FROM tblAfiliado WHERE idAfiliado = ?";
@@ -135,10 +133,49 @@ class Pago {
       return null;
     }
   }
+  public function pagadoPorIngreso() {
+    try {
+      $con = Database::getInstace();
+      $sql = "SELECT * FROM tblAfiliado WHERE idAfiliado = ?";
+      $stmt = $con->prepare($sql);
+      $stmt->execute([$this->idPagadoPor]);
+      $res = $stmt->fetch();
+      return $res;
+    } catch (\Throwable $th) {
+      return null;
+    }
+  }
 
-  public static function getByProject($idProyecto) {
+  public function recibidoPorIngreso() {
+    try {
+      $con = Database::getInstace();
+      $sql = "SELECT * FROM tblUsuario WHERE idUsuario = ?";
+      $stmt = $con->prepare($sql);
+      $stmt->execute([$this->idRecibidoPor]);
+      $res = $stmt->fetch();
+      return $res;
+    } catch (\Throwable $th) {
+      return null;
+    }
+  }
+
+  public static function getByProject($idProyecto) { //Egreso
     try {
       $sql = "SELECT pa.*, UPPER(us.alias) usuario, UPPER(af.nombre) afiliado  FROM tblPago pa INNER JOIN tblAfiliado af ON pa.idRecibidoPor = af.idAfiliado INNER JOIN tblUsuario us ON pa.idPagadoPor = us.idUsuario WHERE idProyecto = ?;";
+      $con = Database::getInstace();
+      $stmt = $con->prepare($sql);
+      $stmt->execute([$idProyecto]);
+      $res = $stmt->fetchAll();
+      return $res;
+    } catch (\Throwable $th) {
+      //throw $th;
+      return [];
+    }
+  }
+
+  public static function getByProjectIngreso($idProyecto) {
+    try {
+      $sql = "SELECT pa.*, UPPER(us.alias) usuario, UPPER(af.nombre) afiliado  FROM tblPago pa INNER JOIN tblAfiliado af ON pa.idPagadoPor = af.idAfiliado INNER JOIN tblUsuario us ON pa.idRecibidoPor = us.idUsuario WHERE idProyecto = ?;";
       $con = Database::getInstace();
       $stmt = $con->prepare($sql);
       $stmt->execute([$idProyecto]);

@@ -100,4 +100,22 @@ class CUsuario {
       }
     }
   }
+  public function changepass($data, $files = null) {
+    $id = $data['idUsuario'];
+    $pass = $data['pass'];
+    $new = $data['newPass'];
+    $usuario = new Usuario($id);
+    if ($usuario->idUsuario == 0) {
+      echo json_encode(array('status' => 'error', 'message' => 'No existe el usuario | idUsuario incorrecto'));
+    } else if ($usuario->password != hash('sha256', $pass)) {
+      echo json_encode(array('status' => 'error', 'message' => 'La contraseña anterior es incorrecta'));
+    } else {
+      $res = $usuario->newPass($new);
+      if ($res > 0) {
+        echo json_encode(array('status' => 'success', 'message' => 'La contraseña fue cambiada exitosamente'));
+      } else {
+        echo json_encode(array('status' => 'error', 'message' => 'Ocurrió un error al cambiar la contraseña, intenta más tarde'));
+      }
+    }
+  }
 }

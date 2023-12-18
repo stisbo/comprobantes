@@ -99,6 +99,12 @@ if (isset($_COOKIE['user_obj'])) {
                         <label for="">Fecha de registro</label>
                       </div>
                     </div>
+                    <div class="col-md-4">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" placeholder="Nro Nota | Fact" value="" name="nro">
+                        <label for="">Nro. Nota o Factura</label>
+                      </div>
+                    </div>
                   </div>
                   <div class="row">
                     <div class="d-flex justify-content-center flex-wrap gap-3">

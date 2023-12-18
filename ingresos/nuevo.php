@@ -75,16 +75,16 @@ if (isset($_COOKIE['user_obj'])) {
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="" placeholder="Usuario" value="<?= strtoupper($user->alias) ?>" disabled>
-                        <label for="">Pagado por:</label>
+                        <input type="text" class="form-control" id="afiliado_to" placeholder="Usuario Origen" autocomplete="off">
+                        <label for="afiliado_from">Pagado por:</label>
+                        <input type="hidden" name="idAfiliado" value="0" id="idAfiliado">
+                        <div id="suggestions_afiliado" class="suggestions"></div>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="afiliado_to" placeholder="Usuario destino" autocomplete="off">
-                        <label for="afiliado_to">Recibido por:</label>
-                        <input type="hidden" name="idAfiliado" value="0" id="idAfiliado">
-                        <div id="suggestions_afiliado" class="suggestions"></div>
+                        <input type="text" class="form-control" placeholder="Usuario destino" autocomplete="off" value="<?= strtoupper($user->alias) ?>" disabled>
+                        <label for="">Recibido por:</label>
                       </div>
                     </div>
                     <div class="col-md-4">
@@ -101,7 +101,7 @@ if (isset($_COOKIE['user_obj'])) {
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" placeholder="Nro Nota | Fact" value="" name="nro">
+                        <input type="text" class="form-control" placeholder="Nro Nota | Fact" value="" name="nro" autocomplete="off">
                         <label for="">Nro. Nota o Factura</label>
                       </div>
                     </div>

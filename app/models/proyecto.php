@@ -45,9 +45,9 @@ class Proyecto {
     $this->estado = '';
     $this->montoRef = 0.0;
   }
-  public static function searchByName($name) {
+  public static function searchByName($name, $tipo) {
     $con = Database::getInstace();
-    $sql = "SELECT * FROM tblProyecto WHERE proyecto LIKE '%$name%';";
+    $sql = "SELECT * FROM tblProyecto WHERE proyecto LIKE '%$name%' AND tipo LIKE '$tipo';";
     $stmt = $con->prepare($sql);
     $stmt->execute();
     $rows = $stmt->fetchAll();

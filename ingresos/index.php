@@ -45,26 +45,27 @@ if (isset($_COOKIE['user_obj'])) {
                 </h4>
               </div>
               <div class="card-body">
-                <table style="width:100%" class="table table-hover" id="table_ingresos">
-                  <thead>
-                    <tr>
-                      <th class="text-center">N° ID</th>
-                      <th class="text-center">Descripción</th>
-                      <th class="text-center">Tipo</th>
-                      <th class="text-center">Monto Ref.</th>
-                      <th class="text-center">Creado por</th>
-                      <th class="text-center">Fecha creación</th>
-                      <th class="text-center">Acciones</th>
-                    </tr>
-                  </thead>
-                  <tbody id="t_body_ingresos">
+                <div class="table-responsive">
+                  <table style="width:100%" class="table table-hover" id="table_ingresos">
+                    <thead>
+                      <tr>
+                        <th class="text-center">N° ID</th>
+                        <th class="text-center">Descripción</th>
+                        <th class="text-center">Tipo</th>
+                        <th class="text-center">Monto Ref.</th>
+                        <th class="text-center">Creado por</th>
+                        <th class="text-center">Fecha creación</th>
+                        <th class="text-center">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody id="t_body_ingresos">
 
-                  </tbody>
-                </table>
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           </div>
-        </div>
       </main>
     </div>
   </div><!-- fin contenedor -->

@@ -50,6 +50,18 @@ class Usuario {
       return -1;
     }
   }
+  public function newPass($newPass) { /// cambio de password
+    try {
+      $con = Database::getInstace();
+      $sql = "UPDATE tblUsuario SET password = :password WHERE idUsuario = :idUsuario";
+      $stmt = $con->prepare($sql);
+      $pass = hash('sha256', $newPass);
+      $stmt->execute(['password' => $pass, 'idUsuario' => $this->idUsuario]);
+      return 1;
+    } catch (\Throwable $th) {
+      return -1;
+    }
+  }
   public function save() {
     try {
       $con = Database::getInstace();
@@ -66,10 +78,8 @@ class Usuario {
         $sql = "UPDATE tblUsuario SET alias = :alias, password = :password, rol = :rol, idGrupo = :idGrupo WHERE idUsuario = :idUsuario";
         $params = ['alias' => $this->alias, 'password' => $this->password, 'idUsuario' => $this->idUsuario, 'rol' => $this->rol, 'idGrupo' => $this->idGrupo];
         $stmt = $con->prepare($sql);
-        $res = $stmt->execute($params);
-        if (!$res) {
-          $res = -1;
-        }
+        $stmt->execute($params);
+        $res = 1;
       }
       return $res;
     } catch (\Throwable $th) {

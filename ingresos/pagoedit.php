@@ -87,16 +87,16 @@ if (isset($_GET['pid'])) {
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="" placeholder="Usuario" value="<?= strtoupper($pago->pagadoPorEgreso()['alias']) ?>" disabled>
+                        <input type="text" class="form-control" id="afiliado_to" placeholder="Usuario" value="<?= strtoupper($pago->pagadoPorIngreso()['nombre']) ?>">
                         <label for="">Pagado por:</label>
+                        <input type="hidden" name="idAfiliado" value="<?= $pago->idRecibidoPor ?>" id="idAfiliado">
+                        <div id="suggestions_afiliado" class="suggestions"></div>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="afiliado_to" placeholder="Usuario destino" autocomplete="off" value="<?= strtoupper($pago->recibidoPorEgreso()['nombre']) ?>">
+                        <input type="text" class="form-control" id="" placeholder="Usuario destino" autocomplete="off" value="<?= strtoupper($pago->recibidoPorIngreso()['alias']) ?>" disabled>
                         <label for="afiliado_to">Recibido por:</label>
-                        <input type="hidden" name="idAfiliado" value="<?= $pago->idRecibidoPor ?>" id="idAfiliado">
-                        <div id="suggestions_afiliado" class="suggestions"></div>
                       </div>
                     </div>
                     <div class="col-md-4">

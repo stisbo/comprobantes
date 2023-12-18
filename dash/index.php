@@ -16,8 +16,10 @@ if (isset($_COOKIE['user_obj'])) {
   <title>DASHBOARD</title>
   <link rel="stylesheet" href="../assets/datatables/datatables.bootstrap5.min.css">
   <link href="../css/styles.css" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/jquery/jqueryToast.min.css">
   <script src="../assets/fontawesome/fontawesome6.min.js"></script>
   <script src="../assets/jquery/jquery.js"></script>
+  <script src="../assets/jquery/jqueryToast.min.js"></script>
 </head>
 
 <body>

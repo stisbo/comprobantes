@@ -28,11 +28,14 @@ async function listar(estado) {
 
 function generarTabla(data) {
   let html = '';
+  const cookie = JSON.parse(decodeURIComponent(getCookie('user_obj')));
   data.forEach((element) => {
     let fecha = new Date(element.fechaCreacion);
     let opciones = `
-      <li><a class="dropdown-item" type="button" href="./pagoslist.php?proid=${element.idProyecto}"><i class="fa fa-eye text-primary"></i> Pagos Asociados</a></li>`;
-    opciones += `<li><button class="dropdown-item" type="button"  data-bs-toggle="modal" data-bs-target="#modal_egreso_nuevo" data-idproyecto="${element.idProyecto}"><i class="fa fa-pencil text-info"></i> Editar</button></li>`;
+      <div><a class="btn btn-primary" type="button" href="./pagoslist.php?proid=${element.idProyecto}"><i class="fa fa-eye"></i></a></div>`;
+    if (cookie.rol == 'ADMIN') {
+      opciones += `<div><button class="btn btn-info" type="button"  data-bs-toggle="modal" data-bs-target="#modal_ingreso_nuevo" data-idproyecto="${element.idProyecto}"><i class="fa fa-pencil"></i></button></div>`;
+    }
     html += `<tr>
     <td class="text-center">${element.idProyecto}</td>
     <td>${element.proyecto.toUpperCase()}</td>
@@ -41,13 +44,8 @@ function generarTabla(data) {
     <td class="text-center">${element.alias.toUpperCase()}</td>
     <td>${fecha.toLocaleDateString()}</td>
     <td align="center">
-      <div class="dropdown">
-        <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Acciones
-        </button>
-        <ul class="dropdown-menu">
+      <div class="d-flex justify-content-around gap-2">
         ${opciones}
-        </ul>
       </div>
     </td>
   </tr>`
@@ -77,3 +75,37 @@ async function ingresoUp() {
   }
   $("#modal_egreso_nuevo").modal('hide')
 }
+
+$("#modal_ingreso_nuevo").on('show.bs.modal', async (e) => {
+  if (parseInt(e.relatedTarget.dataset.idproyecto) != 0) { // edit
+    const res = await $.ajax({
+      url: '../app/cproyecto/getProjectID',
+      type: 'GET',
+      data: { idProyecto: e.relatedTarget.dataset.idproyecto },
+      dataType: 'json'
+    });
+    if (res.status == 'success') {
+      const data = JSON.parse(res.data);
+      $("#idProyecto_egreso").val(data.idProyecto);
+      $("#descripcion_e").val(data.proyecto.toUpperCase());
+      $("#monto_e").val(data.montoRef);
+    } else {
+      console.warn(res);
+    }
+  } else { //create
+    let htmlOptions = `
+    <option value="">-- Seleccione una opción --</option>
+    <option value="PENDIENTE">PENDIENTE</option>
+    <option value="SALDADO" >SALDADO</option>`;
+    $("#estado_e").html(htmlOptions);
+  }
+})
+
+$("#modal_ingreso_nuevo").on('hide.bs.modal', async () => {
+  setTimeout(() => {
+    $("#idProyecto_egreso").val('0');
+    $("#descripcion_e").val('');
+    $("#monto_e").val('');
+    $("#estado_e").val('');
+  }, 800);
+})

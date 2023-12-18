@@ -18,7 +18,7 @@ if (!isset($_GET['proid'])) {
 }
 $proyecto = new Proyecto($_GET['proid']);
 // print_r($proyecto);
-$pagos = Pago::getByProject($proyecto->idProyecto);
+$pagos = Pago::getByProjectIngreso($proyecto->idProyecto);
 // print_r($pagos);
 
 ?>
@@ -95,8 +95,8 @@ $pagos = Pago::getByProject($proyecto->idProyecto);
                           <td><?= $pago['modoPago'] ?></td>
                           <td><?= $pago['nroNotaFact'] ?></td>
                           <td><?= date('d/m/Y', strtotime($pago['fechaRegistro'])) ?></td>
-                          <td><?= $pago['usuario'] ?></td>
                           <td><?= $pago['afiliado'] ?></td>
+                          <td><?= $pago['usuario'] ?></td>
                           <td>
                             <div class="dropdown">
                               <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -149,9 +149,10 @@ $pagos = Pago::getByProject($proyecto->idProyecto);
         language: lenguaje,
         info: false,
         scrollX: true,
+        // scrollY: '20vh',
         columnDefs: [{
           orderable: false,
-          targets: [2, 4, 7]
+          targets: [5, 8]
         }],
       })
     })

@@ -36,7 +36,6 @@ if (isset($_COOKIE['user_obj'])) {
           </div>
           <div class="buttons-head col-md-6 col-sm-12 mb-3">
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal_usuario_nuevo"><i class="fa fa-user-plus"></i> Crear Nuevo Usuario</button>
-            <button class="btn btn-warning" onclick="listaPendientes()"><i class="fa fa-info"></i> Pendientes</button>
           </div>
           <div class="row" id="cards-usuarios">
             <div class="card mb-4 shadow">

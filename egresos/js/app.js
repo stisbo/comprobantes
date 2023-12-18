@@ -4,10 +4,10 @@ $(document).ready(async () => {
 });
 
 async function loadInicio() {
-  listar('PENDIENTE');
+  listar();
 }
 
-async function listar(estado) {
+async function listar() {
   if (tabla) {
     tabla.destroy();
   }
@@ -32,12 +32,16 @@ async function listar(estado) {
 }
 function generarTabla(data) {
   let html = '';
+  const cookie = JSON.parse(decodeURIComponent(getCookie('user_obj')));
   data.forEach((element) => {
     let clsEstado = element.estado == 'PENDIENTE' ? 'text-bg-warning' : 'text-bg-primary';
     let fecha = new Date(element.fechaCreacion);
     let opciones = `
-      <li><a class="dropdown-item" type="button" href="./pagoslist.php?proid=${element.idProyecto}"><i class="fa fa-eye text-primary"></i> Pagos Asociados</a></li>`;
-    opciones += `<li><button class="dropdown-item" type="button"  data-bs-toggle="modal" data-bs-target="#modal_egreso_nuevo" data-idproyecto="${element.idProyecto}"><i class="fa fa-pencil text-info"></i> Editar</button></li>`;
+      <div><a class="btn btn-primary text-white" type="button" href="./pagoslist.php?proid=${element.idProyecto}"><i class="fa fa-eye"></i></a></div>`;
+    if (cookie.rol == 'ADMIN') {
+      opciones += `<div><button class="btn btn-info tet" type="button"  data-bs-toggle="modal" data-bs-target="#modal_egreso_nuevo" data-idproyecto="${element.idProyecto}"><i class="fa fa-pencil"></i></button></div>`;
+    }
+
     html += `<tr>
     <td class="text-center">${element.idProyecto}</td>
     <td>${element.proyecto.toUpperCase()}</td>
@@ -47,13 +51,8 @@ function generarTabla(data) {
     <td>${fecha.toLocaleDateString()}</td>
     <td align="center"><span class="badge ${clsEstado}">${element.estado}</span></td>
     <td align="center">
-      <div class="dropdown">
-        <button class="btn btn-outline-dark dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Acciones
-        </button>
-        <ul class="dropdown-menu">
+      <div class="d-flex justify-content-between gap-2">
         ${opciones}
-        </ul>
       </div>
     </td>
   </tr>`

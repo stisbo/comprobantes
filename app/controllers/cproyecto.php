@@ -41,7 +41,7 @@ class CProyecto {
   }
   public function search($data) {
     try {
-      $proyects = Proyecto::searchByName($data['q']);
+      $proyects = Proyecto::searchByName($data['q'], $data['type']);
       echo json_encode(['status' => 'success', 'data' => json_encode($proyects)]);
     } catch (\Throwable $th) {
       echo json_encode(['status' => 'error', 'error' => json_encode($th)]);

@@ -5,7 +5,7 @@ namespace App\Controllers;
 use App\Models\Pago;
 
 class CPago {
-  public function create($data, $files = null) {
+  public function createEgreso($data, $files = null) {
     if (!isset($_COOKIE['user_obj'])) {
       echo json_encode(['status' => 'error', 'message' => 'Necesario cookies de sesion']);
     } else {
@@ -22,6 +22,37 @@ class CPago {
         $pago->modoPago = $data['modoPago'];
         $pago->nameFile = $file;
         $pago->idPagadoPor = $user->idUsuario;
+        $pago->nroNotaFact = isset($data['nro']) ? $data['nro'] : '';
+        $res = $pago->save();
+        if ($res) {
+          $pago->idPago = $res;
+          echo json_encode(['status' => 'success', 'message' => 'Pago creado', 'pago' => json_encode($pago)]);
+        } else {
+          echo json_encode(['status' => 'error', 'message' => 'Error al crear afiliado']);
+        }
+      } else {
+        echo json_encode(['status' => 'error', 'message' => 'No se ha podido crear el archivo del comprobante']);
+      }
+    }
+  }
+
+  public function createIngreso($data, $files = null) {
+    if (!isset($_COOKIE['user_obj'])) {
+      echo json_encode(['status' => 'error', 'message' => 'Necesario cookies de sesion']);
+    } else {
+      $user = json_decode($_COOKIE['user_obj']);
+      $pago = new Pago();
+      // guardamos los archivos enviados, si es que existen.
+      $tipo = isset($data['tipo_file']) ? $data['tipo_file'] : '';
+      $file = $pago->saveFile($tipo, $files, $data);
+      if ($file != null || $file == '') {
+        $pago->concepto = $data['concepto'];
+        $pago->monto = $data['monto'];
+        $pago->idProyecto = $data['idProyecto'];
+        $pago->idPagadoPor = $data['idAfiliado'];
+        $pago->modoPago = $data['modoPago'];
+        $pago->nameFile = $file;
+        $pago->idRecibidoPor = $user->idUsuario;
         $pago->nroNotaFact = isset($data['nro']) ? $data['nro'] : '';
         $res = $pago->save();
         if ($res) {
@@ -53,7 +84,8 @@ class CPago {
       $url = $url . '/public/' . $domain . '/' . $pago->nameFile;
       if (unlink($url)) {
         $pago->nameFile = '';
-        if ($pago->save() != -1) {
+        $res = $pago->save();
+        if ($res != -1) {
           echo json_encode(['status' => 'success', 'message' => 'Archivo eliminado']);
         } else {
           echo json_encode(['status' => 'error', 'message' => 'Se elimino el archivo pero no se actualizo en nombre de archivo']);
@@ -65,13 +97,49 @@ class CPago {
       echo json_encode(['status' => 'error', 'message' => json_encode($th)]);
     }
   }
-  public function update($data, $files) {
+  public function update($data, $files) { // Egreso 
     try {
       $pago = new Pago($data['idPago']);
       $pago->concepto = $data['concepto'];
       $pago->monto = $data['monto'];
       $pago->idProyecto = $data['idProyecto'];
       $pago->idRecibidoPor = $data['idAfiliado'];
+      $pago->modoPago = $data['modoPago'];
+      $pago->nroNotaFact = isset($data['nro']) ? $data['nro'] : '';
+      if ($data['tipo_file'] == 'file') { // existe archivo
+        $res = $pago->save();
+        if ($res) {
+          echo json_encode(['status' => 'success', 'message' => 'Pago actualizado', 'pago' => json_encode($pago)]);
+        } else {
+          echo json_encode(['status' => 'error', 'message' => 'Error al crear pago']);
+        }
+      } else {
+        $tipo = $data['tipo_file'] == '' ? '' : $data['tipo_file'];
+        $file = $pago->saveFile($tipo, $files, $data);
+        if ($file != null || $file == '') {
+          $pago->nameFile = $file;
+          $res = $pago->save();
+          if ($res) {
+            echo json_encode(['status' => 'success', 'message' => 'Pago actualizado', 'pago' => json_encode($pago)]);
+          } else {
+            echo json_encode(['status' => 'error', 'message' => 'Error al crear pago']);
+          }
+        } else {
+          echo json_encode(['status' => 'error', 'message' => 'No se ha podido crear el archivo del comprobante']);
+        }
+      }
+    } catch (\Throwable $th) {
+      echo json_encode(['status' => 'error', 'message' => json_encode($th)]);
+    }
+  }
+
+  public function updateIngreso($data, $files) {
+    try {
+      $pago = new Pago($data['idPago']);
+      $pago->concepto = $data['concepto'];
+      $pago->monto = $data['monto'];
+      $pago->idProyecto = $data['idProyecto'];
+      $pago->idPagadoPor = $data['idAfiliado'];
       $pago->modoPago = $data['modoPago'];
       $pago->nroNotaFact = isset($data['nro']) ? $data['nro'] : '';
       if ($data['tipo_file'] == 'file') { // existe archivo

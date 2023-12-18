@@ -1,3 +1,5 @@
+
+
 var audio = null;
 var imagen = null;
 $(document).ready(function () {
@@ -50,10 +52,9 @@ $(document).on('input', '#tipo_detalle', async (e) => {
     url: '../app/cproyecto/search',
     type: 'GET',
     dataType: 'json',
-    data: { q: valorInput, type: 'EGRESO' }
+    data: { q: valorInput, type: 'INGRESO' }
   })
   console.log(res)
-  console.log(JSON.parse(res.data))
   if (res.status == 'success') {
     mostrarSugerenciasProyecto(JSON.parse(res.data), 'suggestion_proy', 'tipo_detalle');
   }
@@ -139,7 +140,7 @@ async function agregarProyecto() {
     url: '../app/cproyecto/create',
     type: 'POST',
     dataType: 'json',
-    data: { proyecto, tipo: 'EGRESO' }
+    data: { proyecto, tipo: 'INGRESO' }
   })
   if (res.status == 'success') {
     $.toast({
@@ -197,12 +198,13 @@ async function agregarAfiliado() {
     })
   }
 }
+
 function validator() {
   const val = $("#idAfiliado").val()
   const val2 = $("#idProyecto").val();
   if (val == '' || val == "0") {
     $.toast({
-      heading: 'Agrege al usuario <b>"Recibido por"</b>',
+      heading: 'Agrege al usuario <b>"Pagado por"</b>',
       icon: 'danger',
       position: 'top-right',
       stack: 2,
@@ -241,7 +243,7 @@ $(document).on('submit', '#form_nuevo', async (e) => {
   if (imagen != null) formData.append('imagen', imagen);
   if (audio != null) formData.append('audio', audio);
   const res = await $.ajax({
-    url: '../app/cpago/createEgreso',
+    url: '../app/cpago/createIngreso',
     data: formData,
     contentType: false,
     processData: false,
@@ -271,6 +273,7 @@ $(document).on('submit', '#form_nuevo', async (e) => {
     })
   }
 })
+
 $(document).on('click', '.type-comp', (e) => {
   $.each($('.type-comp'), function (_, type) {
     $(type).removeClass('active');
@@ -319,7 +322,7 @@ $(document).on('click', '.type-comp', (e) => {
     $("#btn_terminar_firma").on('click', () => {
       imagen = hand.save_draw();
       $.toast({
-        heading: '<b></b>',
+        heading: '<b>Firma agregada como imagen</b>',
         icon: 'success',
         position: 'top-right',
         hideAfter: 1200
