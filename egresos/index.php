@@ -40,10 +40,19 @@ if (isset($_COOKIE['user_obj'])) {
           </div>
           <div class="row" id="card-egresos">
             <div class="card shadow">
-              <div class="card-header">
-                <h4>
-                  <i class="fa fa-table"></i> Lista de proyectos
-                </h4>
+              <div class="card-header d-flex flex-wrap justify-content-between">
+                <div class="btn-group" role="group" aria-label="Basic example">
+                  <button type="button" class="btn btn-outline-success fw-bold filter-btns" data-value="saldado">Saldado</button>
+                  <button type="button" class="btn btn-outline-warning fw-bold filter-btns" data-value="pendiente">Pendiente</button>
+                  <button type="button" class="btn btn-outline-primary fw-bold active filter-btns" data-value="">Todos</button>
+                </div>
+                <div>
+                  <select class="form-select" id="filter_year">
+                    <?php for ($i = 0; $i < 5; $i++) : ?>
+                      <option value="<?= date('Y', strtotime('-' . $i . ' year')) ?>"><?= date('Y', strtotime('-' . $i . ' year')) ?></option>
+                    <?php endfor; ?>
+                  </select>
+                </div>
               </div>
               <div class="card-body">
                 <div class="table-responsive">

@@ -32,6 +32,7 @@ function generarTabla(data) {
   data.forEach((element) => {
     let fecha = new Date(element.fechaCreacion);
     let opciones = `
+      <div><a class="btn btn-success rounded-circle" href="./nuevo.php?proid=${element.idProyecto}"><i class="fa fa-solid fa-circle-plus"></i></a></div>
       <div><a class="btn btn-primary" type="button" href="./pagoslist.php?proid=${element.idProyecto}"><i class="fa fa-eye"></i></a></div>`;
     if (cookie.rol == 'ADMIN' || cookie.rol == 'EDITOR') {
       opciones += `<div><button class="btn btn-info" type="button"  data-bs-toggle="modal" data-bs-target="#modal_ingreso_nuevo" data-idproyecto="${element.idProyecto}"><i class="fa fa-pencil"></i></button></div>`;

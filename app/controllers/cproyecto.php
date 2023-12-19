@@ -15,7 +15,7 @@ class CProyecto {
         $proyecto->idUsuario = $user->idUsuario;
         $proyecto->proyecto = $data['proyecto'];
         $proyecto->tipo = $data['tipo'];
-        $proyecto->estado = isset($data['estado']) ? $data['estado'] : 'SIN ESTADO';
+        $proyecto->estado = isset($data['estado']) ? $data['estado'] : 'PENDIENTE';
         $proyecto->montoRef = isset($data['montoRef']) ? $data['montoRef'] : 0.0;
         $res = $proyecto->save();
         if ($res > 0) {
@@ -49,7 +49,7 @@ class CProyecto {
   }
   public function getProjects($data) {
     try {
-      $projects = Proyecto::getAll($data['tipo']);
+      $projects = Proyecto::getAll($data);
       echo json_encode(['status' => 'success', 'data' => json_encode($projects)]);
     } catch (\Throwable $th) {
       //throw $th;

@@ -4,10 +4,10 @@ $(document).ready(async () => {
 });
 
 async function loadInicio() {
-  listar();
+  listar({});
 }
 
-async function listar() {
+async function listar(data) {
   if (tabla) {
     tabla.destroy();
   }
@@ -15,7 +15,7 @@ async function listar() {
     url: '../app/cproyecto/getProjects',
     type: 'GET',
     dataType: 'json',
-    data: { tipo: 'EGRESO' },
+    data: { ...data, tipo: 'EGRESO' },
   });
   if (res.status == 'success') {
     const data = JSON.parse(res.data);
@@ -34,9 +34,10 @@ function generarTabla(data) {
   let html = '';
   const cookie = JSON.parse(decodeURIComponent(getCookie('user_obj')));
   data.forEach((element) => {
-    let clsEstado = element.estado == 'PENDIENTE' ? 'text-bg-warning' : 'text-bg-primary';
+    let clsEstado = element.estado == 'PENDIENTE' ? 'text-bg-warning' : 'text-bg-success';
     let fecha = new Date(element.fechaCreacion);
     let opciones = `
+      <div><a class="btn btn-success rounded-circle" href="./nuevo.php?proid=${element.idProyecto}"><i class="fa fa-solid fa-circle-plus"></i></a></div>
       <div><a class="btn btn-primary text-white" type="button" href="./pagoslist.php?proid=${element.idProyecto}"><i class="fa fa-eye"></i></a></div>`;
     if (cookie.rol == 'ADMIN' || cookie.rol == 'EDITOR') {
       opciones += `<div><button class="btn btn-info tet" type="button"  data-bs-toggle="modal" data-bs-target="#modal_egreso_nuevo" data-idproyecto="${element.idProyecto}"><i class="fa fa-pencil"></i></button></div>`;
@@ -118,3 +119,29 @@ async function egresoUp() {
   }
   $("#modal_egreso_nuevo").modal('hide')
 }
+
+$(document).on('click', '.filter-btns', async (e) => {
+  const list = e.target.classList;
+  if (list.value.split(' ').includes('active')) return;
+  const value = e.target.dataset.value;
+  const anio = $('#filter_year').val()
+  await listar({ estado: value, year: anio });
+  $('.filter-btns').each((index, element) => {
+    $(element).removeClass('active');
+  });
+  $(e.target).addClass('active');
+});
+
+$(document).on('change', '#filter_year', async (e) => {
+  let val;
+  $('.filter-btns').each((_, element) => {
+    if ($(element).hasClass('active')) {
+      val = $(element).data('value');
+    }
+  });
+  const data = {
+    year: e.target.value,
+    estado: val
+  }
+  await listar(data);
+})

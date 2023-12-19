@@ -6,6 +6,20 @@ if (isset($_COOKIE['user_obj'])) {
   header('Location: ../auth/login.php');
   die();
 }
+require_once('../app/models/proyecto.php');
+require_once('../app/config/database.php');
+
+use App\Models\Proyecto;
+
+$idProyecto = "0";
+$detalle = "";
+if (isset($_GET['proid'])) {
+  $proyecto = new Proyecto($_GET['proid']);
+  if ($proyecto->idProyecto != 0) {
+    $detalle = strtoupper($proyecto->proyecto);
+    $idProyecto = $_GET['proid'];
+  }
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -47,9 +61,9 @@ if (isset($_COOKIE['user_obj'])) {
                   <div class="row">
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="tipo_detalle" placeholder="Tipo de detalle" autocomplete="off">
+                        <input type="text" class="form-control" id="tipo_detalle" value="<?= $detalle ?>" placeholder="Tipo de detalle" autocomplete="off">
                         <label for="tipo_detalle">Tipo de detalle</label>
-                        <input type="hidden" name="idProyecto" id="idProyecto" value="0">
+                        <input type="hidden" name="idProyecto" id="idProyecto" value="<?= $idProyecto ?>">
                         <div id="suggestion_proy" class="suggestions"></div>
                       </div>
                     </div>
@@ -89,13 +103,13 @@ if (isset($_COOKIE['user_obj'])) {
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="" placeholder="Monto del pago" name="monto" step="any" required>
+                        <input type="number" class="form-control" placeholder="Monto del pago" name="monto" step="any" required>
                         <label for="">Monto</label>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="" placeholder="fecha registro" value="<?= date('Y-m-d') ?>" disabled>
+                        <input type="date" class="form-control" placeholder="fecha registro" value="<?= date('Y-m-d') ?>" disabled>
                         <label for="">Fecha de registro</label>
                       </div>
                     </div>
