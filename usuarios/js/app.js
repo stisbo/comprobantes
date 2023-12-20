@@ -45,8 +45,20 @@ async function listarUsuarios() {
         <td>${item.idUsuario}</td>
         <td>${item.alias}</td>
         <td>${item.rol}</td>
-        <td>${item.fechaCreacion}</td>
-        <td></td>
+        <td class="text-center">${item.fechaCreacion}</td>
+        <td>
+          <div class="d-flex justify-content-around">
+            <div>
+              <button class="btn btn-primary rounded-circle" type="button" data-bs-toggle="modal" data-bs-target="#modal_usuario_edit" data-alias="${item.alias}" data-rol="${item.rol}" data-id="${item.idUsuario}"><i class="fa fa-pencil"></i></button>
+            </div>
+            <div>
+              <button class="btn btn-secondary rounded-circle" title="Restablecer contraseña" type="button" data-bs-toggle="modal" data-bs-target="#modal_reset_pass" data-id="${item.idUsuario}"><i class="fa fa-lock"></i></button>
+            </div>
+            <div>
+              <button class="btn btn-danger rounded-circle" title="eliminar usuario" type="button" data-bs-toggle="modal" data-bs-target="#modal_delete_usuario" data-id="${item.idUsuario}"><i class="fa fa-trash"></i></button>
+            </div>
+          </div>
+        </td>
       </tr>`;
     });
     $("#tbl_users").html(htmlTable);
@@ -55,5 +67,118 @@ async function listarUsuarios() {
       info: false,
       scrollX: true,
     });
+  }
+}
+
+$(document).on('show.bs.modal', '#modal_usuario_edit', (e) => {
+  const alias = $(e.relatedTarget).data('alias');
+  const rol = $(e.relatedTarget).data('rol');
+  const id = $(e.relatedTarget).data('id');
+  $("#user_alias_edit").val(alias);
+  $("#id_usuario_edit").val(id);
+  $("#user_rol_edit").html(`
+    <option value="VISOR" ${rol == 'VISOR' ? 'selected' : ''}>VISOR</option>
+    <option value="EDITOR" ${rol == 'EDITOR' ? 'selected' : ''}>EDITOR</option>
+  `);
+});
+$(document).on('hide.bs.modal', '#modal_usuario_edit', () => {
+  setTimeout(() => {
+    $("#user_alias_edit").val('');
+    $("#id_usuario_edit").val('');
+    $("#user_rol_edit").html(``);
+  }, 900);
+});
+
+async function updateUser() {
+  const data = $("#form_user_edit").serialize();
+  const res = await $.ajax({
+    url: '../app/cusuario/update',
+    data,
+    type: 'PUT',
+    dataType: 'JSON'
+  });
+  if (res.status == 'success') {
+    $.toast({
+      heading: 'ACTUALIZACIÓN CORRECTA',
+      icon: 'success',
+      position: 'top-right',
+      hideAfter: 1100
+    })
+    setTimeout(() => {
+      window.location.reload();
+    }, 1109);
+  } else {
+    console.warn(res)
+    $.toast({
+      heading: 'OCURRIÓ UN ERROR',
+      icon: 'warning',
+      position: 'top-right',
+      hideAfter: 1100
+    })
+  }
+}
+
+$(document).on('show.bs.modal', '#modal_delete_usuario', (e) => {
+  const id = $(e.relatedTarget).data('id');
+  $("#idUsuario_delete").val(id);
+});
+async function deleteUser() {
+  const res = await $.ajax({
+    url: '../app/cusuario/delete',
+    type: 'DELETE',
+    data: { idUsuario: $("#idUsuario_delete").val() },
+    dataType: 'JSON'
+  });
+  if (res.status == 'success') {
+    $.toast({
+      heading: 'USUARIO ELIMINADO',
+      icon: 'success',
+      position: 'top-right',
+      hideAfter: 1100
+    })
+    setTimeout(() => {
+      window.location.reload();
+    }, 1109);
+  } else {
+    console.warn(res)
+    $.toast({
+      heading: 'OCURRIÓ UN ERROR',
+      icon: 'warning',
+      position: 'top-right',
+      hideAfter: 1100
+    })
+  }
+}
+
+$(document).on('show.bs.modal', '#modal_reset_pass', (e) => {
+  const id = $(e.relatedTarget).data('id');
+  $("#idUsuario_reset_pass").val(id);
+})
+
+async function user_reset_pass() {
+  const res = await $.ajax({
+    url: '../app/cusuario/resetPass',
+    type: 'PUT',
+    data: { idUsuario: $("#idUsuario_reset_pass").val() },
+    dataType: 'JSON'
+  });
+  if (res.status == 'success') {
+    $.toast({
+      heading: 'CONTRASEÑA CAMBIADA',
+      icon: 'success',
+      position: 'top-right',
+      hideAfter: 1100
+    })
+    setTimeout(() => {
+      window.location.reload();
+    }, 1109);
+  } else {
+    console.warn(res)
+    $.toast({
+      heading: 'OCURRIÓ UN ERROR',
+      icon: 'warning',
+      position: 'top-right',
+      hideAfter: 1100
+    })
   }
 }

@@ -98,13 +98,29 @@ class CPago {
     }
   }
   public function delete($data) {
+    $domain = 'domain';
     try {
       $pago = new Pago($data['idPago']);
-      $res = $pago->delete();
-      if ($res > 0) {
-        echo json_encode(['status' => 'success', 'message' => 'Pago eliminado']);
+      if ($pago->nameFile != '') {
+        $url = dirname(dirname(__DIR__));
+        $url = $url . '/public/' . $domain . '/' . $pago->nameFile;
+        if (unlink($url)) {
+          $res = $pago->delete();
+          if ($res > 0) {
+            echo json_encode(['status' => 'success', 'message' => 'Pago eliminado']);
+          } else {
+            echo json_encode(['status' => 'error', 'message' => 'Error al eliminar pago']);
+          }
+        } else {
+          echo json_encode(['status' => 'error', 'message' => 'Error al eliminar pago (file)']);
+        }
       } else {
-        echo json_encode(['status' => 'error', 'message' => 'Error al eliminar pago']);
+        $res = $pago->delete();
+        if ($res > 0) {
+          echo json_encode(['status' => 'success', 'message' => 'Pago eliminado']);
+        } else {
+          echo json_encode(['status' => 'error', 'message' => 'Error al eliminar pago']);
+        }
       }
     } catch (\Throwable $th) {
       echo json_encode(['status' => 'error', 'message' => json_encode($th), 'error' => $th->getMessage()]);

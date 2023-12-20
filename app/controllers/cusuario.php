@@ -118,4 +118,52 @@ class CUsuario {
       }
     }
   }
+  public function delete($data) {
+    $id = $data['idUsuario'];
+    $usuario = new Usuario($id);
+    if ($usuario->idUsuario == 0) {
+      echo json_encode(array('status' => 'error', 'message' => 'No existe el usuario | idUsuario incorrecto'));
+    } else {
+      $res = $usuario->delete();
+      if ($res > 0) {
+        echo json_encode(array('status' => 'success', 'message' => 'El usuario fue eliminado exitosamente'));
+      } else {
+        echo json_encode(array('status' => 'error', 'message' => 'Ocurrió un error al eliminar el usuario, intenta más tarde'));
+      }
+    }
+  }
+  public function update($data) {
+    $idUsuario = $data['idUsuario'];
+    $alias = $data['alias'];
+    $rol = $data['rol'];
+    $usuario = new Usuario($idUsuario);
+    if ($usuario->idUsuario == 0) {
+      echo json_encode(array('status' => 'error', 'message' => 'No existe el usuario | idUsuario incorrecto'));
+    } else {
+      $usuario->alias = $alias;
+      $usuario->rol = $rol;
+      $res = $usuario->save();
+      if ($res > 0) {
+        echo json_encode(array('status' => 'success', 'message' => 'El usuario fue actualizado exitosamente'));
+      } else {
+        echo json_encode(array('status' => 'error', 'message' => 'Ocurrió un error al actualizar el usuario, intenta más tarde'));
+      }
+    }
+  }
+
+  public function resetPass($data) {
+    $id = $data['idUsuario'];
+    $usuario = new Usuario($id);
+    if ($usuario->idUsuario == 0) {
+      echo json_encode(array('status' => 'error', 'message' => 'No existe el usuario | idUsuario incorrecto'));
+    } else {
+      $usuario->password = hash('sha256', $usuario->alias);
+      $res = $usuario->save();
+      if ($res > 0) {
+        echo json_encode(array('status' => 'success', 'message' => 'La contraseña fue cambiada exitosamente'));
+      } else {
+        echo json_encode(array('status' => 'error', 'message' => 'Ocurrió un error al cambiar la contraseña, intenta más tarde'));
+      }
+    }
+  }
 }

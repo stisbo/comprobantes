@@ -373,6 +373,7 @@ $(document).on('hide.bs.modal', '#modal_ver_comprobante', () => {
   }
 })
 
+// eliminar archivo 
 $(document).on('click', '#btn_delete_comp', async (e) => {
   const idPago = e.currentTarget.dataset.idpago;
   const res = await $.ajax({
@@ -397,3 +398,43 @@ $(document).on('click', '#btn_delete_comp', async (e) => {
     console.warn(res)
   }
 })
+
+$(document).on('show.bs.modal', '#modal_delete_pago', (e) => {
+  const idPago = e.relatedTarget.dataset.idpago;
+  $("#idPago_delete").val(idPago);
+});
+$(document).on('hide.bs.modal', '#modal_delete_pago', (e) => {
+  setTimeout(() => {
+    $("#idPago_delete").val(0);
+  }, 900);
+});
+
+async function deletePago() {
+  const idPago = $("#idPago_delete").val();
+  if (idPago == 0 || idPago == '') return;
+  const res = await $.ajax({
+    url: '../app/cpago/delete',
+    type: 'DELETE',
+    dataType: 'json',
+    data: { idPago }
+  });
+  if (res.status == 'success') {
+    $.toast({
+      heading: '<b>Pago eliminado</b>',
+      icon: 'success',
+      position: 'top-right',
+      hideAfter: 1800
+    });
+    setTimeout(() => {
+      window.location.reload();
+    }, 1900)
+  } else {
+    console.warn(res)
+    $.toast({
+      heading: '<b>Ocurrió un error</b>',
+      icon: 'danger',
+      position: 'top-right',
+      hideAfter: 1200
+    })
+  }
+}

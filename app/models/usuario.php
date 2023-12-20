@@ -75,8 +75,8 @@ class Usuario {
           $res = $this->idUsuario;
         }
       } else { // update
-        $sql = "UPDATE tblUsuario SET alias = :alias, password = :password, rol = :rol, idGrupo = :idGrupo WHERE idUsuario = :idUsuario";
-        $params = ['alias' => $this->alias, 'password' => $this->password, 'idUsuario' => $this->idUsuario, 'rol' => $this->rol, 'idGrupo' => $this->idGrupo];
+        $sql = "UPDATE tblUsuario SET alias = :alias, password = :password, rol = :rol WHERE idUsuario = :idUsuario";
+        $params = ['alias' => $this->alias, 'password' => $this->password, 'rol' => $this->rol, 'idUsuario' => $this->idUsuario];
         $stmt = $con->prepare($sql);
         $stmt->execute($params);
         $res = 1;
@@ -104,6 +104,17 @@ class Usuario {
     $this->password = $row['password'];
     $this->rol = $row['rol'];
     $this->idGrupo = $row['idGrupo'];
+  }
+  public function delete() {
+    try {
+      $con = Database::getInstace();
+      $sql = "DELETE FROM tblUsuario WHERE idUsuario = :idUsuario";
+      $stmt = $con->prepare($sql);
+      $stmt->execute(['idUsuario' => $this->idUsuario]);
+      return 1;
+    } catch (\Throwable $th) {
+      return -1;
+    }
   }
   public static function exist($alias, $pass): Usuario {
     $con = Database::getInstace();

@@ -2,7 +2,7 @@
 <div class="modal fade" id="modal_delete_pago" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header bg-danger text-white">
         <h1 class="modal-title fs-5" id="exampleModalLabel">Eliminar el pago</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -16,7 +16,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-        <button type="button" class="btn btn-primary" onclick="deeletePago()">Sí, eliminar</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="deletePago()">Sí, eliminar</button>
       </div>
     </div>
   </div>

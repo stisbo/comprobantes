@@ -12,7 +12,7 @@ if (isset($_COOKIE['user_obj'])) {
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <title>INGRESOS</title>
+  <title>Usuarios</title>
   <link rel="stylesheet" href="../assets/datatables/datatables.bootstrap5.min.css">
   <link href="../css/styles.css" rel="stylesheet" />
   <link rel="stylesheet" href="../css/custom.css">
@@ -32,7 +32,7 @@ if (isset($_COOKIE['user_obj'])) {
       <main>
         <div class="container-fluid px-4">
           <div class="mt-4">
-            <h1>Usuarios</h1>
+            <h1>Usuarios del sistema</h1>
           </div>
           <div class="buttons-head col-md-6 col-sm-12 mb-3">
             <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal_usuario_nuevo"><i class="fa fa-user-plus"></i> Crear Nuevo Usuario</button>
@@ -46,20 +46,22 @@ if (isset($_COOKIE['user_obj'])) {
                 </h4>
               </div>
               <div class="card-body">
+
                 <table style="width:100%" class="table table-striped" id="table_usuarios">
                   <thead>
                     <tr>
-                      <th>ID</th>
-                      <th>USUARIO</th>
-                      <th>ROL</th>
-                      <th>FECHA CREACIÓN</th>
-                      <th>ACCIONES</th>
+                      <th class="text-center">ID</th>
+                      <th class="text-center">USUARIO</th>
+                      <th class="text-center">ROL</th>
+                      <th class="text-center">FECHA CREACIÓN</th>
+                      <th class="text-center">ACCIONES</th>
                     </tr>
                   </thead>
                   <tbody id="tbl_users">
 
                   </tbody>
                 </table>
+
               </div>
             </div>
           </div>
