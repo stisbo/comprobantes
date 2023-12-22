@@ -23,7 +23,6 @@ if (isset($_COOKIE['user_obj'])) {
 </head>
 
 <body>
-  <?php include('./modals.php'); ?>
   <?php include("../common/header.php"); ?>
   <div id="layoutSidenav"> <!-- contenedor -->
     <?php include("../common/sidebar.php"); ?>
@@ -34,7 +33,7 @@ if (isset($_COOKIE['user_obj'])) {
             <h1>Proyectos Ingreso</h1>
           </div>
           <div class="buttons-head col-md-6 col-sm-12 mb-3">
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal_egreso_nuevo" data-idproyecto="0"><i class="fa fa-plus"></i> Nuevo Proyecto </button>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#modal_ingreso_nuevo" data-idproyecto="0"><i class="fa fa-plus"></i> Nuevo Proyecto </button>
             <a class="btn btn-primary" type="button" href="./nuevo.php"><i class="fa fa-solid fa-hand-holding-dollar"></i> Nuevo pago</a>
           </div>
           <div class="row" id="card-egresos">
@@ -66,10 +65,12 @@ if (isset($_COOKIE['user_obj'])) {
               </div>
             </div>
           </div>
+        </div>
       </main>
     </div>
   </div><!-- fin contenedor -->
 
+  <?php include('./modals.php'); ?>
   <script src="../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="../js/scripts.js"></script>
   <script src="../assets/datatables/datatables.jquery.min.js"></script>

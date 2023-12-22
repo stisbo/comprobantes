@@ -17,6 +17,14 @@
             <input type="number" class="form-control" id="monto_e" name="montoRef" placeholder="" value="" step="any">
             <label for="monto_e">Monto Ref:</label>
           </div>
+          <div class="form-floating">
+            <select class="form-select" id="estado_e" name="estado">
+              <option value=""></option>
+              <option value="PENDIENTE">PENDIENTE</option>
+              <option value="SALDADO">SALDADO</option>
+            </select>
+            <label for="estado">Estado</label>
+          </div>
         </form>
       </div>
       <div class="modal-footer">
