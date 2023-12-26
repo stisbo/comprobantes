@@ -15,7 +15,9 @@ class Pago {
   public string $fechaRegistro;
   public string $nameFile;
   public $nroNotaFact;
-
+  public string $lugar;
+  public string $referencia;  // ingreso (idVenta)
+  public string $adelanto; // ADELANTO || PAGO
   public function __construct($idPago = null) {
     $con = Database::getInstace();
     if ($idPago != null) {
@@ -34,6 +36,9 @@ class Pago {
         $this->fechaRegistro = $pagoRow['fechaRegistro'];
         $this->nameFile = $pagoRow['namefile'];
         $this->nroNotaFact = $pagoRow['nroNotaFact'];
+        $this->lugar = $pagoRow['lugar'] ?? '';
+        $this->referencia = $pagoRow['referencia'] ?? '';
+        $this->adelanto = $pagoRow['adelanto'] ?? 'PAGO';
       } else {
         $this->objectNull();
       }
@@ -52,14 +57,17 @@ class Pago {
     $this->fechaRegistro = '';
     $this->nameFile = '';
     $this->nroNotaFact = '';
+    $this->lugar = '';
+    $this->referencia = '';
+    $this->adelanto = '';
   }
   public function save() {
     $res = -1;
     try {
       $con = Database::getInstace();
       if ($this->idPago == 0) { //insert
-        $sql = "INSERT INTO tblPago(concepto, monto, idProyecto, modoPago, idPagadoPor, idRecibidoPor, namefile, nroNotaFact) VALUES(?, ?, ?, ?, ?, ?, ?, ?);";
-        $params = [$this->concepto, $this->monto, $this->idProyecto, $this->modoPago, $this->idPagadoPor, $this->idRecibidoPor, $this->nameFile, $this->nroNotaFact];
+        $sql = "INSERT INTO tblPago(concepto, monto, idProyecto, modoPago, idPagadoPor, idRecibidoPor, namefile, nroNotaFact, lugar, referencia, adelanto) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        $params = [$this->concepto, $this->monto, $this->idProyecto, $this->modoPago, $this->idPagadoPor, $this->idRecibidoPor, $this->nameFile, $this->nroNotaFact, $this->lugar, $this->referencia, $this->adelanto];
         $stmt = $con->prepare($sql);
         $res = $stmt->execute($params);
         if ($res) {
@@ -67,8 +75,8 @@ class Pago {
           $res = $this->idPago;
         }
       } else { // update
-        $sql = "UPDATE tblPago SET idProyecto = ?, concepto = ?, modoPago = ?, idPagadoPor = ?, idRecibidoPor = ?, monto = ?, namefile = ?, nroNotaFact = ? WHERE idPago = ?";
-        $params = [$this->idProyecto, $this->concepto, $this->modoPago, $this->idPagadoPor, $this->idRecibidoPor, $this->monto, $this->nameFile, $this->nroNotaFact, $this->idPago];
+        $sql = "UPDATE tblPago SET idProyecto = ?, concepto = ?, modoPago = ?, idPagadoPor = ?, idRecibidoPor = ?, monto = ?, namefile = ?, nroNotaFact = ?, lugar = ?, referencia = ?, adelanto = ? WHERE idPago = ?";
+        $params = [$this->idProyecto, $this->concepto, $this->modoPago, $this->idPagadoPor, $this->idRecibidoPor, $this->monto, $this->nameFile, $this->nroNotaFact, $this->lugar, $this->referencia, $this->adelanto, $this->idPago];
         $stmt = $con->prepare($sql);
         $stmt->execute($params);
         $res = 1;
@@ -188,7 +196,7 @@ class Pago {
 
   public static function getByProjectIngreso($idProyecto) {
     try {
-      $sql = "SELECT pa.*, UPPER(us.alias) usuario, UPPER(af.nombre) afiliado  FROM tblPago pa INNER JOIN tblAfiliado af ON pa.idPagadoPor = af.idAfiliado INNER JOIN tblUsuario us ON pa.idRecibidoPor = us.idUsuario WHERE idProyecto = ?;";
+      $sql = "SELECT pa.*, UPPER(us.alias) usuario, UPPER(af.nombre) afiliado  FROM tblPago pa INNER JOIN tblAfiliado af ON pa.idPagadoPor = af.idAfiliado INNER JOIN tblUsuario us ON pa.idRecibidoPor = us.idUsuario WHERE pa.idProyecto = ?;";
       $con = Database::getInstace();
       $stmt = $con->prepare($sql);
       $stmt->execute([$idProyecto]);

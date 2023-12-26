@@ -83,6 +83,7 @@ if (isset($_GET['proid'])) {
                           <option value="GIRO">GIRO</option>
                           <option value="TARJETA">TARJETA</option>
                           <option value="BANCO">BANCO</option>
+                          <option value="QR">QR</option>
                         </select>
                         <label for="">Modo de pago</label>
                       </div>
@@ -117,6 +118,27 @@ if (isset($_GET['proid'])) {
                       <div class="form-floating mb-3">
                         <input type="text" class="form-control" placeholder="Nro Nota | Fact" value="" name="nro" autocomplete="off">
                         <label for="">Nro. Nota o Factura</label>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" placeholder="Lugar" value="" name="lugar">
+                        <label for="">Lugar de pago (opcional)</label>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" placeholder="Id Venta" value="" name="referencia">
+                        <label for="">ID Venta (opcional)</label>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-floating mb-3">
+                        <select name="adelanto" class="form-select">
+                          <option value="PAGO" selected>PAGO</option>
+                          <option value="ADELANTO">ADELANTO</option>
+                        </select>
+                        <label for="">Adelanto</label>
                       </div>
                     </div>
                   </div>

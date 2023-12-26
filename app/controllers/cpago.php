@@ -23,6 +23,9 @@ class CPago {
         $pago->nameFile = $file;
         $pago->idPagadoPor = $user->idUsuario;
         $pago->nroNotaFact = isset($data['nro']) ? $data['nro'] : '';
+        $pago->lugar = isset($data['lugar']) ? $data['lugar'] : '';
+        $pago->referencia = isset($data['referencia']) ? $data['referencia'] : '';
+        $pago->adelanto = $data['adelanto'] ?? 'PAGO';
         $res = $pago->save();
         if ($res) {
           $pago->idPago = $res;
@@ -54,6 +57,9 @@ class CPago {
         $pago->nameFile = $file;
         $pago->idRecibidoPor = $user->idUsuario;
         $pago->nroNotaFact = isset($data['nro']) ? $data['nro'] : '';
+        $pago->lugar = isset($data['lugar']) ? $data['lugar'] : '';
+        $pago->referencia = isset($data['referencia']) ? $data['referencia'] : '';
+        $pago->adelanto = $data['adelanto'] ?? 'PAGO';
         $res = $pago->save();
         if ($res) {
           $pago->idPago = $res;
@@ -135,6 +141,9 @@ class CPago {
       $pago->idRecibidoPor = $data['idAfiliado'];
       $pago->modoPago = $data['modoPago'];
       $pago->nroNotaFact = isset($data['nro']) ? $data['nro'] : '';
+      $pago->lugar = $data['lugar'] ?? '';
+      $pago->referencia = $data['referencia'] ?? '';
+      $pago->adelanto = $data['adelanto'] ?? 'PAGO';
       if ($data['tipo_file'] == 'file') { // existe archivo
         $res = $pago->save();
         if ($res) {
@@ -171,6 +180,9 @@ class CPago {
       $pago->idPagadoPor = $data['idAfiliado'];
       $pago->modoPago = $data['modoPago'];
       $pago->nroNotaFact = isset($data['nro']) ? $data['nro'] : '';
+      $pago->lugar = $data['lugar'] ?? '';
+      $pago->referencia = $data['referencia'] ?? '';
+      $pago->adelanto = $data['adelanto'] ?? 'PAGO';
       if ($data['tipo_file'] == 'file') { // existe archivo
         $res = $pago->save();
         if ($res) {

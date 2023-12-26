@@ -81,6 +81,7 @@ if (isset($_GET['pid'])) {
                           <option value="GIRO" <?= $pago->modoPago == 'GIRO' ? 'selected' : '' ?>>GIRO</option>
                           <option value="TARJETA" <?= $pago->modoPago == 'TARJETA' ? 'selected' : '' ?>>TARJETA</option>
                           <option value="BANCO" <?= $pago->modoPago == 'BANCO' ? 'selected' : '' ?>>BANCO</option>
+                          <option value="QR" <?= $pago->modoPago == 'QR' ? 'selected' : '' ?>>QR</option>
                         </select>
                         <label for="">Modo de pago</label>
                       </div>
@@ -115,6 +116,27 @@ if (isset($_GET['pid'])) {
                       <div class="form-floating mb-3">
                         <input type="date" class="form-control" id="" placeholder="fecha registro" value="<?= date('Y-m-d', strtotime($pago->fechaRegistro)) ?>" disabled>
                         <label for="">Fecha de registro</label>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" placeholder="Lugar" value="<?= $pago->lugar ?>" name="lugar">
+                        <label for="">Lugar de pago</label>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-floating mb-3">
+                        <input type="text" class="form-control" placeholder="Referencia" value="<?= $pago->referencia?>" name="referencia">
+                        <label for="">Referencia externa (opcional)</label>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="form-floating mb-3">
+                        <select name="adelanto" class="form-select">
+                          <option value="PAGO" <?= $pago->adelanto == 'PAGO'?'selected':''?>>PAGO</option>
+                          <option value="ADELANTO" <?= $pago->adelanto == 'ADELANTO' ? 'selected':''?>>ADELANTO</option>
+                        </select>
+                        <label for="">Adelanto</label>
                       </div>
                     </div>
                   </div>

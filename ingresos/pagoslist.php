@@ -79,6 +79,7 @@ $pagos = Pago::getByProjectIngreso($proyecto->idProyecto);
                         <th class="text-center">Fecha registro</th>
                         <th class="text-center">Pagado por</th>
                         <th class="text-center">Recibido por</th>
+                        <th class="text-center">Lugar</th>
                         <th class="text-center">Acciones</th>
                       </tr>
                     </thead>
@@ -97,6 +98,7 @@ $pagos = Pago::getByProjectIngreso($proyecto->idProyecto);
                           <td><?= date('d/m/Y', strtotime($pago['fechaRegistro'])) ?></td>
                           <td><?= $pago['afiliado'] ?></td>
                           <td><?= $pago['usuario'] ?></td>
+                          <td><?= $pago['lugar'] ?></td>
                           <td>
                             <div class="d-flex justify-content-around gap-2">
                               <?php if ($user->rol == 'ADMIN' || $user->rol == 'EDITOR') : ?>
@@ -119,6 +121,7 @@ $pagos = Pago::getByProjectIngreso($proyecto->idProyecto);
                       <tr class="table-light">
                         <td colspan="2" class="text-end fw-bolder">Suma: </td>
                         <td class="text-end"><?= number_format($suma, 2) ?></td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -151,7 +154,7 @@ $pagos = Pago::getByProjectIngreso($proyecto->idProyecto);
         // scrollY: '20vh',
         columnDefs: [{
           orderable: false,
-          targets: [5, 8]
+          targets: [5, 9]
         }],
       })
     })
