@@ -55,7 +55,6 @@ $(document).on('input', '#tipo_detalle', async (e) => {
     dataType: 'json',
     data: { q: valorInput, type: 'INGRESO' }
   })
-  console.log(res)
   if (res.status == 'success') {
     mostrarSugerenciasProyecto(JSON.parse(res.data), 'suggestion_proy', 'tipo_detalle');
   }
@@ -262,8 +261,10 @@ $(document).on('submit', '#form_nuevo', async (e) => {
         stack: 3,
         hideAfter: 1500
       });
+      const pago = JSON.parse(res.pago)
       setTimeout(() => {
         window.location.href = './';
+        window.open('../reports/pago.php?pagid=' + pago.idPago, 'blank');
       }, 1500);
     } else {
       formulario = false;
@@ -406,19 +407,23 @@ $(document).on('show.bs.modal', '#modal_delete_pago', (e) => {
 $(document).on('hide.bs.modal', '#modal_delete_pago', (e) => {
   setTimeout(() => {
     $("#idPago_delete").val(0);
+    $("#pass_modal_pago").val('');
+    $("#aviso_modal_pago").html(`<div class="alert alert-warning" role="alert">Para eliminar, debe ingresar su <b>contraseña</b></div>`)
   }, 900);
 });
 
 async function deletePago() {
   const idPago = $("#idPago_delete").val();
   if (idPago == 0 || idPago == '') return;
+  const pass = $("#pass_modal_pago").val();
   const res = await $.ajax({
     url: '../app/cpago/delete',
     type: 'DELETE',
     dataType: 'json',
-    data: { idPago }
+    data: { idPago, pass }
   });
   if (res.status == 'success') {
+    $("#modal_delete_pago").modal('hide')
     $.toast({
       heading: '<b>Pago eliminado</b>',
       icon: 'success',
@@ -430,6 +435,8 @@ async function deletePago() {
     }, 1900)
   } else {
     console.warn(res)
+    $("#aviso_modal_pago").html(`<div class="alert alert-danger" role="alert">
+  ¡Error! ${res.message ?? ''} </div>`);
     $.toast({
       heading: '<b>Ocurrió un error</b>',
       icon: 'danger',

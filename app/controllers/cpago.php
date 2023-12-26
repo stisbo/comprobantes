@@ -105,31 +105,45 @@ class CPago {
   }
   public function delete($data) {
     $domain = 'domain';
-    try {
-      $pago = new Pago($data['idPago']);
-      if ($pago->nameFile != '') {
-        $url = dirname(dirname(__DIR__));
-        $url = $url . '/public/' . $domain . '/' . $pago->nameFile;
-        if (unlink($url)) {
+    $user = json_decode($_COOKIE['user_obj']);
+    if ($user->password == hash('sha256', $data['pass'])) {
+      try {
+        $pago = new Pago($data['idPago']);
+        if ($pago->nameFile != '') {
+          $url = dirname(dirname(__DIR__));
+          $url = $url . '/public/' . $domain . '/' . $pago->nameFile;
+          if (file_exists($url)) {
+            if (unlink($url)) {
+              $res = $pago->delete();
+              if ($res > 0) {
+                echo json_encode(['status' => 'success', 'message' => 'Pago eliminado']);
+              } else {
+                echo json_encode(['status' => 'error', 'message' => 'Error al eliminar pago']);
+              }
+            } else {
+              echo json_encode(['status' => 'error', 'message' => 'Error al eliminar pago (file)']);
+            }
+          } else {
+            $res = $pago->delete();
+            if ($res > 0) {
+              echo json_encode(['status' => 'success', 'message' => 'Pago eliminado']);
+            } else {
+              echo json_encode(['status' => 'error', 'message' => 'Error al eliminar pago']);
+            }
+          }
+        } else {
           $res = $pago->delete();
           if ($res > 0) {
             echo json_encode(['status' => 'success', 'message' => 'Pago eliminado']);
           } else {
             echo json_encode(['status' => 'error', 'message' => 'Error al eliminar pago']);
           }
-        } else {
-          echo json_encode(['status' => 'error', 'message' => 'Error al eliminar pago (file)']);
         }
-      } else {
-        $res = $pago->delete();
-        if ($res > 0) {
-          echo json_encode(['status' => 'success', 'message' => 'Pago eliminado']);
-        } else {
-          echo json_encode(['status' => 'error', 'message' => 'Error al eliminar pago']);
-        }
+      } catch (\Throwable $th) {
+        echo json_encode(['status' => 'error', 'message' => json_encode($th), 'error' => $th->getMessage()]);
       }
-    } catch (\Throwable $th) {
-      echo json_encode(['status' => 'error', 'message' => json_encode($th), 'error' => $th->getMessage()]);
+    } else {
+      echo json_encode(['status' => 'error', 'message' => 'Contraseña incorrecta']);
     }
   }
   public function update($data, $files) { // Egreso 

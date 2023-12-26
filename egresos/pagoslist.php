@@ -98,7 +98,7 @@ $pagos = Pago::getByProject($proyecto->idProyecto);
                           <td><?= date('d/m/Y', strtotime($pago['fechaRegistro'])) ?></td>
                           <td><?= $pago['usuario'] ?></td>
                           <td><?= $pago['afiliado'] ?></td>
-                          <td><?= $pago['lugar']?></td>
+                          <td><?= $pago['lugar'] ?></td>
                           <td>
                             <div class="d-flex justify-content-around gap-2">
                               <?php if ($user->rol == 'ADMIN' || $user->rol == 'EDITOR') : ?>
@@ -107,8 +107,9 @@ $pagos = Pago::getByProject($proyecto->idProyecto);
                               <?php if ($pago['namefile'] != '') : ?>
                                 <div><a class="btn btn-info" href="#" type="button" data-bs-toggle="modal" data-bs-target="#modal_ver_comprobante" data-namefile="<?= $pago['namefile'] ?>" data-idpago="<?= $pago['idPago'] ?>"><i class="fa fa-eye"></i></a></div>
                               <?php endif; ?>
+                              <div><a href="../reports/pago.php?pagid=<?= $pago['idPago'] ?>" target="_blank" class="btn btn-secondary" type="button"><i class="fa fa-print"></i></a></div>
                               <?php if ($user->rol == 'ADMIN') : ?>
-                                <div><button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#modal_delete_pago" data-namefile="<?= $pago['namefile'] ?>" data-idpago="<?= $pago['idPago'] ?>"><i class="fa fa-trash"></i></a></div>
+                                <div><button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#modal_delete_pago" data-namefile="<?= $pago['namefile'] ?>" data-idpago="<?= $pago['idPago'] ?>"><i class="fa fa-trash"></i></button></div>
                               <?php endif; ?>
                             </div>
                           </td>
@@ -131,7 +132,7 @@ $pagos = Pago::getByProject($proyecto->idProyecto);
                       </tr>
                       <tr class="table-light">
                         <td colspan="2" class="text-end fw-bolder">Saldo: </td>
-                        <?php $saldo = floatval($proyecto->montoRef) - $suma; 
+                        <?php $saldo = floatval($proyecto->montoRef) - $suma;
                         $saldo = $saldo > 0 ? $saldo : 0;
                         ?>
                         <td class="text-end"><?= number_format($saldo, 2) ?></td>
