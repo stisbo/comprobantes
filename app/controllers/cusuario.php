@@ -118,6 +118,24 @@ class CUsuario {
       }
     }
   }
+
+  public function changecolor($data, $files=null){
+    $id = $data['idUsuario'];
+    $color = $data['color'];
+    $user = new Usuario($id)
+    if($user->idUsuario != 0 && $color != ''){
+      $user->color = $color;
+      $res = $user->save();
+      if($res > 0){
+        echo json_encode(['status' => 'success', 'message' => 'Cambio correcto']);
+      }else{
+        echo json_encode(['status' => 'error', 'message' => 'Error inesperado']);        
+      }
+    }else{
+      echo json_encode(['status' => 'error', 'message' => 'No de puede guardar, datos faltantes']);
+    }
+  }
+
   public function delete($data) {
     $id = $data['idUsuario'];
     $usuario = new Usuario($id);

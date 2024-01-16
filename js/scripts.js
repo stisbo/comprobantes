@@ -14,6 +14,12 @@ window.addEventListener('DOMContentLoaded', event => {
     });
   }
 
+  const color = localStorage.color != undefined && localStorage.color != '' ? localStorage.color : '#212529';
+  console.log('El color es: '+ color)
+
+  $('#top_nav').css('background-color', color);
+  $('#sidenavAccordion').css('background-color', color);
+
 });
 
 $(document).on('click', '#idLogout', async () => {
@@ -51,6 +57,11 @@ $(document).on('keyup', "#pass_repeat", (e) => {
 $(document).on("show.bs.modal", "#modal_usuario", function (event) {
   var button = $(event.relatedTarget) // Botón que activé el modal
   $("#id_user").val(button.data('id'));
+})
+
+$(document).on('show.bs.modal', '#modal_cambiar_color', (e) => {
+  var button = $(e.relatedTarget);
+  $("#id_user_color").val(button.data('id'));
 })
 
 $(document).on("hide.bs.modal", "#modal_usuario", function (event) {
@@ -122,6 +133,11 @@ const showPass = (curr) => {
   }
 }
 
+$(document).on('input', '#color_menu', (e) => {
+  $('#top_nav').css('background-color', e.target.value);
+  $('#sidenavAccordion').css('background-color', e.target.value);
+})
+
 const lenguaje = {
   processing: "Procesando...",
   search: "Buscar en la tabla",
@@ -150,4 +166,34 @@ function getCookie(cname) {
     }
   }
   return "";
+}
+
+async function cambiarColor(){
+  const color = $('#color_menu').val();
+  const idUsuario = $("#id_user_color").val();
+  const data = {
+    color, idUsuario
+  }
+
+  const res = await $.ajax({
+    url:'../app/cusuario/changecolor',
+    data,
+    type: "POST",
+    dataType: "JSON",
+  })
+  if(res.status == 'success'){
+    $.toast({
+      heading: 'Cambio realizado',
+      icon: 'success',
+      position: 'top-right',
+      hideAfter: 1900
+    })
+  }else{
+    $.toast({
+      heading: 'Ocurrió un error',
+      icon: 'danger',
+      position: 'top-right',
+      hideAfter: 1900
+    })
+  }
 }

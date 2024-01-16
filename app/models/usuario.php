@@ -11,6 +11,7 @@ class Usuario {
   public int $idGrupo; // usuario propietario ADMIN = 0
   public string $password;
   public string $fechaCreacion;
+  public string $color; // color de menu
   public function __construct($idUsuario = null) {
     if ($idUsuario != null) {
       $con = Database::getInstace();
@@ -24,12 +25,14 @@ class Usuario {
         $this->password = $row['password'];
         $this->rol = $row['rol'];
         $this->idGrupo = $row['idGrupo'];
+        $this->color = $row['color'];
       } else {
         $this->idUsuario = 0;
         $this->alias = '';
         $this->password = '';
         $this->rol = '';
         $this->idGrupo = -1;
+        $this->color = '#212529';
       }
     } else {
       $this->idUsuario = 0;
@@ -37,6 +40,7 @@ class Usuario {
       $this->password = '';
       $this->rol = '';
       $this->idGrupo = -1;
+      $this->color = '#212529';
     }
   }
   public function resetPass() {

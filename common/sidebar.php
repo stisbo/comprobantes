@@ -37,10 +37,16 @@
             Administrar usuarios
           </a>
         <?php endif; ?>
-        <a class="nav-link" href="#" type="button" data-bs-toggle="modal" data-bs-target="#modal_usuario" data-id="<?= $user->idUsuario ?>">
-          <div class="sb-nav-link-icon"><i class="fa fa-lock"></i></div>
-          Cambiar mi contraseña
+        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#configModals" aria-expanded="false" aria-controls="configModals">
+          <div class="sb-nav-link-icon"><i class="fa fa-solid fa-gear"></i></div> Configuraciones
+          <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
         </a>
+        <div class="collapse" id="configModals" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
+          <nav class="sb-sidenav-menu-nested nav">
+            <a class="nav-link" href="#" type="button" data-bs-toggle="modal" data-bs-target="#modal_usuario" data-id="<?= $user->idUsuario ?>">Cambiar Contraseña</a>
+            <a class="nav-link" href="#" type="button" data-bs-toggle="modal" data-bs-target="#modal_cambiar_color" data-id="<?= $user->idUsuario ?>">Cambiar color del menú</a>
+          </nav>
+        </div>
       </div>
     </div>
     <div class="sb-sidenav-footer">
@@ -91,6 +97,25 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CANCELAR</button>
         <button type="button" class="btn btn-primary" id="btn_cambiar" data-bs-dismiss="modal" onclick="cambiarPass()">CAMBIAR</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL CAMBIAR COLOR -->
+<div class="modal fade" id="modal_cambiar_color" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <h5 align="center">Elija un color para el menú</h5>
+        <input type="hidden" value="" id="id_user_color">
+        <div class="d-flex justify-content-center">
+          <input type="color" id="color_menu" value="#212529">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">CANCELAR</button>
+        <button type="button" class="btn btn-primary" id="btn_cambiar" data-bs-dismiss="modal" onclick="cambiarColor()">TERMINAR</button>
       </div>
     </div>
   </div>
