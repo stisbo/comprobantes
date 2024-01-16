@@ -61,8 +61,8 @@ if (isset($_GET['proid'])) {
                   <div class="row">
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="tipo_detalle" value="<?= $detalle ?>" placeholder="Tipo de detalle" autocomplete="off">
-                        <label for="tipo_detalle">Tipo de detalle</label>
+                        <input type="text" class="form-control" id="tipo_detalle" value="<?= $detalle ?>" placeholder="Proyecto" autocomplete="off">
+                        <label for="tipo_detalle">Proyecto</label>
                         <input type="hidden" name="idProyecto" id="idProyecto" value="<?= $idProyecto ?>">
                         <div id="suggestion_proy" class="suggestions"></div>
                       </div>

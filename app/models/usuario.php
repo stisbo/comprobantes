@@ -70,8 +70,8 @@ class Usuario {
     try {
       $con = Database::getInstace();
       if ($this->idUsuario == 0) { //insert
-        $sql = "INSERT INTO tblUsuario (alias, password, rol, idGrupo) VALUES (:alias, :password, :rol, :idGrupo)";
-        $params = ['alias' => $this->alias, 'password' => $this->password, 'rol' => $this->rol, 'idGrupo' => $this->idGrupo];
+        $sql = "INSERT INTO tblUsuario (alias, password, rol, idGrupo, color) VALUES (:alias, :password, :rol, :idGrupo, :color)";
+        $params = ['alias' => $this->alias, 'password' => $this->password, 'rol' => $this->rol, 'idGrupo' => $this->idGrupo, 'color' => '#212529'];
         $stmt = $con->prepare($sql);
         $res = $stmt->execute($params);
         if ($res) {
@@ -79,8 +79,8 @@ class Usuario {
           $res = $this->idUsuario;
         }
       } else { // update
-        $sql = "UPDATE tblUsuario SET alias = :alias, password = :password, rol = :rol WHERE idUsuario = :idUsuario";
-        $params = ['alias' => $this->alias, 'password' => $this->password, 'rol' => $this->rol, 'idUsuario' => $this->idUsuario];
+        $sql = "UPDATE tblUsuario SET alias = :alias, password = :password, rol = :rol, color = :color WHERE idUsuario = :idUsuario";
+        $params = ['alias' => $this->alias, 'password' => $this->password, 'rol' => $this->rol, 'color' => $this->color, 'idUsuario' => $this->idUsuario];
         $stmt = $con->prepare($sql);
         $stmt->execute($params);
         $res = 1;
@@ -108,6 +108,7 @@ class Usuario {
     $this->password = $row['password'];
     $this->rol = $row['rol'];
     $this->idGrupo = $row['idGrupo'];
+    $this->color = $row['color'];
   }
   public function delete() {
     try {

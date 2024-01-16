@@ -63,3 +63,23 @@
     </div>
   </div>
 </div>
+
+<!-- MODAL ELIMINAR -->
+<div class="modal fade" id="modal_delete_egreso" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5">Eliminar Proyecto</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="callout callout-danger text-center">¿Está seguro?</div>
+        <input type="hidden" id="idProyecto_delete" value="0">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" id="btn_adjArchivo_modal" class="btn btn-danger" data-bs-dismiss="modal" onclick="eliminar_egreso()">Eliminar Proyecto</button>
+      </div>
+    </div>
+  </div>
+</div>

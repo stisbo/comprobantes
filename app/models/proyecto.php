@@ -89,12 +89,35 @@ class Proyecto {
     $stmt = $con->prepare($sql);
     return $stmt->execute($params);
   }
+
+  public function getPagos() {
+    $con = Database::getInstace();
+    $sql = "SELECT * FROM tblPago WHERE idProyecto = ?;";
+    $params = [$this->idProyecto];
+    $stmt = $con->prepare($sql);
+    $stmt->execute($params);
+    return count($stmt->fetchAll() ?? []);
+  }
   public static function getAll($data) { // ingreso o egreso
     $con = Database::getInstace();
     $tipo = $data['tipo'];
     $estado = isset($data['estado']) ? "AND tp.estado LIKE '%" . $data['estado'] . "%' " : '';
     $year = isset($data['year']) ? "AND YEAR(tp.fechaCreacion) = " . $data['year'] : 'AND YEAR(tp.fechaCreacion) = ' . date('Y');
     $sql = "SELECT tp.*, tu.alias FROM tblProyecto tp INNER JOIN tblUsuario tu ON tp.idUsuario = tu.idUsuario WHERE tp.tipo LIKE '$tipo' $estado $year;";
+    $stmt = $con->prepare($sql);
+    $stmt->execute();
+    $rows = $stmt->fetchAll();
+    return $rows;
+  }
+  public static function getMontoPagos($data) {
+    $con = Database::getInstace();
+    $tipo = $data['tipo'];
+    $estado = isset($data['estado']) ? "AND tp.estado LIKE '%" . $data['estado'] . "%' " : '';
+    $year = isset($data['year']) ? "AND YEAR(tp.fechaCreacion) = " . $data['year'] : 'AND YEAR(tp.fechaCreacion) = ' . date('Y');
+    $sql = "SELECT tp.idProyecto, SUM(tpa.monto) AS total
+      FROM tblProyecto tp LEFT JOIN tblPago tpa ON tp.idProyecto = tpa.idProyecto
+      WHERE tipo LIKE '$tipo' $estado $year
+      GROUP BY tp.idProyecto";
     $stmt = $con->prepare($sql);
     $stmt->execute();
     $rows = $stmt->fetchAll();

@@ -17,6 +17,7 @@ if (isset($_COOKIE['user_obj'])) {
   <link rel="stylesheet" href="../assets/datatables/datatables.bootstrap5.min.css">
   <link href="../css/styles.css" rel="stylesheet" />
   <link rel="stylesheet" href="../assets/jquery/jqueryToast.min.css">
+  <link rel="stylesheet" href="../css/custom.css">
   <script src="../assets/fontawesome/fontawesome6.min.js"></script>
   <script src="../assets/jquery/jquery.js"></script>
   <script src="../assets/jquery/jqueryToast.min.js"></script>

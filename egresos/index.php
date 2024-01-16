@@ -63,6 +63,7 @@ if (isset($_COOKIE['user_obj'])) {
                         <th class="text-center">Descripción</th>
                         <th class="text-center">Tipo</th>
                         <th class="text-center">Monto Ref.</th>
+                        <th class="text-center">Monto Pagado</th>
                         <th class="text-center">Creado por</th>
                         <th class="text-center">Fecha creación</th>
                         <th class="text-center">Estado</th>

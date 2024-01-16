@@ -50,7 +50,8 @@ class CProyecto {
   public function getProjects($data) {
     try {
       $projects = Proyecto::getAll($data);
-      echo json_encode(['status' => 'success', 'data' => json_encode($projects)]);
+      $pagos = Proyecto::getMontoPagos($data);
+      echo json_encode(['status' => 'success', 'data' => json_encode($projects), 'pagos' => json_encode($pagos)]);
     } catch (\Throwable $th) {
       //throw $th;
       echo json_encode(['status' => 'error', 'error' => json_encode($th)]);
@@ -67,6 +68,21 @@ class CProyecto {
       } catch (\Throwable $th) {
         //throw $th;
         echo json_encode(['status' => 'error', 'error' => json_encode($th)]);
+      }
+    }
+  }
+  public function delete($data) {
+    $idProyecto = $data['idProyecto'];
+    $proyecto = new Proyecto($idProyecto);
+    $nPagos = $proyecto->getPagos();
+    if ($nPagos > 0) {
+      echo json_encode(['status' => 'error', 'message' => 'El proyecto tiene pagos asociados, no se puede eliminar']);
+    } else {
+      $res = $proyecto->delete();
+      if ($res) {
+        echo json_encode(['status' => 'success', 'message' => 'Proyecto eliminado con exito']);
+      } else {
+        echo json_encode(['status' => 'error', 'message' => 'Ocurrió un error al eliminar el proyecto']);
       }
     }
   }

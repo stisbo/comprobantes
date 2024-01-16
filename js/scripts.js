@@ -15,11 +15,11 @@ window.addEventListener('DOMContentLoaded', event => {
   }
 
   const color = localStorage.color != undefined && localStorage.color != '' ? localStorage.color : '#212529';
-  console.log('El color es: '+ color)
+  console.log('El color es: ' + color)
 
   $('#top_nav').css('background-color', color);
   $('#sidenavAccordion').css('background-color', color);
-
+  $(".sb-sidenav-footer").css('background-color', `${color}88`)
 });
 
 $(document).on('click', '#idLogout', async () => {
@@ -136,6 +136,7 @@ const showPass = (curr) => {
 $(document).on('input', '#color_menu', (e) => {
   $('#top_nav').css('background-color', e.target.value);
   $('#sidenavAccordion').css('background-color', e.target.value);
+  $(".sb-sidenav-footer").css('background-color', e.target.value)
 })
 
 const lenguaje = {
@@ -168,7 +169,7 @@ function getCookie(cname) {
   return "";
 }
 
-async function cambiarColor(){
+async function cambiarColor() {
   const color = $('#color_menu').val();
   const idUsuario = $("#id_user_color").val();
   const data = {
@@ -176,19 +177,21 @@ async function cambiarColor(){
   }
 
   const res = await $.ajax({
-    url:'../app/cusuario/changecolor',
+    url: '../app/cusuario/changecolor',
     data,
     type: "POST",
     dataType: "JSON",
   })
-  if(res.status == 'success'){
+  if (res.status == 'success') {
     $.toast({
       heading: 'Cambio realizado',
       icon: 'success',
       position: 'top-right',
       hideAfter: 1900
-    })
-  }else{
+    });
+    localStorage.setItem('color', color);
+    console.log('cambio de color: ', color, localStorage.color)
+  } else {
     $.toast({
       heading: 'Ocurrió un error',
       icon: 'danger',

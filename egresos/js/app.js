@@ -19,7 +19,8 @@ async function listar(data) {
   });
   if (res.status == 'success') {
     const data = JSON.parse(res.data);
-    $("#t_body_egresos").html(generarTabla(data));
+    const pagos = JSON.parse(res.pagos);
+    $("#t_body_egresos").html(generarTabla(data, pagos));
     tabla = $("#table_egresos").DataTable({
       language: lenguaje,
       info: false,
@@ -30,8 +31,9 @@ async function listar(data) {
     })
   }
 }
-function generarTabla(data) {
+function generarTabla(data, pagos) {
   let html = '';
+  // console.log(pagos)
   const cookie = JSON.parse(decodeURIComponent(getCookie('user_obj')));
   data.forEach((element) => {
     let clsEstado = element.estado == 'PENDIENTE' ? 'text-bg-warning' : 'text-bg-success';
@@ -42,12 +44,18 @@ function generarTabla(data) {
     if (cookie.rol == 'ADMIN' || cookie.rol == 'EDITOR') {
       opciones += `<div><button class="btn btn-info tet" type="button"  data-bs-toggle="modal" data-bs-target="#modal_egreso_nuevo" data-idproyecto="${element.idProyecto}"><i class="fa fa-pencil"></i></button></div>`;
     }
-
+    if (cookie.rol == 'ADMIN') {
+      opciones += `<div><button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#modal_delete_egreso" data-idproyecto="${element.idProyecto}"><i class="fa fa-trash"></i></button></div>`;
+    }
+    let pago = pagos.find(p => p.idProyecto == element.idProyecto);
+    let monto = pago ? pago.total : 0;
+    // console.log(monto)
     html += `<tr>
     <td class="text-center">${element.idProyecto}</td>
     <td>${element.proyecto.toUpperCase()}</td>
     <td>${element.tipo}</td>
     <td class="text-end">${Number(element.montoRef).toFixed(2)}</td>
+    <td class="text-end">${Number(monto).toFixed(2)}</td>
     <td class="text-center">${element.alias.toUpperCase()}</td>
     <td>${fecha.toLocaleDateString()}</td>
     <td align="center"><span class="badge ${clsEstado}">${element.estado}</span></td>
@@ -97,6 +105,9 @@ $("#modal_egreso_nuevo").on('hide.bs.modal', async () => {
     $("#estado_e").val('');
   }, 800);
 })
+$("#modal_delete_egreso").on('show.bs.modal', async (e) => {
+  $('#idProyecto_delete').val(e.relatedTarget.dataset.idproyecto);
+})
 async function egresoUp() {
   let data = $("#form_egreso").serialize();
   data += '&tipo=EGRESO';
@@ -145,3 +156,30 @@ $(document).on('change', '#filter_year', async (e) => {
   }
   await listar(data);
 })
+
+async function eliminar_egreso() {
+  const res = await $.ajax({
+    url: '../app/cproyecto/delete',
+    type: 'DELETE',
+    data: { idProyecto: $('#idProyecto_delete').val() },
+    dataType: 'json'
+  });
+  if (res.status == 'success') {
+    $.toast({
+      heading: 'Proyecto eliminado',
+      icon: 'success',
+      position: 'top-right',
+      hideAfter: 1100
+    })
+    setTimeout(() => {
+      location.reload();
+    }, 1200);
+  } else {
+    $.toast({
+      heading: res.message,
+      icon: 'danger',
+      position: 'top-right',
+      hideAfter: 2500
+    })
+  }
+}
