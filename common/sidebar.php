@@ -18,9 +18,8 @@
             <a class="nav-link" href="../ingresos/nuevo.php">Nuevo pago</a>
           </nav>
         </div>
-
         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-          <div class="sb-nav-link-icon"><i class="fa fa-solid fa-arrow-trend-down"></i></div> EGRESOS
+          <div class="sb-nav-link-icon"><i class="fa fa-solid fa-arrow-trend-up"></i></div> EGRESOS
           <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
         </a>
         <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
@@ -29,6 +28,10 @@
             <a class="nav-link" href="../egresos/nuevo.php">Nuevo pago</a>
           </nav>
         </div>
+        <a class="nav-link" href="../lugares/">
+          <div class="sb-nav-link-icon"><i class="fas fa-earth-americas"></i></div>
+          Lugares
+        </a>
 
         <div class="sb-sidenav-menu-heading">OPCIONES</div>
         <?php if ($user->rol == 'ADMIN') : ?>
@@ -49,7 +52,7 @@
         </div>
       </div>
     </div>
-    <div class="sb-sidenav-footer text-white">
+    <div class="sb-sidenav-footer text-white" style="background-color:<?= $user->color ?>;">
       <div id="bg-transparent"></div>
       <div class="small">Identificado como:</div>
       <?= strtoupper($user->alias) ?>

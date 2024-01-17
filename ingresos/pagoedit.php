@@ -67,13 +67,13 @@ if (isset($_GET['pid'])) {
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="" placeholder="Descripcion" name="concepto" value="<?= $pago->concepto ?>" required>
+                        <input type="text" class="form-control" placeholder="Descripcion" name="concepto" value="<?= $pago->concepto ?>" required>
                         <label for="">Concepto</label>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <select name="modoPago" id="" class="form-select" required>
+                        <select name="modoPago" class="form-select" required>
                           <option value="">-- SELECCIONE --</option>
                           <option value="EFECTIVO" <?= $pago->modoPago == 'EFECTIVO' ? 'selected' : '' ?>>EFECTIVO</option>
                           <option value="CHEQUE" <?= $pago->modoPago == 'CHEQUE' ? 'selected' : '' ?>>CHEQUE</option>
@@ -96,13 +96,13 @@ if (isset($_GET['pid'])) {
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="" placeholder="Usuario destino" autocomplete="off" value="<?= strtoupper($pago->recibidoPorIngreso()['alias']) ?>" disabled>
+                        <input type="text" class="form-control" placeholder="Usuario destino" autocomplete="off" value="<?= strtoupper($pago->recibidoPorIngreso()['alias']) ?>" disabled>
                         <label for="afiliado_to">Recibido por:</label>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="number" class="form-control" id="" placeholder="Monto del pago" name="monto" step="any" value="<?= $pago->monto ?>" required>
+                        <input type="number" class="form-control" placeholder="Monto del pago" name="monto" step="any" value="<?= $pago->monto ?>" required>
                         <label for="">Monto</label>
                       </div>
                     </div>
@@ -114,14 +114,18 @@ if (isset($_GET['pid'])) {
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="" placeholder="fecha registro" value="<?= date('Y-m-d', strtotime($pago->fechaRegistro)) ?>" disabled>
+                        <input type="date" class="form-control" placeholder="fecha registro" value="<?= date('Y-m-d', strtotime($pago->fechaRegistro)) ?>" disabled>
                         <label for="">Fecha de registro</label>
                       </div>
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" placeholder="Lugar" value="<?= $pago->lugar ?>" name="lugar">
-                        <label for="">Lugar de pago (opcional)</label>
+                        <select name="lugar" class="form-select">
+                          <?php foreach ($lugares as $lugar) : ?>
+                            <option value="<?= $lugar['lugar'] ?>" <?= $pago->lugar == $lugar['lugar'] ? 'selected' : '' ?>><?= strtoupper($lugar['lugar']) ?></option>
+                          <?php endforeach; ?>
+                        </select>
+                        <label for="">Lugar de pago</label>
                       </div>
                     </div>
                     <div class="col-md-4">
@@ -133,8 +137,8 @@ if (isset($_GET['pid'])) {
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
                         <select name="adelanto" class="form-select">
-                          <option value="PAGO" <?= $pago->adelanto == 'PAGO'?'selected':''?>>PAGO</option>
-                          <option value="ADELANTO" <?= $pago->adelanto == 'ADELANTO' ? 'selected':''?>>ADELANTO</option>
+                          <option value="PAGO" <?= $pago->adelanto == 'PAGO' ? 'selected' : '' ?>>PAGO</option>
+                          <option value="ADELANTO" <?= $pago->adelanto == 'ADELANTO' ? 'selected' : '' ?>>ADELANTO</option>
                         </select>
                         <label for="">Adelanto</label>
                       </div>

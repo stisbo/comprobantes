@@ -8,8 +8,10 @@ if (isset($_COOKIE['user_obj'])) {
 }
 require_once('../app/models/proyecto.php');
 require_once('../app/config/database.php');
+require_once('../app/models/lugar.php');
 
 use App\Models\Proyecto;
+use App\Models\Lugar;
 
 $idProyecto = "0";
 $detalle = "";
@@ -20,6 +22,7 @@ if (isset($_GET['proid'])) {
     $idProyecto = $_GET['proid'];
   }
 }
+$lugares = Lugar::all();
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -122,7 +125,11 @@ if (isset($_GET['proid'])) {
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control" placeholder="Lugar" value="" name="lugar">
+                        <select name="lugar" class="form-select">
+                          <?php foreach ($lugares as $lugar) : ?>
+                            <option value="<?= $lugar['lugar'] ?>"><?= strtoupper($lugar['lugar']) ?></option>
+                          <?php endforeach; ?>
+                        </select>
                         <label for="">Lugar de pago</label>
                       </div>
                     </div>
