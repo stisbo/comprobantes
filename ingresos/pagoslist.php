@@ -54,7 +54,7 @@ $pagos = Pago::getByProjectIngreso($proyecto->idProyecto);
           </div>
 
           <div class="callout callout-primary shadow">
-            <h4 class="text-uppercase">Proyecto: <?= $proyecto->proyecto ?></h4>
+            <h4 class="text-uppercase">Proyecto (ingreso): <?= $proyecto->proyecto ?></h4>
             <div class="d-flex justify-content-between align-items-center flex-wrap">
               <p class="fs-5 mb-1"><b>Monto de referencia: </b> <?= number_format($proyecto->montoRef, 2) ?></p>
               <p class="fs-5  mb-1"><b>Estado: </b> <?= $proyecto->estado ?></p>

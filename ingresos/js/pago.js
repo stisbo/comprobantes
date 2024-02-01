@@ -263,7 +263,7 @@ $(document).on('submit', '#form_nuevo', async (e) => {
       });
       const pago = JSON.parse(res.pago)
       setTimeout(() => {
-        window.location.href = './';
+        // window.location.href = './';
         window.open('../reports/pago.php?pagid=' + pago.idPago, 'blank');
       }, 1500);
     } else {
@@ -334,6 +334,7 @@ $(document).on('click', '.type-comp', (e) => {
         hideAfter: 1200
       })
       $("#type_file_upload").val('imagen')
+      $('#tipo_comprobante_file').val('FIRMA')
       $("#btn_clean_firma").attr('disabled', true);
       $("#modal_egreso_comprobante").modal('hide')
       adjuntarArch();
@@ -343,12 +344,14 @@ $(document).on('click', '.type-comp', (e) => {
 })
 
 $("#modal_egreso_comprobante").on('hide.bs.modal', () => {
-  $.each($('.type-comp'), function (_, type) {
-    $(type).removeClass('active');
-    $(type).attr('disabled', false);
-  })
-  $("#cont_comprobante").html('')
-  $("#btn_adjArchivo_modal").removeClass('d-none')
+  setTimeout(() => {
+    $.each($('.type-comp'), function (_, type) {
+      $(type).removeClass('active');
+      $(type).attr('disabled', false);
+    })
+    $("#cont_comprobante").html('')
+    $("#btn_adjArchivo_modal").removeClass('d-none')
+  }, 800);
 })
 
 function adjuntarArch() {

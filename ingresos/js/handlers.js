@@ -41,6 +41,7 @@ async function handlerAudio(idBoton, file_id) {
         // Envía el audio grabado al servidor
         audio = audioBlob;
         $(`#${file_id}`).val('audio');
+        $("#tipo_comprobante_file").val('AUDIO')
         buttonsDisabled();
       };
 
@@ -100,6 +101,7 @@ function handlerImage(idContImg, idFileInput, file_id) {
       var img = $(`#${idContImg}`);
       img.attr("src", blob);
       $(`#${file_id}`).val('imagen');
+      $("#tipo_comprobante_file").val('IMAGEN')
       imagen = blob
       buttonsDisabled()
     };

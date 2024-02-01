@@ -4,8 +4,6 @@ var formulario = false;
 $(document).ready(function () {
 })
 
-
-
 // ocultamos la sugerencia por el ID
 function ocultarSugerencias(idSugg) {
   $("#" + idSugg).hide();
@@ -324,12 +322,13 @@ $(document).on('click', '.type-comp', (e) => {
     $("#btn_terminar_firma").on('click', () => {
       imagen = hand.save_draw();
       $.toast({
-        heading: '<b></b>',
+        heading: '<b>Firma Agregada como imagen</b>',
         icon: 'success',
         position: 'top-right',
         hideAfter: 1200
       })
       $("#type_file_upload").val('imagen')
+      $('#tipo_comprobante_file').val('FIRMA')
       $("#btn_clean_firma").attr('disabled', true);
       $("#modal_egreso_comprobante").modal('hide')
       adjuntarArch();
@@ -339,12 +338,14 @@ $(document).on('click', '.type-comp', (e) => {
 })
 
 $("#modal_egreso_comprobante").on('hide.bs.modal', () => {
-  $.each($('.type-comp'), function (_, type) {
-    $(type).removeClass('active');
-    $(type).attr('disabled', false);
-  })
-  $("#cont_comprobante").html('')
-  $("#btn_adjArchivo_modal").removeClass('d-none')
+  setTimeout(() => {
+    $.each($('.type-comp'), function (_, type) {
+      $(type).removeClass('active');
+      $(type).attr('disabled', false);
+    })
+    $("#cont_comprobante").html('')
+    $("#btn_adjArchivo_modal").removeClass('d-none')
+  }, 800);
 })
 
 function adjuntarArch() {

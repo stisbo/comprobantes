@@ -58,6 +58,7 @@ $lugares = Lugar::all();
           <div class="row" id="card-egresos">
             <form id="form_update" data-idpago="<?= $pid ?>">
               <input type="hidden" id="type_file_upload" name="tipo_file" value="<?= $pago->nameFile == '' ? '' : 'file' ?>">
+              <input type="hidden" name="tipoComprobante" value="<?= $pago->tipoComprobante ?>" id="tipo_comprobante_file">
               <div class="card shadow">
                 <div class="card-body">
                   <div class="row">

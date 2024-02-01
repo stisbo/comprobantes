@@ -18,6 +18,7 @@ class Pago {
   public string $lugar;
   public string $referencia;  // ingreso (idVenta)
   public string $adelanto; // ADELANTO || PAGO
+  public string $tipoComprobante;
   public function __construct($idPago = null) {
     $con = Database::getInstace();
     if ($idPago != null) {
@@ -39,6 +40,7 @@ class Pago {
         $this->lugar = $pagoRow['lugar'] ?? '';
         $this->referencia = $pagoRow['referencia'] ?? '';
         $this->adelanto = $pagoRow['adelanto'] ?? 'PAGO';
+        $this->tipoComprobante = $pagoRow['tipoComprobante'] ?? '';
       } else {
         $this->objectNull();
       }
@@ -60,14 +62,15 @@ class Pago {
     $this->lugar = '';
     $this->referencia = '';
     $this->adelanto = '';
+    $this->tipoComprobante = '';
   }
   public function save() {
     $res = -1;
     try {
       $con = Database::getInstace();
       if ($this->idPago == 0) { //insert
-        $sql = "INSERT INTO tblPago(concepto, monto, idProyecto, modoPago, idPagadoPor, idRecibidoPor, namefile, nroNotaFact, lugar, referencia, adelanto) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-        $params = [$this->concepto, $this->monto, $this->idProyecto, $this->modoPago, $this->idPagadoPor, $this->idRecibidoPor, $this->nameFile, $this->nroNotaFact, $this->lugar, $this->referencia, $this->adelanto];
+        $sql = "INSERT INTO tblPago(concepto, monto, idProyecto, modoPago, idPagadoPor, idRecibidoPor, namefile, nroNotaFact, lugar, referencia, adelanto, tipoComprobante) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        $params = [$this->concepto, $this->monto, $this->idProyecto, $this->modoPago, $this->idPagadoPor, $this->idRecibidoPor, $this->nameFile, $this->nroNotaFact, $this->lugar, $this->referencia, $this->adelanto, $this->tipoComprobante];
         $stmt = $con->prepare($sql);
         $res = $stmt->execute($params);
         if ($res) {
@@ -75,8 +78,8 @@ class Pago {
           $res = $this->idPago;
         }
       } else { // update
-        $sql = "UPDATE tblPago SET idProyecto = ?, concepto = ?, modoPago = ?, idPagadoPor = ?, idRecibidoPor = ?, monto = ?, namefile = ?, nroNotaFact = ?, lugar = ?, referencia = ?, adelanto = ? WHERE idPago = ?";
-        $params = [$this->idProyecto, $this->concepto, $this->modoPago, $this->idPagadoPor, $this->idRecibidoPor, $this->monto, $this->nameFile, $this->nroNotaFact, $this->lugar, $this->referencia, $this->adelanto, $this->idPago];
+        $sql = "UPDATE tblPago SET idProyecto = ?, concepto = ?, modoPago = ?, idPagadoPor = ?, idRecibidoPor = ?, monto = ?, namefile = ?, nroNotaFact = ?, lugar = ?, referencia = ?, adelanto = ?, tipoComprobante = ? WHERE idPago = ?";
+        $params = [$this->idProyecto, $this->concepto, $this->modoPago, $this->idPagadoPor, $this->idRecibidoPor, $this->monto, $this->nameFile, $this->nroNotaFact, $this->lugar, $this->referencia, $this->adelanto, $this->tipoComprobante, $this->idPago];
         $stmt = $con->prepare($sql);
         $stmt->execute($params);
         $res = 1;

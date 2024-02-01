@@ -3,7 +3,7 @@ require_once('../app/config/database.php');
 require_once('../app/models/pago.php');
 require_once('../app/models/proyecto.php');
 require_once('../tcpdf/tcpdf.php');
-
+// ventapdfPR1
 use App\Models\Pago;
 use App\Models\Proyecto;
 
@@ -22,19 +22,16 @@ if (isset($_GET['pagid'])) {
     header('Location: ../');
     die();
   }
-  $width = 217;
-  $height += 250;
-  $pageLayout = array($width, $height); //  or array($height, $width) 
-  $pdf = new TCPDF('p', 'pt', $pageLayout, true, 'UTF-8', false);
+  $pdf = new TCPDF('P', 'mm', 'A4', true, 'UTF-8', false);
 
   $pdf->SetCreator('PDF_CREATOR');
   $pdf->SetAuthor('STIS - BOLIVIA');
   $pdf->SetTitle('Nota de pago');
   $pdf->setPrintHeader(false);
   $pdf->setPrintFooter(false);
-  $pdf->SetMargins(8, 0, 0, false);
+  $pdf->SetMargins(10, 5, 5, false);
   $pdf->SetAutoPageBreak(true, 2);
-  $pdf->SetFont('Helvetica', '', 8);
+  $pdf->SetFont('Helvetica', '', 24);
   $pdf->addPage();
 
   $content = '<h2 style="text-align:center;">NOTA DE PAGO</h2>';
@@ -64,6 +61,17 @@ if (isset($_GET['pagid'])) {
   }
   $tipoPago = $pago->adelanto ?? 'PAGO';
   $lugar = $pago->lugar ?? '';
+  $tagImgIngreso = '';
+  $tagImgEgreso = '';
+  $domain = 'domain';
+  if ($pago->tipoComprobante == 'FIRMA' && $pago->nameFile != '') {
+    if ($proyecto->tipo == 'EGRESO') {
+      $tagImgEgreso  = '<img src="../public/' . $domain . '/' . $pago->nameFile . '" style="width:185px;">';
+    } else {
+      $tagImgIngreso = '<img src="../public/' . $domain . '/' . $pago->nameFile . '" style="width:185px;">';
+    }
+  }
+  $comprobante = "Comp. " . $pago->tipoComprobante ?? '';
   $tabla .= '
             <tr><td colspan="500" align="left"><b>Pagado por: </b>' . strtoupper($pagado) . '</td></tr>
             <tr><td colspan="500" align="left"><b>Recibido por: </b>' . strtoupper($recibido) . '</td></tr>
@@ -71,9 +79,11 @@ if (isset($_GET['pagid'])) {
             <tr><td colspan="500" align="left"><b>Concepto: </b><br>   ' . $tipoPago . ' | ' . $pago->concepto . '</td></tr>
             <tr><td colspan="250" align="left"><b>Monto: </b>' . number_format($pago->monto, 2) . '</td><td colspan="250" align="left"><b>Modo: </b> ' . $pago->modoPago . '</td></tr>
             <tr><td colspan="500" align="left" style="padding: 8px; text-align: left; border-bottom: 1px solid #000; font-size:80%;"><b>Fecha y hora:</b> ' . date('d/m/Y H:i', strtotime($pago->fechaRegistro)) . '</td></tr>
+            <tr><td colspan="500" style="font-size:8px;"></td></tr>
+            <tr><td colspan="500" style="font-size:13px;">' . $comprobante . '</td></tr>
       </table>';
   $tabla .= '<table border="0" cellpadding="0"><tr><td colspan="500"></td></tr><tr><td colspan="500"></td></tr><tr><td colspan="500"></td></tr>';
-  $tabla .= '<tr><td colspan="200" align="center" style="padding: 8px; text-align: left; border-bottom: 1px solid #000;"></td><td colspan="100"></td><td colspan="200" align="center" style="padding: 8px; text-align: left; border-bottom: 1px solid #000;"></td></tr>';
+  $tabla .= '<tr><td colspan="200" align="center" style="padding: 8px; text-align: left; border-bottom: 1px solid #000;">' . $tagImgEgreso . '</td><td colspan="100"></td><td colspan="200" align="center" style="padding: 8px; text-align: left; border-bottom: 1px solid #000;">' . $tagImgIngreso . '</td></tr>';
   $tabla .= '<tr><td colspan="200" align="center" style="padding: 8px; text-align: center;">Firma pagado por</td><td colspan="100"></td><td colspan="200" align="center" style="padding: 8px; text-align: center;">Firma recibido por</td></tr>';
   $tabla .= '</table>';
   $pdf->WriteHTMLCell(0, 0, '', '', $tabla, 0, 0);

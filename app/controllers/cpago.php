@@ -20,6 +20,7 @@ class CPago {
         $pago->idProyecto = $data['idProyecto'];
         $pago->idRecibidoPor = $data['idAfiliado'];
         $pago->modoPago = $data['modoPago'];
+        $pago->tipoComprobante = $data['tipoComprobante'];
         $pago->nameFile = $file;
         $pago->idPagadoPor = $user->idUsuario;
         $pago->nroNotaFact = isset($data['nro']) ? $data['nro'] : '';
@@ -52,6 +53,7 @@ class CPago {
         $pago->concepto = $data['concepto'];
         $pago->monto = $data['monto'];
         $pago->idProyecto = $data['idProyecto'];
+        $pago->tipoComprobante = $data['tipoComprobante'];
         $pago->idPagadoPor = $data['idAfiliado'];
         $pago->modoPago = $data['modoPago'];
         $pago->nameFile = $file;

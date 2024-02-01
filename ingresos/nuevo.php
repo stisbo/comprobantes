@@ -59,6 +59,7 @@ $lugares = Lugar::all();
           <div class="row" id="card-egresos">
             <form id="form_nuevo">
               <input type="hidden" id="type_file_upload" name="tipo_file" value="">
+              <input type="hidden" name="tipoComprobante" value="" id="tipo_comprobante_file">
               <div class="card shadow">
                 <div class="card-body">
                   <div class="row">
