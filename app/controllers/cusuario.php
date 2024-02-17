@@ -5,22 +5,21 @@ namespace App\Controllers;
 use App\Models\Usuario;
 
 class CUsuario {
-  public function create($data, $files) { // solo usuarios administradores 
-    $usuario = new Usuario();
-    $usuario->alias = $data['alias'];
-    $usuario->password = hash('sha256', $data['password']);
-    // print_r($usuario);
-    $usuario->rol = 'ADMIN';
-    $usuario->idGrupo = 0;
-    $res = $usuario->save();
-    // echo $res . '-----';
-    if ($res) {
-      setcookie('user_obj', json_encode($usuario), time() + 64800, '/', false);
-      echo json_encode(array('status' => 'success'));
-    } else {
-      echo json_encode(array('status' => 'error'));
-    }
-  }
+  // public function create($data, $files) { // solo usuarios administradores 
+  //   $usuario = new Usuario();
+  //   $usuario->alias = $data['alias'];
+  //   $usuario->password = hash('sha256', $data['password']);
+  //   // print_r($usuario);
+  //   $usuario->rol = 'ADMIN';
+  //   $res = $usuario->save();
+  //   // echo $res . '-----';
+  //   if ($res) {
+  //     setcookie('user_obj', json_encode($usuario), time() + 64800, '/', false);
+  //     echo json_encode(array('status' => 'success'));
+  //   } else {
+  //     echo json_encode(array('status' => 'error'));
+  //   }
+  // }
 
   public function createSubUsuario($data, $files) {
     // solo admistradores pueden crear usuarios.
@@ -28,17 +27,15 @@ class CUsuario {
     if (!isset($_COOKIE['user_obj'])) {
       echo json_encode(array('status' => 'error', 'message' => 'Cookies de sesion necesarias'));
     } else {
-      $idUsuario = json_decode($_COOKIE['user_obj'])->idUsuario;
-      // verifiacamos si existe el alias en el grupo
-      $resExist = Usuario::aliasExist($data['alias'], $idUsuario);
+
+      $resExist = Usuario::aliasExist($data['alias']);
       if ($resExist) {
-        echo json_encode(array('status' => 'error', 'message' => 'El usuario (alias) que proporcionaste ya existe en tu grupo, intenta con otro usuario'));
+        echo json_encode(array('status' => 'error', 'message' => 'El usuario (alias) que proporcionaste ya existe, intenta con otro usuario'));
       } else {
         $usuario = new Usuario();
         $usuario->alias = $data['alias'];
         $usuario->password = hash('sha256', $data['alias']);
         $usuario->rol = $data['rol'];
-        $usuario->idGrupo = $idUsuario;
         $res = $usuario->save();
         if ($res > 0) {
           echo json_encode(array('status' => 'success', 'message' => 'El usuario fue creado exitosamente'));
@@ -79,7 +76,6 @@ class CUsuario {
       $user->idUsuario = $userData->idUsuario;
       $user->alias = $userData->alias;
       $user->rol = $userData->rol;
-      $user->idGrupo = $userData->idGrupo;
       $datos = $user->searchAfiliado($data['q']);
       echo json_encode(array('status' => 'success', 'data' => $datos));
     } catch (\Throwable $th) {
@@ -92,8 +88,7 @@ class CUsuario {
       echo json_encode(array('status' => 'error', 'message' => 'Cookies de sesion necesarias'));
     } else {
       try {
-        $user = json_decode($_COOKIE['user_obj']);
-        $users = Usuario::getAllUsers($user->idUsuario);
+        $users = Usuario::getAllUsers();
         echo json_encode(array('status' => 'success', 'data' => json_encode($users)));
       } catch (\Throwable $th) {
         print_r($th);

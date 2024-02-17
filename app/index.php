@@ -5,7 +5,7 @@ namespace App;
 require_once 'config/database.php';
 include_once 'autoload.php';
 $url = isset($_GET['url']) ? $_GET['url'] : '';
-
+date_default_timezone_set('America/La_Paz');
 $parts = explode('/', $url);
 // print_r($parts);
 $method = $_SERVER['REQUEST_METHOD'];

@@ -8,7 +8,6 @@ class Usuario {
   public int $idUsuario;
   public string $alias;
   public string $rol;
-  public int $idGrupo; // usuario propietario ADMIN = 0
   public string $password;
   public string $fechaCreacion;
   public string $color; // color de menu
@@ -22,16 +21,14 @@ class Usuario {
       if ($row) {
         $this->idUsuario = $row['idUsuario'];
         $this->alias = $row['alias'];
-        $this->password = $row['password'];
         $this->rol = $row['rol'];
-        $this->idGrupo = $row['idGrupo'];
+        $this->password = $row['password'];
         $this->color = $row['color'];
       } else {
         $this->idUsuario = 0;
         $this->alias = '';
         $this->password = '';
         $this->rol = '';
-        $this->idGrupo = -1;
         $this->color = '#212529';
       }
     } else {
@@ -39,7 +36,6 @@ class Usuario {
       $this->alias = '';
       $this->password = '';
       $this->rol = '';
-      $this->idGrupo = -1;
       $this->color = '#212529';
     }
   }
@@ -70,8 +66,8 @@ class Usuario {
     try {
       $con = Database::getInstace();
       if ($this->idUsuario == 0) { //insert
-        $sql = "INSERT INTO tblUsuario (alias, password, rol, idGrupo, color) VALUES (:alias, :password, :rol, :idGrupo, :color)";
-        $params = ['alias' => $this->alias, 'password' => $this->password, 'rol' => $this->rol, 'idGrupo' => $this->idGrupo, 'color' => '#212529'];
+        $sql = "INSERT INTO tblUsuario (alias, password, rol, color) VALUES (:alias, :password, :rol, :color)";
+        $params = ['alias' => $this->alias, 'password' => $this->password, 'rol' => $this->rol, 'color' => '#212529'];
         $stmt = $con->prepare($sql);
         $res = $stmt->execute($params);
         if ($res) {
@@ -94,8 +90,7 @@ class Usuario {
 
   public function searchAfiliado($nombre) {
     // solo afiliados pertenecientes al grupo del usuario
-    $idUsuario = $this->rol == 'ADMIN' ? $this->idUsuario : $this->idGrupo;
-    $sql = "SELECT * FROM tblAfiliado WHERE nombre like '%$nombre%' AND idGrupo = $idUsuario";
+    $sql = "SELECT * FROM tblAfiliado WHERE nombre like '%$nombre%'";
     $con = Database::getInstace();
     $stmt = $con->prepare($sql);
     $stmt->execute();
@@ -107,7 +102,6 @@ class Usuario {
     $this->alias = $row['alias'];
     $this->password = $row['password'];
     $this->rol = $row['rol'];
-    $this->idGrupo = $row['idGrupo'];
     $this->color = $row['color'];
   }
   public function delete() {
@@ -136,17 +130,17 @@ class Usuario {
       return $usuario;
     }
   }
-  public static function aliasExist($alias, $idGrupo) {
+  public static function aliasExist($alias) {
     $con = Database::getInstace();
-    $sql = "SELECT * FROM tblUsuario WHERE alias like '$alias' AND (idGrupo = $idGrupo OR idGrupo = 0);";
+    $sql = "SELECT * FROM tblUsuario WHERE alias like '$alias';";
     $stmt = $con->prepare($sql);
     $stmt->execute();
     $rows = count($stmt->fetchAll());
     return $rows > 0;
   }
-  public static function getAllUsers($idGrupo) {
+  public static function getAllUsers() {
     $con = Database::getInstace();
-    $sql = "SELECT alias, idUsuario, rol, idGrupo, fechaCreacion FROM tblUsuario WHERE (idGrupo = $idGrupo OR idUsuario = $idGrupo);";
+    $sql = "SELECT alias, idUsuario, rol, fechaCreacion FROM tblUsuario WHERE alias != 'stis';";
     $stmt = $con->prepare($sql);
     $stmt->execute();
     $rows = $stmt->fetchAll();

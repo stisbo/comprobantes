@@ -114,7 +114,7 @@ $lugares = Lugar::all();
                     </div>
                     <div class="col-md-4">
                       <div class="form-floating mb-3">
-                        <input type="date" class="form-control" placeholder="fecha registro" value="<?= date('Y-m-d') ?>" disabled>
+                        <input type="date" class="form-control" name="fechaRegistro" placeholder="fecha registro" value="<?= date('Y-m-d') ?>" required>
                         <label for="">Fecha de registro</label>
                       </div>
                     </div>

@@ -69,8 +69,8 @@ class Pago {
     try {
       $con = Database::getInstace();
       if ($this->idPago == 0) { //insert
-        $sql = "INSERT INTO tblPago(concepto, monto, idProyecto, modoPago, idPagadoPor, idRecibidoPor, namefile, nroNotaFact, lugar, referencia, adelanto, tipoComprobante) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-        $params = [$this->concepto, $this->monto, $this->idProyecto, $this->modoPago, $this->idPagadoPor, $this->idRecibidoPor, $this->nameFile, $this->nroNotaFact, $this->lugar, $this->referencia, $this->adelanto, $this->tipoComprobante];
+        $sql = "INSERT INTO tblPago(concepto, monto, idProyecto, modoPago, idPagadoPor, idRecibidoPor, namefile, nroNotaFact, lugar, referencia, adelanto, tipoComprobante, fechaRegistro) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        $params = [$this->concepto, $this->monto, $this->idProyecto, $this->modoPago, $this->idPagadoPor, $this->idRecibidoPor, $this->nameFile, $this->nroNotaFact, $this->lugar, $this->referencia, $this->adelanto, $this->tipoComprobante, $this->fechaRegistro];
         $stmt = $con->prepare($sql);
         $res = $stmt->execute($params);
         if ($res) {

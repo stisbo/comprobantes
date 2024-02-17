@@ -27,6 +27,7 @@ class CPago {
         $pago->lugar = isset($data['lugar']) ? $data['lugar'] : '';
         $pago->referencia = isset($data['referencia']) ? $data['referencia'] : '';
         $pago->adelanto = $data['adelanto'] ?? 'PAGO';
+        $pago->fechaRegistro = $data['fechaRegistro'] . 'T' . date('H:i:s');
         $res = $pago->save();
         if ($res) {
           $pago->idPago = $res;
