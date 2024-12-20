@@ -123,4 +123,25 @@ class Proyecto {
     $rows = $stmt->fetchAll();
     return $rows;
   }
+  public static function getProyectoConMontoTotalPago($data) {
+    try {
+      $con = Database::getInstace();
+      $tipo = $data['tipo'] ?? 'EGRESO';
+      $estado = isset($data['estado']) ? "AND tp.estado LIKE '%" . $data['estado'] . "%' " : '';
+      $year = isset($data['year']) ? "AND YEAR(tp.fechaCreacion) = " . $data['year'] : 'AND YEAR(tp.fechaCreacion) = ' . date('Y');
+      $sql = "SELECT tp.*, b.totalPagado FROM tblProyecto tp, (SELECT idProyecto, sum(monto) as totalPagado FROM tblPago
+          GROUP BY idProyecto) b
+          WHERE tp.idProyecto = b.idProyecto
+          AND tp.tipo = '$tipo' $estado $year
+          ORDER BY tp.fechaCreacion;";
+      $stmt = $con->prepare($sql);
+      $stmt->execute();
+      $rows = $stmt->fetchAll();
+      return $rows;
+    } catch (\Throwable $th) {
+      //throw $th;
+      print_r($th);
+    }
+    return [];
+  }
 }
